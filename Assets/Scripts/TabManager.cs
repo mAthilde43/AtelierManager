@@ -1,0 +1,110 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+public class TabManager : MonoBehaviour
+{
+    // Références vers les panneaux
+    public GameObject shopPanel;
+    public GameObject workshopPanel;
+    public GameObject salesPanel;
+    public GameObject upgradesPanel;  // ← NOUVEAU
+
+// Références vers les boutons d'onglets
+    public Button shopTabButton;
+    public Button workshopTabButton;
+    public Button salesTabButton;
+    public Button upgradesTabButton;  // ← NOUVEAU
+    
+    
+    // Couleurs pour les boutons actifs/inactifs
+    private Color activeColor = new Color(1f, 1f, 1f, 1f);      // Blanc (actif)
+    private Color inactiveColor = new Color(0.7f, 0.7f, 0.7f, 1f); // Gris (inactif)
+    
+    void Start()
+    {
+        // Configure les boutons
+        shopTabButton.onClick.AddListener(() => ShowTab("shop"));
+        workshopTabButton.onClick.AddListener(() => ShowTab("workshop"));
+        salesTabButton.onClick.AddListener(() => ShowTab("sales"));
+        upgradesTabButton.onClick.AddListener(() => ShowTab("upgrades"));  // ← NOUVEAU
+    
+        // Affiche la boutique par défaut au démarrage
+        ShowTab("shop");
+    }
+    
+    // Fonction pour afficher un onglet
+    public void ShowTab(string tabName)
+    {
+        // Cache tous les panneaux
+        shopPanel.SetActive(false);
+        workshopPanel.SetActive(false);
+        salesPanel.SetActive(false);
+        upgradesPanel.SetActive(false);  // ← NOUVEAU
+    
+        // Réinitialise la couleur de tous les boutons
+        ResetButtonColors();
+    
+        // Affiche le panneau demandé et met en surbrillance son bouton
+        switch (tabName)
+        {
+            case "shop":
+                shopPanel.SetActive(true);
+                HighlightButton(shopTabButton);
+                Debug.Log("📂 Onglet Boutique ouvert");
+                break;
+            
+            case "workshop":
+                workshopPanel.SetActive(true);
+                HighlightButton(workshopTabButton);
+                Debug.Log("📂 Onglet Atelier ouvert");
+                break;
+            
+            case "sales":
+                salesPanel.SetActive(true);
+                HighlightButton(salesTabButton);
+                Debug.Log("📂 Onglet Vente ouvert");
+                break;
+            
+            case "upgrades":  // ← NOUVEAU
+                upgradesPanel.SetActive(true);
+                HighlightButton(upgradesTabButton);
+                Debug.Log("📂 Onglet Améliorations ouvert");
+                break;
+            
+            default:
+                Debug.LogWarning("⚠️ Onglet inconnu : " + tabName);
+                shopPanel.SetActive(true);
+                break;
+        }
+    }
+    
+    // Réinitialise la couleur de tous les boutons (inactifs)
+    void ResetButtonColors()
+    {
+        ColorBlock cb;
+    
+        cb = shopTabButton.colors;
+        cb.normalColor = inactiveColor;
+        shopTabButton.colors = cb;
+    
+        cb = workshopTabButton.colors;
+        cb.normalColor = inactiveColor;
+        workshopTabButton.colors = cb;
+    
+        cb = salesTabButton.colors;
+        cb.normalColor = inactiveColor;
+        salesTabButton.colors = cb;
+    
+        cb = upgradesTabButton.colors;  // ← NOUVEAU
+        cb.normalColor = inactiveColor;
+        upgradesTabButton.colors = cb;
+    }
+    
+    // Met en surbrillance un bouton (actif)
+    void HighlightButton(Button button)
+    {
+        ColorBlock cb = button.colors;
+        cb.normalColor = activeColor;
+        button.colors = cb;
+    }
+}
