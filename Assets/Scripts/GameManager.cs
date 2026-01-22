@@ -37,6 +37,8 @@ public class GameManager : MonoBehaviour
     
     // === AMÉLIORATIONS ===
     public List<Upgrade> upgrades = new List<Upgrade>();
+    // === RÉFÉRENCES ===
+    private ProgressionManager progressionManager;
     
     void Start()
     {
@@ -56,6 +58,9 @@ public class GameManager : MonoBehaviour
 
         // Initialise l'UI de la boutique
         InitializeUI();
+        
+        // Récupère le ProgressionManager
+        progressionManager = FindObjectOfType<ProgressionManager>();
     }
     
     // Fonction pour créer les matériaux de départ
@@ -310,6 +315,12 @@ public class GameManager : MonoBehaviour
             prod.AddQuantity(1);
         
             Debug.Log("✅ Production réussie : 1x " + prod.productName);
+            
+            // Donne de l'XP pour la fabrication
+            if (progressionManager != null)
+            {
+                progressionManager.OnProductCrafted(prod.sellPrice);
+            }
         }
         else
         {
@@ -347,6 +358,12 @@ public class GameManager : MonoBehaviour
             AddMoney(earnings);
         
             Debug.Log("✅ Vente réussie : " + quantity + "x " + prod.productName + " pour " + earnings + "€");
+            
+            // Donne de l'XP pour la vente
+            if (progressionManager != null)
+            {
+                progressionManager.OnProductSold(earnings);
+            }
         
             // Met à jour toute l'interface
             RefreshAllUI();
@@ -391,6 +408,12 @@ public void BuyUpgrade(int upgradeIndex)
         ApplyUpgradeEffect(upg);
         
         Debug.Log("✅ Amélioration achetée : " + upg.upgradeName + " pour " + upg.cost + "€");
+        
+        // Donne de l'XP pour l'amélioration
+        if (progressionManager != null)
+        {
+            progressionManager.OnUpgradeBought();
+        }
         
         // Met à jour l'interface
         RefreshAllUI();
