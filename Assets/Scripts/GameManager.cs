@@ -249,6 +249,11 @@ public class GameManager : MonoBehaviour
             {
                 AudioManager.Instance.PlayPurchase();
             }
+            // Met à jour les notifications
+            if (NotificationManager.Instance != null)
+            {
+                NotificationManager.Instance.UpdateAllNotifications();
+            }
         }
         else
         {
@@ -633,7 +638,7 @@ public Upgrade GetUpgrade(int index)
             saleChairItemUI.UpdateDisplay(products[1]);
         if (saleShelfItemUI != null)
             saleShelfItemUI.UpdateDisplay(products[2]);
-        
+    
         // Met à jour les améliorations
         if (upgrade1ItemUI != null)
             upgrade1ItemUI.UpdateDisplay(upgrades[0]);
@@ -645,6 +650,12 @@ public Upgrade GetUpgrade(int index)
             upgrade4ItemUI.UpdateDisplay(upgrades[3]);
         if (upgrade5ItemUI != null)
             upgrade5ItemUI.UpdateDisplay(upgrades[4]);
+    
+        // Met à jour les notifications (NOUVEAU)
+        if (NotificationManager.Instance != null)
+        {
+            NotificationManager.Instance.UpdateAllNotifications();
+        }
     }
     
     // Sauvegarde automatiquement quand on quitte le jeu
