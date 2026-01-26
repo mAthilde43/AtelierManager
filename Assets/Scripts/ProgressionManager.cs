@@ -29,17 +29,25 @@ public class ProgressionManager : MonoBehaviour
     }
     
     // Ajoute de l'expérience
+    // Ajoute de l'expérience
     public void AddExperience(int amount)
     {
         currentExperience += amount;
         Debug.Log("⭐ +" + amount + " XP | Total: " + currentExperience + "/" + experienceToNextLevel);
-        
+    
+        // Feedback visuel XP
+        if (FeedbackManager.Instance != null && xpText != null)
+        {
+            Vector3 position = xpText.transform.position;
+            FeedbackManager.Instance.ShowXPGain(amount, position);
+        }
+    
         // Vérifie si on passe au niveau suivant
         while (currentExperience >= experienceToNextLevel)
         {
             LevelUp();
         }
-        
+    
         UpdateProgressionDisplay();
     }
     
@@ -53,7 +61,12 @@ public class ProgressionManager : MonoBehaviour
         experienceToNextLevel = Mathf.RoundToInt(experienceToNextLevel * 1.5f);
     
         Debug.Log("🎉 NIVEAU SUPÉRIEUR ! Niveau " + currentLevel + " atteint !");
-    
+        // Son de level up
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayLevelUp();
+        }
+        
         // Affiche la notification
         ShowLevelUpNotification();
     

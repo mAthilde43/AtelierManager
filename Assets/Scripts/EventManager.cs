@@ -170,7 +170,13 @@ public class EventManager : MonoBehaviour
         if (eventPopupPanel != null)
         {
             eventPopupPanel.SetActive(true);
-            
+        
+            // Son d'événement
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayEvent();
+            }
+        
             // Le script EventPopupUI gérera l'affichage
             EventPopupUI popupUI = eventPopupPanel.GetComponent<EventPopupUI>();
             if (popupUI != null)

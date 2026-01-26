@@ -185,6 +185,19 @@ public class GameManager : MonoBehaviour
         playerMoney += amount;
         UpdateMoneyDisplay();
         Debug.Log("💰 +" + amount + "€ | Total: " + playerMoney + "€");
+    
+        // Son de gain d'argent
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayMoneyGain();
+        }
+    
+        // Feedback visuel (texte flottant)
+        if (FeedbackManager.Instance != null && moneyText != null)
+        {
+            Vector3 position = moneyText.transform.position;
+            FeedbackManager.Instance.ShowMoneyGain(amount, position);
+        }
     }
     
     public void RemoveMoney(int amount)
@@ -192,6 +205,13 @@ public class GameManager : MonoBehaviour
         playerMoney -= amount;
         UpdateMoneyDisplay();
         Debug.Log("💸 -" + amount + "€ | Total: " + playerMoney + "€");
+    
+        // Feedback visuel (texte flottant rouge)
+        if (FeedbackManager.Instance != null && moneyText != null)
+        {
+            Vector3 position = moneyText.transform.position;
+            FeedbackManager.Instance.ShowMoneyLoss(amount, position);
+        }
     }
     
     public bool HasEnoughMoney(int amount)
@@ -224,6 +244,11 @@ public class GameManager : MonoBehaviour
             mat.AddQuantity(quantity);
             
             Debug.Log("✅ Achat réussi : " + quantity + "x " + mat.materialName + " pour " + totalCost + "€");
+            // Son d'achat
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayPurchase();
+            }
         }
         else
         {
@@ -333,6 +358,12 @@ public class GameManager : MonoBehaviour
         
             Debug.Log("✅ Production réussie : 1x " + prod.productName);
             
+            // Son de craft
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayCraft();
+            }
+            
             // Donne de l'XP pour la fabrication
             if (progressionManager != null)
             {
@@ -375,6 +406,11 @@ public class GameManager : MonoBehaviour
             AddMoney(earnings);
         
             Debug.Log("✅ Vente réussie : " + quantity + "x " + prod.productName + " pour " + earnings + "€");
+            // Son de vente
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySell();
+            }
             
             // Donne de l'XP pour la vente
             if (progressionManager != null)
@@ -425,6 +461,11 @@ public void BuyUpgrade(int upgradeIndex)
         ApplyUpgradeEffect(upg);
         
         Debug.Log("✅ Amélioration achetée : " + upg.upgradeName + " pour " + upg.cost + "€");
+        // Son de succès
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySuccess();
+        }
         
         // Donne de l'XP pour l'amélioration
         if (progressionManager != null)
@@ -438,6 +479,11 @@ public void BuyUpgrade(int upgradeIndex)
     else
     {
         Debug.LogWarning("⚠️ Pas assez d'argent pour " + upg.upgradeName + " ! Il manque " + (upg.cost - playerMoney) + "€");
+        // Son d'erreur
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayError();
+        }
     }
 }
 

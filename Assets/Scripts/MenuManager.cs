@@ -1,10 +1,14 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.UI;
+
 public class MenuManager : MonoBehaviour
 {
     public TextMeshProUGUI continueText; // Texte "(Continuer la partie)"
-    
+    public Slider musicVolumeSlider; // Ajoute cette ligne
+    public Slider sfxVolumeSlider;   // Ajoute cette ligne
+    public GameObject settingsPanel;
     void Start()
     {
         // Vérifie si une sauvegarde existe
@@ -19,6 +23,19 @@ public class MenuManager : MonoBehaviour
             else
             {
                 continueText.gameObject.SetActive(false);
+            }
+        }
+    
+        // Initialise les sliders de volume avec les valeurs actuelles
+        if (AudioManager.Instance != null)
+        {
+            if (musicVolumeSlider != null)
+            {
+                musicVolumeSlider.value = AudioManager.Instance.musicVolume;
+            }
+            if (sfxVolumeSlider != null)
+            {
+                sfxVolumeSlider.value = AudioManager.Instance.sfxVolume;
             }
         }
     }
@@ -55,5 +72,51 @@ public class MenuManager : MonoBehaviour
     
         // Charge le jeu
         SceneManager.LoadScene("MainGame");
+    }
+    
+    public void OpenSettings()
+    {
+        if (settingsPanel != null)
+        {
+            settingsPanel.SetActive(true);
+        }
+    }
+
+    public void CloseSettings()
+    {
+        if (settingsPanel != null)
+        {
+            settingsPanel.SetActive(false);
+        }
+    }
+
+    public void OnMusicVolumeChanged(float value)
+    {
+        AudioManager audioManager = AudioManager.Instance;
+    
+        if (audioManager != null)
+        {
+            audioManager.SetMusicVolume(value);
+            Debug.Log("🎵 Volume musique changé : " + value);
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ AudioManager introuvable !");
+        }
+    }
+
+    public void OnSFXVolumeChanged(float value)
+    {
+        AudioManager audioManager = AudioManager.Instance;
+    
+        if (audioManager != null)
+        {
+            audioManager.SetSFXVolume(value);
+            Debug.Log("🔊 Volume SFX changé : " + value);
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ AudioManager introuvable !");
+        }
     }
 }
