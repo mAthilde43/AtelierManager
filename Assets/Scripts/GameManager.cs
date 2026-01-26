@@ -58,9 +58,26 @@ public class GameManager : MonoBehaviour
 
         // Initialise l'UI de la boutique
         InitializeUI();
-        
+    
         // Récupère le ProgressionManager
         progressionManager = FindObjectOfType<ProgressionManager>();
+    
+        // === CHARGE LA SAUVEGARDE (si elle existe) ===
+        SaveManager saveManager = SaveManager.Instance;
+        if (saveManager != null)
+        {
+            TimeManager timeManager = FindObjectOfType<TimeManager>();
+        
+            if (saveManager.HasSaveData())
+            {
+                saveManager.LoadGame(this, timeManager, progressionManager);
+                Debug.Log("📂 Partie chargée !");
+            }
+            else
+            {
+                Debug.Log("🆕 Nouvelle partie");
+            }
+        }
     }
     
     // Fonction pour créer les matériaux de départ
@@ -478,6 +495,52 @@ void ApplyUpgradeEffect(Upgrade upg)
     }
 }
 
+// Fonction publique pour réappliquer un effet d'amélioration (utilisée au chargement)
+public void ReapplyUpgradeEffect(Upgrade upg)
+{
+    // Ne réapplique que les effets permanents (pas les bonus d'argent)
+    TimeManager timeManager = FindObjectOfType<TimeManager>();
+    
+    switch (upg.type)
+    {
+        case UpgradeType.MaterialDiscount:
+            // Réduit le prix de tous les matériaux
+            foreach (CraftingMaterial mat in craftingMaterials)
+            {
+                int reduction = Mathf.RoundToInt(mat.price * upg.value / 100f);
+                mat.price -= reduction;
+                if (mat.price < 1) mat.price = 1;
+            }
+            break;
+            
+        case UpgradeType.SalesBonus:
+            // Augmente le prix de vente de tous les produits
+            foreach (Product prod in products)
+            {
+                int bonus = Mathf.RoundToInt(prod.sellPrice * upg.value / 100f);
+                prod.sellPrice += bonus;
+            }
+            break;
+            
+        case UpgradeType.DailyIncomeBoost:
+            // Augmente les revenus quotidiens
+            if (timeManager != null)
+            {
+                timeManager.dailyIncome += upg.value;
+            }
+            break;
+            
+        case UpgradeType.WeeklyCostReduction:
+            // Réduit les charges hebdomadaires
+            if (timeManager != null)
+            {
+                timeManager.weeklyCost -= upg.value;
+                if (timeManager.weeklyCost < 0) timeManager.weeklyCost = 0;
+            }
+            break;
+    }
+}
+
 // Fonction pour obtenir une amélioration par son index
 public Upgrade GetUpgrade(int index)
 {
@@ -536,5 +599,40 @@ public Upgrade GetUpgrade(int index)
             upgrade4ItemUI.UpdateDisplay(upgrades[3]);
         if (upgrade5ItemUI != null)
             upgrade5ItemUI.UpdateDisplay(upgrades[4]);
+    }
+    
+    // Sauvegarde automatiquement quand on quitte le jeu
+    void OnApplicationQuit()
+    {
+        SaveManager saveManager = SaveManager.Instance;
+        if (saveManager != null)
+        {
+            TimeManager timeManager = FindObjectOfType<TimeManager>();
+        
+            if (timeManager != null && progressionManager != null)
+            {
+                saveManager.SaveGame(this, timeManager, progressionManager);
+                Debug.Log("💾 Sauvegarde automatique à la fermeture");
+            }
+        }
+    }
+
+// Sauvegarde aussi quand l'application perd le focus (mobile)
+    void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus) // Le jeu est mis en pause (on quitte l'app sur mobile)
+        {
+            SaveManager saveManager = SaveManager.Instance;
+            if (saveManager != null)
+            {
+                TimeManager timeManager = FindObjectOfType<TimeManager>();
+            
+                if (timeManager != null && progressionManager != null)
+                {
+                    saveManager.SaveGame(this, timeManager, progressionManager);
+                    Debug.Log("💾 Sauvegarde automatique (pause)");
+                }
+            }
+        }
     }
 }
