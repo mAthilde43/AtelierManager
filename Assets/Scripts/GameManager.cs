@@ -198,6 +198,12 @@ public class GameManager : MonoBehaviour
             Vector3 position = moneyText.transform.position;
             FeedbackManager.Instance.ShowMoneyGain(amount, position);
         }
+
+        //track pour les objectifs
+        if (ObjectiveManager.Instance != null)
+        {
+            ObjectiveManager.Instance.OnMoneyEarned(amount);
+        }
     }
     
     public void RemoveMoney(int amount)
@@ -211,6 +217,12 @@ public class GameManager : MonoBehaviour
         {
             Vector3 position = moneyText.transform.position;
             FeedbackManager.Instance.ShowMoneyLoss(amount, position);
+        }
+        
+        //track pour les objectifs
+        if (ObjectiveManager.Instance != null)
+        {
+            ObjectiveManager.Instance.OnMoneySpent(amount);
         }
     }
     
@@ -244,6 +256,12 @@ public class GameManager : MonoBehaviour
             mat.AddQuantity(quantity);
             
             Debug.Log("✅ Achat réussi : " + quantity + "x " + mat.materialName + " pour " + totalCost + "€");
+            
+            // Track pour les objectifs
+            if (ObjectiveManager.Instance != null)
+            {
+                ObjectiveManager.Instance.OnMaterialBought(quantity);
+            }
             // Son d'achat
             if (AudioManager.Instance != null)
             {
@@ -362,6 +380,11 @@ public class GameManager : MonoBehaviour
             prod.AddQuantity(1);
         
             Debug.Log("✅ Production réussie : 1x " + prod.productName);
+            // Track pour les objectifs
+            if (ObjectiveManager.Instance != null)
+            {
+                ObjectiveManager.Instance.OnProductCrafted(1);
+            }
             
             // Son de craft
             if (AudioManager.Instance != null)
@@ -411,6 +434,12 @@ public class GameManager : MonoBehaviour
             AddMoney(earnings);
         
             Debug.Log("✅ Vente réussie : " + quantity + "x " + prod.productName + " pour " + earnings + "€");
+            // Track pour les objectifs
+            if (ObjectiveManager.Instance != null)
+            {
+                ObjectiveManager.Instance.OnProductSold(quantity);
+            }
+            
             // Son de vente
             if (AudioManager.Instance != null)
             {
@@ -466,6 +495,12 @@ public void BuyUpgrade(int upgradeIndex)
         ApplyUpgradeEffect(upg);
         
         Debug.Log("✅ Amélioration achetée : " + upg.upgradeName + " pour " + upg.cost + "€");
+        // Track pour les objectifs
+        if (ObjectiveManager.Instance != null)
+        {
+            ObjectiveManager.Instance.OnUpgradeBought(1);
+        }
+        
         // Son de succès
         if (AudioManager.Instance != null)
         {

@@ -65,7 +65,6 @@ public class TimeManager : MonoBehaviour
     }
     
     // Appelée quand un nouveau jour commence
-    // Appelée quand un nouveau jour commence
     void OnNewDay()
     {
         UpdateTimeDisplay();
@@ -76,6 +75,12 @@ public class TimeManager : MonoBehaviour
         {
             gameManager.AddMoney(dailyIncome);
             Debug.Log("💵 Revenu quotidien : +" + dailyIncome + "€");
+        }
+        
+        //reset les objectifs quotidien
+        if (ObjectiveManager.Instance != null)
+        {
+            ObjectiveManager.Instance.ResetDailyObjectives();
         }
     }
     
@@ -89,6 +94,12 @@ public class TimeManager : MonoBehaviour
         {
             gameManager.RemoveMoney(weeklyCost);
             Debug.Log("💸 Charges hebdomadaires : -" + weeklyCost + "€");
+        }
+        
+        //reset les objectifs quotidien
+        if (ObjectiveManager.Instance != null)
+        {
+            ObjectiveManager.Instance.ResetWeeklyObjectives();
         }
     }
     
@@ -126,4 +137,6 @@ public class TimeManager : MonoBehaviour
         AdvanceDay();
         Debug.Log("⏭️ Jour passé manuellement");
     }
+    
+    
 }
