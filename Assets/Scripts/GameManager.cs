@@ -17,16 +17,30 @@ public class GameManager : MonoBehaviour
     public MaterialItemUI woodItemUI;    // Élément UI pour le bois de chêne
     public MaterialItemUI pineItemUI;    // Élément UI pour le bois de pin
     public MaterialItemUI varnishItemUI; // Élément UI pour le vernis
+    public MaterialItemUI metalItemUI;   // Élément UI pour le métal
+    public MaterialItemUI fabricItemUI;  // Élément UI pour le tissu
+    public MaterialItemUI leatherItemUI; // Élément UI pour le cuire
     
 // === UI ATELIER ===
     public ProductItemUI tableItemUI; // Élément UI pour la table en chêne
     public ProductItemUI chairItemUI;
     public ProductItemUI shelfItemUI;
+    public ProductItemUI lampItemUI;      
+    public ProductItemUI armchairItemUI;  
+    public ProductItemUI deskItemUI;      
+    public ProductItemUI sofaItemUI;      
+    public ProductItemUI wardrobeItemUI;  
+    
     
     // === UI VENTE ===
     public SaleItemUI saleTableItemUI;  // Élément UI pour vendre la table
     public SaleItemUI saleChairItemUI;  // Élément UI pour vendre la chaise
     public SaleItemUI saleShelfItemUI;  // Élément UI pour vendre l'étagère
+    public SaleItemUI saleLampItemUI;  
+    public SaleItemUI saleArmchairItemUI; 
+    public SaleItemUI saleDeskItemUI; 
+    public SaleItemUI saleSofaItemUI; 
+    public SaleItemUI saleWardrobefItemUI;
     
     // === UI AMÉLIORATIONS ===
     public UpgradeItemUI upgrade1ItemUI;
@@ -87,6 +101,9 @@ public class GameManager : MonoBehaviour
         craftingMaterials.Add(new CraftingMaterial("Bois de chêne", 50));
         craftingMaterials.Add(new CraftingMaterial("Bois de pin", 30));
         craftingMaterials.Add(new CraftingMaterial("Vernis", 20));
+        craftingMaterials.Add(new CraftingMaterial("Métal", 80));
+        craftingMaterials.Add(new CraftingMaterial("Tissu", 40));
+        craftingMaterials.Add(new CraftingMaterial("Cuir", 60));
         
         Debug.Log("📦 " + craftingMaterials.Count + " types de matériaux initialisés");
     }
@@ -112,6 +129,40 @@ public class GameManager : MonoBehaviour
         etagere.AddMaterialRequirement(1, 2); // 2x Bois de pin
         etagere.AddMaterialRequirement(2, 2); // 2x Vernis
         products.Add(etagere);
+        
+        // Lampe : 1x Métal + 1x Tissu = 180€
+        Product lamp = new Product("Lampe", 180, 25);
+        lamp.AddMaterialRequirement(3, 1); // 1x Métal
+        lamp.AddMaterialRequirement(4, 1); // 1x Tissu
+        products.Add(lamp);
+    
+        // Fauteuil : 2x Pin + 2x Tissu + 1x Cuir = 280€
+        Product armchair = new Product("Fauteuil", 280, 35);
+        armchair.AddMaterialRequirement(1, 2); // 2x Bois de pin
+        armchair.AddMaterialRequirement(4, 2); // 2x Tissu
+        armchair.AddMaterialRequirement(5, 1); // 1x Cuir
+        products.Add(armchair);
+    
+        // Bureau : 4x Chêne + 2x Métal + 1x Vernis = 450€
+        Product desk = new Product("Bureau", 450, 40);
+        desk.AddMaterialRequirement(0, 4); // 4x Bois de chêne
+        desk.AddMaterialRequirement(3, 2); // 2x Métal
+        desk.AddMaterialRequirement(2, 1); // 1x Vernis
+        products.Add(desk);
+    
+        // Canapé : 3x Pin + 4x Tissu + 2x Cuir = 520€
+        Product sofa = new Product("Canapé", 520, 50);
+        sofa.AddMaterialRequirement(1, 3); // 3x Bois de pin
+        sofa.AddMaterialRequirement(4, 4); // 4x Tissu
+        sofa.AddMaterialRequirement(5, 2); // 2x Cuir
+        products.Add(sofa);
+        
+        // Armoire : 5x Chêne + 3x Métal + 2x Vernis = 650€
+        Product wardrobe = new Product("Armoire", 650, 60);
+        wardrobe.AddMaterialRequirement(0, 5); // 5x Bois de chêne
+        wardrobe.AddMaterialRequirement(3, 3); // 3x Métal
+        wardrobe.AddMaterialRequirement(2, 2); // 2x Vernis
+        products.Add(wardrobe);
     
         Debug.Log("🔨 " + products.Count + " types de produits initialisés");
     }
@@ -306,6 +357,18 @@ public class GameManager : MonoBehaviour
         {
             varnishItemUI.Setup(2, craftingMaterials[2], this);
         }
+        if (metalItemUI != null)
+        {
+            metalItemUI.Setup(3, craftingMaterials[3], this);
+        } 
+        if (fabricItemUI != null)
+        {
+            fabricItemUI.Setup(4, craftingMaterials[4], this);
+        } 
+        if (leatherItemUI != null)
+        {
+            leatherItemUI.Setup(5, craftingMaterials[5], this);
+        }
     
         // Configure les éléments UI des produits (atelier)
         if (tableItemUI != null)
@@ -314,6 +377,16 @@ public class GameManager : MonoBehaviour
             chairItemUI.Setup(1, products[1], this);
         if (shelfItemUI != null)
             shelfItemUI.Setup(2, products[2], this);
+        if (lampItemUI != null)
+            lampItemUI.Setup(3, products[3], this);     
+        if (armchairItemUI != null)
+            armchairItemUI.Setup(4, products[4],this);  
+        if (deskItemUI != null)
+            deskItemUI.Setup(5, products[5],this);     
+        if (sofaItemUI != null)
+            sofaItemUI.Setup(6, products[6],this);     
+        if (wardrobeItemUI != null)
+            wardrobeItemUI.Setup(7, products[7],this);  
     
         // Configure les éléments UI de vente
         if (saleTableItemUI != null)
@@ -322,6 +395,18 @@ public class GameManager : MonoBehaviour
             saleChairItemUI.Setup(1, products[1], this);
         if (saleShelfItemUI != null)
             saleShelfItemUI.Setup(2, products[2], this);
+        if (saleLampItemUI != null)
+            saleLampItemUI.Setup(3, products[3], this);
+        if (saleArmchairItemUI != null)
+            saleArmchairItemUI.Setup(4, products[4], this);
+        if (saleDeskItemUI != null)
+            saleDeskItemUI.Setup(5, products[5], this);
+        if (saleSofaItemUI != null)
+            saleSofaItemUI.Setup(6, products[6], this);
+        if (saleWardrobefItemUI != null)
+            saleWardrobefItemUI.Setup(7, products[7], this);
+        
+        
         
         // Configure les éléments UI des améliorations
         if (upgrade1ItemUI != null)
@@ -657,6 +742,13 @@ public Upgrade GetUpgrade(int index)
             pineItemUI.UpdateDisplay(craftingMaterials[1]);
         if (varnishItemUI != null)
             varnishItemUI.UpdateDisplay(craftingMaterials[2]);
+        if (metalItemUI != null)
+            metalItemUI.UpdateDisplay(craftingMaterials[3]);
+        if (fabricItemUI != null)
+            fabricItemUI.UpdateDisplay(craftingMaterials[4]);
+        if (leatherItemUI != null)
+            leatherItemUI.UpdateDisplay(craftingMaterials[5]);
+        
 
         // Met à jour les produits (atelier)
         if (tableItemUI != null)
@@ -665,6 +757,16 @@ public Upgrade GetUpgrade(int index)
             chairItemUI.UpdateDisplay(products[1]);
         if (shelfItemUI != null)
             shelfItemUI.UpdateDisplay(products[2]);
+        if (lampItemUI != null)
+            lampItemUI.UpdateDisplay(products[3]);     
+        if (armchairItemUI != null)
+            armchairItemUI.UpdateDisplay(products[4]);  
+        if (deskItemUI != null)
+            deskItemUI.UpdateDisplay(products[5]);     
+        if (sofaItemUI != null)
+            sofaItemUI.UpdateDisplay(products[6]);     
+        if (wardrobeItemUI != null)
+            wardrobeItemUI.UpdateDisplay(products[7]);  
     
         // Met à jour les produits (vente)
         if (saleTableItemUI != null)
@@ -673,6 +775,16 @@ public Upgrade GetUpgrade(int index)
             saleChairItemUI.UpdateDisplay(products[1]);
         if (saleShelfItemUI != null)
             saleShelfItemUI.UpdateDisplay(products[2]);
+        if (saleLampItemUI != null)
+            saleLampItemUI.UpdateDisplay(products[3]);
+        if (saleArmchairItemUI != null)
+            saleArmchairItemUI.UpdateDisplay(products[4]);
+        if (saleDeskItemUI != null)
+            saleDeskItemUI.UpdateDisplay(products[5]);
+        if (saleSofaItemUI != null)
+            saleSofaItemUI.UpdateDisplay(products[6]);
+        if (saleWardrobefItemUI != null)
+            saleWardrobefItemUI.UpdateDisplay(products[7]);
     
         // Met à jour les améliorations
         if (upgrade1ItemUI != null)

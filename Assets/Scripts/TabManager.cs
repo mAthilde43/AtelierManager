@@ -7,26 +7,34 @@ public class TabManager : MonoBehaviour
     public GameObject shopPanel;
     public GameObject workshopPanel;
     public GameObject salesPanel;
-    public GameObject upgradesPanel;  // ← NOUVEAU
+    public GameObject upgradesPanel;
 
-// Références vers les boutons d'onglets
+    // Références vers les boutons d'onglets
     public Button shopTabButton;
     public Button workshopTabButton;
     public Button salesTabButton;
-    public Button upgradesTabButton;  // ← NOUVEAU
-    
+    public Button upgradesTabButton;
     
     // Couleurs pour les boutons actifs/inactifs
     private Color activeColor = new Color(1f, 1f, 1f, 1f);      // Blanc (actif)
     private Color inactiveColor = new Color(0.7f, 0.7f, 0.7f, 1f); // Gris (inactif)
     
+    // ===== AJOUT =====
+    private GameManager gameManager;
+    // =================
+    
     void Start()
     {
+        // ===== AJOUT =====
+        // Récupère le GameManager
+        gameManager = FindObjectOfType<GameManager>();
+        // =================
+        
         // Configure les boutons
         shopTabButton.onClick.AddListener(() => ShowTab("shop"));
         workshopTabButton.onClick.AddListener(() => ShowTab("workshop"));
         salesTabButton.onClick.AddListener(() => ShowTab("sales"));
-        upgradesTabButton.onClick.AddListener(() => ShowTab("upgrades"));  // ← NOUVEAU
+        upgradesTabButton.onClick.AddListener(() => ShowTab("upgrades"));
     
         // Affiche la boutique par défaut au démarrage
         ShowTab("shop");
@@ -39,7 +47,7 @@ public class TabManager : MonoBehaviour
         shopPanel.SetActive(false);
         workshopPanel.SetActive(false);
         salesPanel.SetActive(false);
-        upgradesPanel.SetActive(false);  // ← NOUVEAU
+        upgradesPanel.SetActive(false);
     
         // Réinitialise la couleur de tous les boutons
         ResetButtonColors();
@@ -65,7 +73,7 @@ public class TabManager : MonoBehaviour
                 Debug.Log("📂 Onglet Vente ouvert");
                 break;
             
-            case "upgrades":  // ← NOUVEAU
+            case "upgrades":
                 upgradesPanel.SetActive(true);
                 HighlightButton(upgradesTabButton);
                 Debug.Log("📂 Onglet Améliorations ouvert");
@@ -76,6 +84,15 @@ public class TabManager : MonoBehaviour
                 shopPanel.SetActive(true);
                 break;
         }
+        
+        // ===== AJOUT =====
+        // Rafraîchit l'UI pour mettre à jour les boutons
+        if (gameManager != null)
+        {
+            gameManager.RefreshAllUI();
+            Debug.Log("🔄 UI rafraîchie après changement d'onglet");
+        }
+        // =================
     }
     
     // Réinitialise la couleur de tous les boutons (inactifs)
@@ -95,7 +112,7 @@ public class TabManager : MonoBehaviour
         cb.normalColor = inactiveColor;
         salesTabButton.colors = cb;
     
-        cb = upgradesTabButton.colors;  // ← NOUVEAU
+        cb = upgradesTabButton.colors;
         cb.normalColor = inactiveColor;
         upgradesTabButton.colors = cb;
     }

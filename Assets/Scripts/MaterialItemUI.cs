@@ -4,6 +4,7 @@ using TMPro;
 
 public class MaterialItemUI : MonoBehaviour
 {
+    [Header("UI References")]
     // Références vers les éléments UI
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI priceText;
@@ -34,6 +35,30 @@ public class MaterialItemUI : MonoBehaviour
         nameText.text = craftingMaterial.materialName;
         priceText.text = "Prix: " + craftingMaterial.price + "€";
         stockText.text = "Stock: " + craftingMaterial.quantity;
+    
+        // ===== DEBUG =====
+        Debug.Log("🔍 UpdateDisplay pour " + craftingMaterial.materialName);
+        Debug.Log("   gameManager null ? " + (gameManager == null));
+        Debug.Log("   buyButton null ? " + (buyButton == null));
+    
+        if (gameManager != null)
+        {
+            Debug.Log("   Argent joueur : " + gameManager.playerMoney);
+            Debug.Log("   Prix matériau : " + craftingMaterial.price);
+        }
+        // =================
+    
+        // Désactive le bouton si pas assez d'argent
+        if (buyButton != null && gameManager != null)
+        {
+            bool canAfford = gameManager.HasEnoughMoney(craftingMaterial.price);
+            Debug.Log("   Can afford ? " + canAfford); // ← AJOUTE
+            buyButton.interactable = canAfford;
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ buyButton ou gameManager est null !"); // ← AJOUTE
+        }
     }
     
     // Fonction appelée quand on clique sur le bouton

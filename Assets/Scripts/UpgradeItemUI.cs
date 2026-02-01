@@ -57,10 +57,14 @@ public class UpgradeItemUI : MonoBehaviour
             statusText.text = "Disponible";
             statusText.color = new Color(0f, 0.47f, 0f); // Vert foncé
             
-            // Active le bouton
+            // Active le bouton SI on a assez d'argent
             if (buyButton != null)
             {
-                buyButton.interactable = true;
+                // ===== MODIFICATION ICI =====
+                bool canAfford = gameManager.HasEnoughMoney(upgrade.cost);
+                buyButton.interactable = canAfford;
+                // ============================
+                
                 buyButton.GetComponentInChildren<TextMeshProUGUI>().text = "Acheter";
             }
             

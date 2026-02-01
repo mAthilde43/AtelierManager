@@ -69,6 +69,23 @@ public class EventManager : MonoBehaviour
             200
         ));
         
+        possibleEvents.Add(new GameEvent(
+            "Salon du meuble",
+            "Votre stand au salon attire beaucoup de clients !",
+            EventType.MoneyGain,
+            800
+        ));
+    
+       
+    
+        possibleEvents.Add(new GameEvent(
+            "Client influent",
+            "Un influenceur partage votre travail sur les réseaux !",
+            EventType.MoneyGain,
+            400
+        ));
+        
+        
         // Événements négatifs
         possibleEvents.Add(new GameEvent(
             "⚡ Panne électrique",
@@ -83,6 +100,18 @@ public class EventManager : MonoBehaviour
             EventType.MoneyLoss,
             80
         ));
+        possibleEvents.Add(new GameEvent(
+            "Panne d'électricité",
+            "Une panne ralentit votre production aujourd'hui.",
+            EventType.MoneyLoss,
+            150
+        ));
+
+        possibleEvents.Add(new GameEvent(
+            "Concurrence déloyale",
+            "Un concurrent vend moins cher, vous perdez des clients.",
+            EventType.MoneyLoss,
+            300));
         
         possibleEvents.Add(new GameEvent(
             "📉 Matériau défectueux",
@@ -90,6 +119,7 @@ public class EventManager : MonoBehaviour
             EventType.MaterialLoss,
             1
         ));
+        
         
         // === ÉVÉNEMENTS AVEC CHOIX ===
 

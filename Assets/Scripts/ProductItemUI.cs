@@ -47,6 +47,26 @@ public class ProductItemUI : MonoBehaviour
             }
         }
         recipeText.text = recipeString;
+        
+        // ===== AJOUTE CETTE SECTION =====
+        // Vérifie si on peut fabriquer (tous les matériaux disponibles)
+        if (craftButton != null && gameManager != null)
+        {
+            bool canCraft = true;
+            
+            foreach (MaterialRequirement req in product.recipe)
+            {
+                CraftingMaterial mat = gameManager.GetMaterial(req.materialIndex);
+                if (mat == null || !mat.HasEnoughQuantity(req.amount))
+                {
+                    canCraft = false;
+                    break;
+                }
+            }
+            
+            craftButton.interactable = canCraft;
+        }
+        // ================================
     }
     
     // Fonction appelée quand on clique sur "Fabriquer"
