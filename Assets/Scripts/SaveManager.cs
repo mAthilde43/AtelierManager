@@ -69,6 +69,29 @@ public class SaveManager : MonoBehaviour
             PlayerPrefs.SetInt("Upgrade_" + i + "_Purchased", gm.upgrades[i].isPurchased ? 1 : 0);
         }
         
+        // ===== AJOUT : STATISTIQUES =====
+        StatsManager sm = StatsManager.Instance;
+        if (sm != null && sm.stats != null)
+        {
+            // Stats globales
+            PlayerPrefs.SetInt("Stats_TotalMoneyEarned", sm.stats.totalMoneyEarned);
+            PlayerPrefs.SetInt("Stats_TotalMoneySpent", sm.stats.totalMoneySpent);
+            PlayerPrefs.SetInt("Stats_TotalProductsCrafted", sm.stats.totalProductsCrafted);
+            PlayerPrefs.SetInt("Stats_TotalProductsSold", sm.stats.totalProductsSold);
+            PlayerPrefs.SetInt("Stats_TotalMaterialsBought", sm.stats.totalMaterialsBought);
+            PlayerPrefs.SetInt("Stats_TotalUpgradesBought", sm.stats.totalUpgradesBought);
+            PlayerPrefs.SetInt("Stats_TotalDaysPlayed", sm.stats.totalDaysPlayed);
+            PlayerPrefs.SetInt("Stats_TotalWeeksPlayed", sm.stats.totalWeeksPlayed);
+            
+            // Records
+            PlayerPrefs.SetInt("Stats_BestDailyEarnings", sm.stats.bestDailyEarnings);
+            PlayerPrefs.SetInt("Stats_HighestMoneyAmount", sm.stats.highestMoneyAmount);
+            PlayerPrefs.SetInt("Stats_MostExpensiveProductSold", sm.stats.mostExpensiveProductSold);
+            
+            Debug.Log("💾 Statistiques sauvegardées");
+        }
+        // ================================
+        
         // === DATE DE SAUVEGARDE ===
         PlayerPrefs.SetString("LastSaveDate", System.DateTime.Now.ToString());
         
@@ -134,6 +157,29 @@ public class SaveManager : MonoBehaviour
             }
         }
         
+        // ===== AJOUT : STATISTIQUES =====
+        StatsManager sm = StatsManager.Instance;
+        if (sm != null && sm.stats != null)
+        {
+            // Stats globales
+            sm.stats.totalMoneyEarned = PlayerPrefs.GetInt("Stats_TotalMoneyEarned", 0);
+            sm.stats.totalMoneySpent = PlayerPrefs.GetInt("Stats_TotalMoneySpent", 0);
+            sm.stats.totalProductsCrafted = PlayerPrefs.GetInt("Stats_TotalProductsCrafted", 0);
+            sm.stats.totalProductsSold = PlayerPrefs.GetInt("Stats_TotalProductsSold", 0);
+            sm.stats.totalMaterialsBought = PlayerPrefs.GetInt("Stats_TotalMaterialsBought", 0);
+            sm.stats.totalUpgradesBought = PlayerPrefs.GetInt("Stats_TotalUpgradesBought", 0);
+            sm.stats.totalDaysPlayed = PlayerPrefs.GetInt("Stats_TotalDaysPlayed", 0);
+            sm.stats.totalWeeksPlayed = PlayerPrefs.GetInt("Stats_TotalWeeksPlayed", 0);
+            
+            // Records
+            sm.stats.bestDailyEarnings = PlayerPrefs.GetInt("Stats_BestDailyEarnings", 0);
+            sm.stats.highestMoneyAmount = PlayerPrefs.GetInt("Stats_HighestMoneyAmount", 0);
+            sm.stats.mostExpensiveProductSold = PlayerPrefs.GetInt("Stats_MostExpensiveProductSold", 0);
+            
+            Debug.Log("📊 Statistiques chargées");
+        }
+        // ================================
+        
         // Met à jour toute l'interface
         gm.RefreshAllUI();
         
@@ -187,7 +233,7 @@ public class SaveManager : MonoBehaviour
         }
     }
 
-// Affiche temporairement l'indicateur de sauvegarde
+    // Affiche temporairement l'indicateur de sauvegarde
     void ShowSaveIndicator()
     {
         if (saveIndicator == null)

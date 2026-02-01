@@ -65,43 +65,58 @@ public class TimeManager : MonoBehaviour
     }
     
     // Appelée quand un nouveau jour commence
-    void OnNewDay()
+void OnNewDay()
+{
+    UpdateTimeDisplay();
+    Debug.Log("📅 Nouveau jour : Jour " + currentDay + " de la semaine " + currentWeek);
+
+    // Revenu quotidien
+    if (gameManager != null)
     {
-        UpdateTimeDisplay();
-        Debug.Log("📅 Nouveau jour : Jour " + currentDay + " de la semaine " + currentWeek);
-    
-        // Revenu quotidien
-        if (gameManager != null)
-        {
-            gameManager.AddMoney(dailyIncome);
-            Debug.Log("💵 Revenu quotidien : +" + dailyIncome + "€");
-        }
-        
-        //reset les objectifs quotidien
-        if (ObjectiveManager.Instance != null)
-        {
-            ObjectiveManager.Instance.ResetDailyObjectives();
-        }
+        gameManager.AddMoney(dailyIncome);
+        Debug.Log("💵 Revenu quotidien : +" + dailyIncome + "€");
     }
+    
+    // Reset les objectifs quotidiens
+    if (ObjectiveManager.Instance != null)
+    {
+        ObjectiveManager.Instance.ResetDailyObjectives();
+    }
+    
+    // ===== AJOUTE CETTE SECTION =====
+    // Commence un nouveau jour pour les stats
+    if (StatsManager.Instance != null)
+    {
+        StatsManager.Instance.StartNewDay();
+    }
+    // ================================
+}
     
     // Appelée quand une nouvelle semaine commence
-    void OnNewWeek()
+void OnNewWeek()
+{
+    Debug.Log("🎉 Nouvelle semaine " + currentWeek + " !");
+
+    // Coût hebdomadaire (loyer, salaires, etc.)
+    if (gameManager != null)
     {
-        Debug.Log("🎉 Nouvelle semaine " + currentWeek + " !");
-    
-        // Coût hebdomadaire (loyer, salaires, etc.)
-        if (gameManager != null)
-        {
-            gameManager.RemoveMoney(weeklyCost);
-            Debug.Log("💸 Charges hebdomadaires : -" + weeklyCost + "€");
-        }
-        
-        //reset les objectifs quotidien
-        if (ObjectiveManager.Instance != null)
-        {
-            ObjectiveManager.Instance.ResetWeeklyObjectives();
-        }
+        gameManager.RemoveMoney(weeklyCost);
+        Debug.Log("💸 Charges hebdomadaires : -" + weeklyCost + "€");
     }
+    
+    // Reset les objectifs hebdomadaires
+    if (ObjectiveManager.Instance != null)
+    {
+        ObjectiveManager.Instance.ResetWeeklyObjectives();
+    }
+    
+    // Incrémente le compteur de semaines
+    if (StatsManager.Instance != null)
+    {
+        StatsManager.Instance.OnNewWeek();
+    }
+    // ================================
+}
     
     // Met à jour l'affichage du temps
     void UpdateTimeDisplay()

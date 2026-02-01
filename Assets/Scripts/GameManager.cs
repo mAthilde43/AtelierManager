@@ -231,51 +231,67 @@ public class GameManager : MonoBehaviour
         }
     }
     
-    public void AddMoney(int amount)
+   public void AddMoney(int amount)
+{
+    playerMoney += amount;
+    UpdateMoneyDisplay();
+    Debug.Log("💰 +" + amount + "€ | Total: " + playerMoney + "€");
+    
+    // Son de gain d'argent
+    if (AudioManager.Instance != null)
     {
-        playerMoney += amount;
-        UpdateMoneyDisplay();
-        Debug.Log("💰 +" + amount + "€ | Total: " + playerMoney + "€");
-    
-        // Son de gain d'argent
-        if (AudioManager.Instance != null)
-        {
-            AudioManager.Instance.PlayMoneyGain();
-        }
-    
-        // Feedback visuel (texte flottant)
-        if (FeedbackManager.Instance != null && moneyText != null)
-        {
-            Vector3 position = moneyText.transform.position;
-            FeedbackManager.Instance.ShowMoneyGain(amount, position);
-        }
-
-        //track pour les objectifs
-        if (ObjectiveManager.Instance != null)
-        {
-            ObjectiveManager.Instance.OnMoneyEarned(amount);
-        }
+        AudioManager.Instance.PlayMoneyGain();
     }
+    
+    // Feedback visuel (texte flottant)
+    if (FeedbackManager.Instance != null && moneyText != null)
+    {
+        Vector3 position = moneyText.transform.position;
+        FeedbackManager.Instance.ShowMoneyGain(amount, position);
+    }
+    
+    // Track pour les objectifs
+    if (ObjectiveManager.Instance != null)
+    {
+        ObjectiveManager.Instance.OnMoneyEarned(amount);
+    }
+    
+    // ===== AJOUTE CETTE LIGNE =====
+    // Track pour les statistiques
+    if (StatsManager.Instance != null)
+    {
+        StatsManager.Instance.OnMoneyEarned(amount);
+    }
+    // ==============================
+}
     
     public void RemoveMoney(int amount)
-    {
-        playerMoney -= amount;
-        UpdateMoneyDisplay();
-        Debug.Log("💸 -" + amount + "€ | Total: " + playerMoney + "€");
+{
+    playerMoney -= amount;
+    UpdateMoneyDisplay();
+    Debug.Log("💸 -" + amount + "€ | Total: " + playerMoney + "€");
     
-        // Feedback visuel (texte flottant rouge)
-        if (FeedbackManager.Instance != null && moneyText != null)
-        {
-            Vector3 position = moneyText.transform.position;
-            FeedbackManager.Instance.ShowMoneyLoss(amount, position);
-        }
-        
-        //track pour les objectifs
-        if (ObjectiveManager.Instance != null)
-        {
-            ObjectiveManager.Instance.OnMoneySpent(amount);
-        }
+    // Feedback visuel (texte flottant rouge)
+    if (FeedbackManager.Instance != null && moneyText != null)
+    {
+        Vector3 position = moneyText.transform.position;
+        FeedbackManager.Instance.ShowMoneyLoss(amount, position);
     }
+    
+    // Track pour les objectifs
+    if (ObjectiveManager.Instance != null)
+    {
+        ObjectiveManager.Instance.OnMoneySpent(amount);
+    }
+    
+    // ===== AJOUTE CETTE LIGNE =====
+    // Track pour les statistiques
+    if (StatsManager.Instance != null)
+    {
+        StatsManager.Instance.OnMoneySpent(amount);
+    }
+    // ==============================
+}
     
     public bool HasEnoughMoney(int amount)
     {
@@ -307,6 +323,11 @@ public class GameManager : MonoBehaviour
             mat.AddQuantity(quantity);
             
             Debug.Log("✅ Achat réussi : " + quantity + "x " + mat.materialName + " pour " + totalCost + "€");
+            // Track pour les statistiques
+if (StatsManager.Instance != null)
+{
+    StatsManager.Instance.OnMaterialBought();
+}
             
             // Track pour les objectifs
             if (ObjectiveManager.Instance != null)
@@ -465,6 +486,13 @@ public class GameManager : MonoBehaviour
             prod.AddQuantity(1);
         
             Debug.Log("✅ Production réussie : 1x " + prod.productName);
+
+// Track pour les statistiques
+if (StatsManager.Instance != null)
+{
+    StatsManager.Instance.OnProductCrafted();
+}
+
             // Track pour les objectifs
             if (ObjectiveManager.Instance != null)
             {
@@ -519,6 +547,12 @@ public class GameManager : MonoBehaviour
             AddMoney(earnings);
         
             Debug.Log("✅ Vente réussie : " + quantity + "x " + prod.productName + " pour " + earnings + "€");
+			// Track pour les statistiques
+if (StatsManager.Instance != null)
+{
+    StatsManager.Instance.OnProductSold(prod.sellPrice);
+}
+
             // Track pour les objectifs
             if (ObjectiveManager.Instance != null)
             {
@@ -580,6 +614,12 @@ public void BuyUpgrade(int upgradeIndex)
         ApplyUpgradeEffect(upg);
         
         Debug.Log("✅ Amélioration achetée : " + upg.upgradeName + " pour " + upg.cost + "€");
+		// Track pour les statistiques
+		if (StatsManager.Instance != null)
+		{
+    		StatsManager.Instance.OnUpgradeBought();
+		}
+
         // Track pour les objectifs
         if (ObjectiveManager.Instance != null)
         {

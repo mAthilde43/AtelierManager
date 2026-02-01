@@ -8,12 +8,14 @@ public class TabManager : MonoBehaviour
     public GameObject workshopPanel;
     public GameObject salesPanel;
     public GameObject upgradesPanel;
+    public GameObject statsPanel;
 
     // Références vers les boutons d'onglets
     public Button shopTabButton;
     public Button workshopTabButton;
     public Button salesTabButton;
     public Button upgradesTabButton;
+    public Button statsTabButton;
     
     // Couleurs pour les boutons actifs/inactifs
     private Color activeColor = new Color(1f, 1f, 1f, 1f);      // Blanc (actif)
@@ -35,6 +37,7 @@ public class TabManager : MonoBehaviour
         workshopTabButton.onClick.AddListener(() => ShowTab("workshop"));
         salesTabButton.onClick.AddListener(() => ShowTab("sales"));
         upgradesTabButton.onClick.AddListener(() => ShowTab("upgrades"));
+        statsTabButton.onClick.AddListener(() => ShowTab("stats"));
     
         // Affiche la boutique par défaut au démarrage
         ShowTab("shop");
@@ -48,6 +51,7 @@ public class TabManager : MonoBehaviour
         workshopPanel.SetActive(false);
         salesPanel.SetActive(false);
         upgradesPanel.SetActive(false);
+        statsPanel.SetActive(false);
     
         // Réinitialise la couleur de tous les boutons
         ResetButtonColors();
@@ -79,13 +83,27 @@ public class TabManager : MonoBehaviour
                 Debug.Log("📂 Onglet Améliorations ouvert");
                 break;
             
+            case "stats":  
+                statsPanel.SetActive(true);
+                HighlightButton(statsTabButton);
+            
+                // Rafraîchit les stats quand on ouvre l'onglet
+                StatsUI statsUI = statsPanel.GetComponent<StatsUI>();
+                if (statsUI != null)
+                {
+                    statsUI.RefreshStatsDisplay();
+                }
+            
+                Debug.Log("📂 Onglet Statistiques ouvert");
+                break;
+            
             default:
                 Debug.LogWarning("⚠️ Onglet inconnu : " + tabName);
                 shopPanel.SetActive(true);
                 break;
         }
         
-        // ===== AJOUT =====
+        
         // Rafraîchit l'UI pour mettre à jour les boutons
         if (gameManager != null)
         {
@@ -115,6 +133,10 @@ public class TabManager : MonoBehaviour
         cb = upgradesTabButton.colors;
         cb.normalColor = inactiveColor;
         upgradesTabButton.colors = cb;
+        
+        cb = statsTabButton.colors;  
+        cb.normalColor = inactiveColor;
+        statsTabButton.colors = cb;
     }
     
     // Met en surbrillance un bouton (actif)
