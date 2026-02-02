@@ -69,7 +69,7 @@ public class SaveManager : MonoBehaviour
             PlayerPrefs.SetInt("Upgrade_" + i + "_Purchased", gm.upgrades[i].isPurchased ? 1 : 0);
         }
         
-        // ===== AJOUT : STATISTIQUES =====
+        // =====  STATISTIQUES =====
         StatsManager sm = StatsManager.Instance;
         if (sm != null && sm.stats != null)
         {
@@ -90,13 +90,28 @@ public class SaveManager : MonoBehaviour
             
             Debug.Log("💾 Statistiques sauvegardées");
         }
-        // ================================
         
         // === DATE DE SAUVEGARDE ===
         PlayerPrefs.SetString("LastSaveDate", System.DateTime.Now.ToString());
         
         PlayerPrefs.Save();
         Debug.Log("💾 Jeu sauvegardé avec succès !");
+        
+        // =====  EMPLOYÉS =====
+        EmployeeManager em = EmployeeManager.Instance;
+        if (em != null && em.employees != null)
+        {
+            for (int i = 0; i < em.employees.Count; i++)
+            {
+                Employee emp = em.employees[i];
+                PlayerPrefs.SetInt("Employee_" + i + "_IsHired", emp.isHired ? 1 : 0);
+                PlayerPrefs.SetInt("Employee_" + i + "_IsActive", emp.isActive ? 1 : 0);
+                PlayerPrefs.SetInt("Employee_" + i + "_Level", emp.level);
+            }
+    
+            Debug.Log("💾 Employés sauvegardés");
+        }
+
     }
     
     // Charge toutes les données
@@ -178,8 +193,29 @@ public class SaveManager : MonoBehaviour
             
             Debug.Log("📊 Statistiques chargées");
         }
-        // ================================
+
+        // =====  EMPLOYÉS =====
+        EmployeeManager em = EmployeeManager.Instance;
+        if (em != null && em.employees != null)
+        {
+            for (int i = 0; i < em.employees.Count; i++)
+            {
+                bool isHired = PlayerPrefs.GetInt("Employee_" + i + "_IsHired", 0) == 1;  // ← GetInt, pas SetInt !
+                bool isActive = PlayerPrefs.GetInt("Employee_" + i + "_IsActive", 0) == 1;
+                int level = PlayerPrefs.GetInt("Employee_" + i + "_Level", 1);
         
+                if (isHired)
+                {
+                    em.employees[i].isHired = true;
+                    em.employees[i].isActive = isActive;
+                    em.employees[i].level = level;
+                }
+            }
+    
+            Debug.Log("📊 Employés chargés");  // ← Bon message
+        }
+
+
         // Met à jour toute l'interface
         gm.RefreshAllUI();
         

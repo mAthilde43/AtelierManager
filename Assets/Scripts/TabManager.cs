@@ -9,6 +9,7 @@ public class TabManager : MonoBehaviour
     public GameObject salesPanel;
     public GameObject upgradesPanel;
     public GameObject statsPanel;
+    public GameObject employeesPanel;
 
     // Références vers les boutons d'onglets
     public Button shopTabButton;
@@ -16,6 +17,7 @@ public class TabManager : MonoBehaviour
     public Button salesTabButton;
     public Button upgradesTabButton;
     public Button statsTabButton;
+    public Button employeesTabButton;
     
     // Couleurs pour les boutons actifs/inactifs
     private Color activeColor = new Color(1f, 1f, 1f, 1f);      // Blanc (actif)
@@ -38,6 +40,7 @@ public class TabManager : MonoBehaviour
         salesTabButton.onClick.AddListener(() => ShowTab("sales"));
         upgradesTabButton.onClick.AddListener(() => ShowTab("upgrades"));
         statsTabButton.onClick.AddListener(() => ShowTab("stats"));
+        employeesTabButton.onClick.AddListener(() => ShowTab("employees"));  // ← AJOUTE
     
         // Affiche la boutique par défaut au démarrage
         ShowTab("shop");
@@ -52,6 +55,7 @@ public class TabManager : MonoBehaviour
         salesPanel.SetActive(false);
         upgradesPanel.SetActive(false);
         statsPanel.SetActive(false);
+        employeesPanel.SetActive(false);  // ← Dans la section qui cache tous les panneaux
     
         // Réinitialise la couleur de tous les boutons
         ResetButtonColors();
@@ -97,6 +101,21 @@ public class TabManager : MonoBehaviour
                 Debug.Log("📂 Onglet Statistiques ouvert");
                 break;
             
+            case "employees":  
+                employeesPanel.SetActive(true);
+                HighlightButton(employeesTabButton);
+    
+                // Rafraîchit les employés
+                EmployeesUI employeesUI = employeesPanel.GetComponent<EmployeesUI>();
+                if (employeesUI != null)
+                {
+                    employeesUI.RefreshEmployeesDisplay();
+                }
+    
+                Debug.Log("📂 Onglet Employés ouvert");
+                break;
+
+            
             default:
                 Debug.LogWarning("⚠️ Onglet inconnu : " + tabName);
                 shopPanel.SetActive(true);
@@ -137,6 +156,11 @@ public class TabManager : MonoBehaviour
         cb = statsTabButton.colors;  
         cb.normalColor = inactiveColor;
         statsTabButton.colors = cb;
+        
+        cb = employeesTabButton.colors;  
+        cb.normalColor = inactiveColor;
+        employeesTabButton.colors = cb;
+
     }
     
     // Met en surbrillance un bouton (actif)

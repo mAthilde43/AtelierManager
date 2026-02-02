@@ -115,8 +115,15 @@ void OnNewWeek()
     {
         StatsManager.Instance.OnNewWeek();
     }
+    
+    // Paie les salaires des employés
+    if (EmployeeManager.Instance != null)
+    {
+        EmployeeManager.Instance.PaySalaries();
+    }
     // ================================
 }
+
     
     // Met à jour l'affichage du temps
     void UpdateTimeDisplay()
