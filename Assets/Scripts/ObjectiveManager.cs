@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+
 public class ObjectiveManager : MonoBehaviour
 {
     // Singleton
@@ -31,6 +32,14 @@ public class ObjectiveManager : MonoBehaviour
     public List<Objective> dailyObjectives = new List<Objective>();
     public List<Objective> weeklyObjectives = new List<Objective>();
     
+    // === UI ===
+    public Transform dailyObjectivesContainer;
+    public Transform weeklyObjectivesContainer;
+    public GameObject objectiveItemPrefab;
+    
+    private List<ObjectiveItemUI> dailyObjectiveUIs = new List<ObjectiveItemUI>();
+    private List<ObjectiveItemUI> weeklyObjectiveUIs = new List<ObjectiveItemUI>();
+    
     // === RÉFÉRENCES ===
     private GameManager gameManager;
     private TimeManager timeManager;
@@ -50,7 +59,7 @@ public class ObjectiveManager : MonoBehaviour
         Debug.Log("🎯 ObjectiveManager initialisé");
     }
 
-// Crée l'UI des objectifs
+    // Crée l'UI des objectifs
     void CreateObjectivesUI()
     {
         if (objectiveItemPrefab == null) return;
@@ -112,8 +121,8 @@ public class ObjectiveManager : MonoBehaviour
             "Gagne 500€ aujourd'hui",
             ObjectiveType.EarnMoney,
             500,
-            100,  // Récompense : 100€
-            50,   // Récompense : 50 XP
+            100,
+            50,
             true
         ));
         
@@ -151,8 +160,8 @@ public class ObjectiveManager : MonoBehaviour
             "Gagne 3000€ cette semaine",
             ObjectiveType.EarnMoney,
             3000,
-            500,  // Récompense : 500€
-            250,  // Récompense : 250 XP
+            500,
+            250,
             false
         ));
         
@@ -201,6 +210,13 @@ public class ObjectiveManager : MonoBehaviour
         UpdateObjectives(ObjectiveType.BuyUpgrades, count);
     }
     
+    // ===== NOUVELLE FONCTION =====
+    public void OnOrderCompleted(int count = 1)
+    {
+        UpdateObjectives(ObjectiveType.CompleteOrders, count);
+    }
+    // =============================
+    
     // Met à jour tous les objectifs d'un certain type
     void UpdateObjectives(ObjectiveType type, int amount)
     {
@@ -211,7 +227,6 @@ public class ObjectiveManager : MonoBehaviour
             {
                 obj.AddProgress(amount);
                 
-                // Si complété, donne la récompense
                 if (obj.isCompleted)
                 {
                     GiveReward(obj);
@@ -226,7 +241,6 @@ public class ObjectiveManager : MonoBehaviour
             {
                 obj.AddProgress(amount);
                 
-                // Si complété, donne la récompense
                 if (obj.isCompleted)
                 {
                     GiveReward(obj);
@@ -234,8 +248,17 @@ public class ObjectiveManager : MonoBehaviour
             }
         }
         
-        // Met à jour l'UI (on le fera dans la prochaine étape)
         UpdateObjectivesUI();
+    }
+    
+    // Vérifie si un objectif est complété
+    void CheckObjectiveCompletion(Objective obj)
+    {
+        if (obj.currentProgress >= obj.targetAmount && !obj.isCompleted)
+        {
+            obj.isCompleted = true;
+            GiveReward(obj);
+        }
     }
     
     // Donne la récompense d'un objectif
@@ -245,13 +268,11 @@ public class ObjectiveManager : MonoBehaviour
         
         Debug.Log("🎁 Récompense : +" + obj.rewardMoney + "€ et +" + obj.rewardXP + " XP");
         
-        // Donne l'argent
         if (obj.rewardMoney > 0)
         {
             gameManager.AddMoney(obj.rewardMoney);
         }
         
-        // Donne l'XP
         if (obj.rewardXP > 0)
         {
             ProgressionManager pm = FindObjectOfType<ProgressionManager>();
@@ -261,7 +282,6 @@ public class ObjectiveManager : MonoBehaviour
             }
         }
         
-        // Feedback visuel
         if (FeedbackManager.Instance != null)
         {
             Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
@@ -269,7 +289,7 @@ public class ObjectiveManager : MonoBehaviour
         }
     }
     
-    // Réinitialise les objectifs quotidiens (appelé chaque nouveau jour)
+    // Réinitialise les objectifs quotidiens
     public void ResetDailyObjectives()
     {
         GenerateDailyObjectives();
@@ -277,7 +297,7 @@ public class ObjectiveManager : MonoBehaviour
         Debug.Log("🔄 Objectifs quotidiens réinitialisés");
     }
     
-    // Réinitialise les objectifs hebdomadaires (appelé chaque nouvelle semaine)
+    // Réinitialise les objectifs hebdomadaires
     public void ResetWeeklyObjectives()
     {
         GenerateWeeklyObjectives();
@@ -288,24 +308,14 @@ public class ObjectiveManager : MonoBehaviour
     // Met à jour l'UI des objectifs
     void UpdateObjectivesUI()
     {
-        // Met à jour les objectifs quotidiens
         for (int i = 0; i < dailyObjectiveUIs.Count && i < dailyObjectives.Count; i++)
         {
             dailyObjectiveUIs[i].UpdateProgress();
         }
     
-        // Met à jour les objectifs hebdomadaires
         for (int i = 0; i < weeklyObjectiveUIs.Count && i < weeklyObjectives.Count; i++)
         {
             weeklyObjectiveUIs[i].UpdateProgress();
         }
     }
-    
-    public Transform dailyObjectivesContainer;
-    public Transform weeklyObjectivesContainer;
-    public GameObject objectiveItemPrefab;
-    
-    private List<ObjectiveItemUI> dailyObjectiveUIs = new List<ObjectiveItemUI>();
-    private List<ObjectiveItemUI> weeklyObjectiveUIs = new List<ObjectiveItemUI>();
-    
 }

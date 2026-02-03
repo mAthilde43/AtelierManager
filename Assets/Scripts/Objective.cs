@@ -10,7 +10,8 @@ public enum ObjectiveType
     BuyMaterials,       // Acheter X matériaux
     ReachLevel,         // Atteindre le niveau X
     BuyUpgrades,        // Acheter X améliorations
-    SurviveDays         // Survivre X jours
+    SurviveDays   ,      // Survivre X jours
+    CompleteOrders
 }
 
 [System.Serializable]
