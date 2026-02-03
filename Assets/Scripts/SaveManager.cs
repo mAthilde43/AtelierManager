@@ -69,7 +69,7 @@ public class SaveManager : MonoBehaviour
             PlayerPrefs.SetInt("Upgrade_" + i + "_Purchased", gm.upgrades[i].isPurchased ? 1 : 0);
         }
         
-        // =====  STATISTIQUES =====
+        // ===== STATISTIQUES =====
         StatsManager sm = StatsManager.Instance;
         if (sm != null && sm.stats != null)
         {
@@ -91,13 +91,7 @@ public class SaveManager : MonoBehaviour
             Debug.Log("💾 Statistiques sauvegardées");
         }
         
-        // === DATE DE SAUVEGARDE ===
-        PlayerPrefs.SetString("LastSaveDate", System.DateTime.Now.ToString());
-        
-        PlayerPrefs.Save();
-        Debug.Log("💾 Jeu sauvegardé avec succès !");
-        
-        // =====  EMPLOYÉS =====
+        // ===== EMPLOYÉS =====
         EmployeeManager em = EmployeeManager.Instance;
         if (em != null && em.employees != null)
         {
@@ -111,7 +105,53 @@ public class SaveManager : MonoBehaviour
     
             Debug.Log("💾 Employés sauvegardés");
         }
-
+        
+        // ===== COMMANDES =====
+        OrderManager om = OrderManager.Instance;
+        if (om != null && om.activeOrders != null)
+        {
+            // Sauvegarde le nombre de commandes
+            PlayerPrefs.SetInt("ActiveOrders_Count", om.activeOrders.Count);
+            
+            // Sauvegarde chaque commande
+            for (int i = 0; i < om.activeOrders.Count; i++)
+            {
+                Order order = om.activeOrders[i];
+                
+                PlayerPrefs.SetString("Order_" + i + "_ID", order.orderID);
+                PlayerPrefs.SetString("Order_" + i + "_Client", order.clientName);
+                PlayerPrefs.SetInt("Order_" + i + "_Reward", order.reward);
+                PlayerPrefs.SetFloat("Order_" + i + "_TimeLimit", order.timeLimit);
+                PlayerPrefs.SetFloat("Order_" + i + "_TimeRemaining", order.timeRemaining);
+                PlayerPrefs.SetInt("Order_" + i + "_Completed", order.isCompleted ? 1 : 0);
+                PlayerPrefs.SetInt("Order_" + i + "_Failed", order.isFailed ? 1 : 0);
+                
+                // Sauvegarde les produits demandés
+                PlayerPrefs.SetInt("Order_" + i + "_Requirements_Count", order.requirements.Count);
+                for (int j = 0; j < order.requirements.Count; j++)
+                {
+                    OrderRequirement req = order.requirements[j];
+                    PlayerPrefs.SetInt("Order_" + i + "_Req_" + j + "_ProductIndex", req.productIndex);
+                    PlayerPrefs.SetInt("Order_" + i + "_Req_" + j + "_Quantity", req.quantity);
+                }
+            }
+            
+            // Sauvegarde le compteur de commandes (avec réflexion pour accéder au champ privé)
+            var counterField = om.GetType().GetField("orderCounter", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            if (counterField != null)
+            {
+                int orderCounter = (int)counterField.GetValue(om);
+                PlayerPrefs.SetInt("OrderCounter", orderCounter);
+            }
+            
+            Debug.Log("💾 Commandes sauvegardées");
+        }
+        
+        // === DATE DE SAUVEGARDE ===
+        PlayerPrefs.SetString("LastSaveDate", System.DateTime.Now.ToString());
+        
+        PlayerPrefs.Save();
+        Debug.Log("💾 Jeu sauvegardé avec succès !");
     }
     
     // Charge toutes les données
@@ -172,7 +212,7 @@ public class SaveManager : MonoBehaviour
             }
         }
         
-        // ===== AJOUT : STATISTIQUES =====
+        // ===== STATISTIQUES =====
         StatsManager sm = StatsManager.Instance;
         if (sm != null && sm.stats != null)
         {
@@ -194,13 +234,13 @@ public class SaveManager : MonoBehaviour
             Debug.Log("📊 Statistiques chargées");
         }
 
-        // =====  EMPLOYÉS =====
+        // ===== EMPLOYÉS =====
         EmployeeManager em = EmployeeManager.Instance;
         if (em != null && em.employees != null)
         {
             for (int i = 0; i < em.employees.Count; i++)
             {
-                bool isHired = PlayerPrefs.GetInt("Employee_" + i + "_IsHired", 0) == 1;  // ← GetInt, pas SetInt !
+                bool isHired = PlayerPrefs.GetInt("Employee_" + i + "_IsHired", 0) == 1;
                 bool isActive = PlayerPrefs.GetInt("Employee_" + i + "_IsActive", 0) == 1;
                 int level = PlayerPrefs.GetInt("Employee_" + i + "_Level", 1);
         
@@ -212,9 +252,64 @@ public class SaveManager : MonoBehaviour
                 }
             }
     
-            Debug.Log("📊 Employés chargés");  // ← Bon message
+            Debug.Log("📊 Employés chargés");
         }
-
+        
+        // ===== COMMANDES =====
+        OrderManager om = OrderManager.Instance;
+        if (om != null)
+        {
+            // Charge le compteur de commandes
+            int orderCounter = PlayerPrefs.GetInt("OrderCounter", 0);
+            var counterField = om.GetType().GetField("orderCounter", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            if (counterField != null)
+            {
+                counterField.SetValue(om, orderCounter);
+            }
+            
+            // Charge le nombre de commandes
+            int ordersCount = PlayerPrefs.GetInt("ActiveOrders_Count", 0);
+            
+            if (ordersCount > 0)
+            {
+                om.activeOrders.Clear();
+                
+                // Charge chaque commande
+                for (int i = 0; i < ordersCount; i++)
+                {
+                    string orderID = PlayerPrefs.GetString("Order_" + i + "_ID", "");
+                    string clientName = PlayerPrefs.GetString("Order_" + i + "_Client", "");
+                    int reward = PlayerPrefs.GetInt("Order_" + i + "_Reward", 0);
+                    float timeLimit = PlayerPrefs.GetFloat("Order_" + i + "_TimeLimit", 0f);
+                    float timeRemaining = PlayerPrefs.GetFloat("Order_" + i + "_TimeRemaining", 0f);
+                    bool isCompleted = PlayerPrefs.GetInt("Order_" + i + "_Completed", 0) == 1;
+                    bool isFailed = PlayerPrefs.GetInt("Order_" + i + "_Failed", 0) == 1;
+                    
+                    // Crée la commande
+                    Order order = new Order(orderID, clientName, reward, timeLimit);
+                    order.timeRemaining = timeRemaining;
+                    order.isCompleted = isCompleted;
+                    order.isFailed = isFailed;
+                    
+                    // Charge les produits demandés
+                    int reqCount = PlayerPrefs.GetInt("Order_" + i + "_Requirements_Count", 0);
+                    for (int j = 0; j < reqCount; j++)
+                    {
+                        int productIndex = PlayerPrefs.GetInt("Order_" + i + "_Req_" + j + "_ProductIndex", 0);
+                        int quantity = PlayerPrefs.GetInt("Order_" + i + "_Req_" + j + "_Quantity", 0);
+                        order.AddRequirement(productIndex, quantity);
+                    }
+                    
+                    // Ajoute la commande uniquement si elle n'est pas terminée ou échouée
+                    if (!isCompleted && !isFailed)
+                    {
+                        om.activeOrders.Add(order);
+                    }
+                }
+                
+                Debug.Log("📊 Commandes chargées : " + om.activeOrders.Count + " actives");
+            }
+        }
 
         // Met à jour toute l'interface
         gm.RefreshAllUI();
@@ -239,7 +334,7 @@ public class SaveManager : MonoBehaviour
     
     // Sauvegarde automatique toutes les X secondes
     private float autoSaveTimer = 0f;
-    public float autoSaveInterval = 60f; // Sauvegarde toutes les 60 secondes
+    public float autoSaveInterval = 60f;
     
     void Update()
     {
@@ -254,7 +349,6 @@ public class SaveManager : MonoBehaviour
     
     void AutoSave()
     {
-        // Trouve les managers dans la scène active
         GameManager gm = FindObjectOfType<GameManager>();
         TimeManager tm = FindObjectOfType<TimeManager>();
         ProgressionManager pm = FindObjectOfType<ProgressionManager>();
@@ -264,17 +358,14 @@ public class SaveManager : MonoBehaviour
             SaveGame(gm, tm, pm);
             Debug.Log("💾 Sauvegarde automatique effectuée");
         
-            // Affiche l'indicateur de sauvegarde
             ShowSaveIndicator();
         }
     }
 
-    // Affiche temporairement l'indicateur de sauvegarde
     void ShowSaveIndicator()
     {
         if (saveIndicator == null)
         {
-            // Cherche l'indicateur dans la scène s'il n'est pas assigné
             saveIndicator = GameObject.Find("SaveIndicator")?.GetComponent<TextMeshProUGUI>();
         }
     
@@ -283,7 +374,6 @@ public class SaveManager : MonoBehaviour
             saveIndicator.gameObject.SetActive(true);
             saveIndicator.text = "Sauvegarde...";
         
-            // Cache après 2 secondes
             CancelInvoke("HideSaveIndicator");
             Invoke("HideSaveIndicator", 2f);
         }
