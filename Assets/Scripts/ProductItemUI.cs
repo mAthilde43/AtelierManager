@@ -32,6 +32,19 @@ public class ProductItemUI : MonoBehaviour
     // Met à jour l'affichage
     public void UpdateDisplay(Product product)
     {
+        // ===== VÉRIFICATION DÉVERROUILLAGE =====
+        // Si le produit est verrouillé, cache complètement cet élément UI
+        if (!product.isUnlocked)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+        else
+        {
+            gameObject.SetActive(true);
+        }
+        // =======================================
+        
         productNameText.text = product.productName;
         sellPriceText.text = "Vente: " + product.sellPrice + "€";
         productStockText.text = "Stock: " + product.quantity;
@@ -48,7 +61,6 @@ public class ProductItemUI : MonoBehaviour
         }
         recipeText.text = recipeString;
         
-        // ===== AJOUTE CETTE SECTION =====
         // Vérifie si on peut fabriquer (tous les matériaux disponibles)
         if (craftButton != null && gameManager != null)
         {
@@ -66,7 +78,6 @@ public class ProductItemUI : MonoBehaviour
             
             craftButton.interactable = canCraft;
         }
-        // ================================
     }
     
     // Fonction appelée quand on clique sur "Fabriquer"

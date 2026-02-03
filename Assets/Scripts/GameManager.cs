@@ -109,64 +109,88 @@ public class GameManager : MonoBehaviour
     }
     
     // Fonction pour créer les produits de départ
-    void InitializeProducts()
-    {
-        // Produit 1 : Table en chêne
-        Product tableChene = new Product("Table en chêne", 200, 5);
-        tableChene.AddMaterialRequirement(0, 3); // 3x Bois de chêne (index 0)
-        tableChene.AddMaterialRequirement(2, 1); // 1x Vernis (index 2)
-        products.Add(tableChene);
+   void InitializeProducts()
+{
+    // Produit 1 : Table en chêne - DÉBLOQUÉ DÈS LE DÉBUT
+    Product tableChene = new Product("Table en chêne", 200, 5);
+    tableChene.AddMaterialRequirement(0, 3);
+    tableChene.AddMaterialRequirement(2, 1);
+    tableChene.isUnlocked = true;  // ← Débloqué dès le début
+    tableChene.unlockLevel = 0;
+    tableChene.unlockConditionText = "Disponible dès le début";
+    products.Add(tableChene);
+
+    // Produit 2 : Chaise en pin - DÉBLOQUÉ DÈS LE DÉBUT
+    Product chaisePine = new Product("Chaise en pin", 80, 3);
+    chaisePine.AddMaterialRequirement(1, 2);
+    chaisePine.AddMaterialRequirement(2, 1);
+    chaisePine.isUnlocked = true;  // ← Débloqué dès le début
+    chaisePine.unlockLevel = 0;
+    chaisePine.unlockConditionText = "Disponible dès le début";
+    products.Add(chaisePine);
+
+    // Produit 3 : Étagère mixte - DÉBLOQUÉ DÈS LE DÉBUT
+    Product etagere = new Product("Étagère mixte", 150, 4);
+    etagere.AddMaterialRequirement(0, 2);
+    etagere.AddMaterialRequirement(1, 2);
+    etagere.AddMaterialRequirement(2, 2);
+    etagere.isUnlocked = true;  // ← Débloqué dès le début
+    etagere.unlockLevel = 0;
+    etagere.unlockConditionText = "Disponible dès le début";
+    products.Add(etagere);
     
-        // Produit 2 : Chaise en pin
-        Product chaisePine = new Product("Chaise en pin", 80, 3);
-        chaisePine.AddMaterialRequirement(1, 2); // 2x Bois de pin (index 1)
-        chaisePine.AddMaterialRequirement(2, 1); // 1x Vernis (index 2)
-        products.Add(chaisePine);
+    // Produit 4 : Lampe - VERROUILLÉ (Niveau 3)
+    Product lamp = new Product("Lampe", 180, 25);
+    lamp.AddMaterialRequirement(3, 1);
+    lamp.AddMaterialRequirement(4, 1);
+    lamp.isUnlocked = false;  // ← Verrouillé
+    lamp.unlockLevel = 3;
+    lamp.unlockConditionText = "Niveau 3 requis";
+    products.Add(lamp);
+
+    // Produit 5 : Fauteuil - VERROUILLÉ (Niveau 5)
+    Product armchair = new Product("Fauteuil", 280, 35);
+    armchair.AddMaterialRequirement(1, 2);
+    armchair.AddMaterialRequirement(4, 2);
+    armchair.AddMaterialRequirement(5, 1);
+    armchair.isUnlocked = false;  // ← Verrouillé
+    armchair.unlockLevel = 5;
+    armchair.unlockConditionText = "Niveau 5 requis";
+    products.Add(armchair);
+
+    // Produit 6 : Bureau - VERROUILLÉ (Niveau 7)
+    Product desk = new Product("Bureau", 450, 40);
+    desk.AddMaterialRequirement(0, 4);
+    desk.AddMaterialRequirement(3, 2);
+    desk.AddMaterialRequirement(2, 1);
+    desk.isUnlocked = false;  // ← Verrouillé
+    desk.unlockLevel = 7;
+    desk.unlockConditionText = "Niveau 7 requis";
+    products.Add(desk);
+
+    // Produit 7 : Canapé - VERROUILLÉ (Niveau 10)
+    Product sofa = new Product("Canapé", 520, 50);
+    sofa.AddMaterialRequirement(1, 3);
+    sofa.AddMaterialRequirement(4, 4);
+    sofa.AddMaterialRequirement(5, 2);
+    sofa.isUnlocked = false;  // ← Verrouillé
+    sofa.unlockLevel = 10;
+    sofa.unlockConditionText = "Niveau 10 requis";
+    products.Add(sofa);
     
-        // Produit 3 : Étagère mixte
-        Product etagere = new Product("Étagère mixte", 150, 4);
-        etagere.AddMaterialRequirement(0, 2); // 2x Bois de chêne
-        etagere.AddMaterialRequirement(1, 2); // 2x Bois de pin
-        etagere.AddMaterialRequirement(2, 2); // 2x Vernis
-        products.Add(etagere);
-        
-        // Lampe : 1x Métal + 1x Tissu = 180€
-        Product lamp = new Product("Lampe", 180, 25);
-        lamp.AddMaterialRequirement(3, 1); // 1x Métal
-        lamp.AddMaterialRequirement(4, 1); // 1x Tissu
-        products.Add(lamp);
-    
-        // Fauteuil : 2x Pin + 2x Tissu + 1x Cuir = 280€
-        Product armchair = new Product("Fauteuil", 280, 35);
-        armchair.AddMaterialRequirement(1, 2); // 2x Bois de pin
-        armchair.AddMaterialRequirement(4, 2); // 2x Tissu
-        armchair.AddMaterialRequirement(5, 1); // 1x Cuir
-        products.Add(armchair);
-    
-        // Bureau : 4x Chêne + 2x Métal + 1x Vernis = 450€
-        Product desk = new Product("Bureau", 450, 40);
-        desk.AddMaterialRequirement(0, 4); // 4x Bois de chêne
-        desk.AddMaterialRequirement(3, 2); // 2x Métal
-        desk.AddMaterialRequirement(2, 1); // 1x Vernis
-        products.Add(desk);
-    
-        // Canapé : 3x Pin + 4x Tissu + 2x Cuir = 520€
-        Product sofa = new Product("Canapé", 520, 50);
-        sofa.AddMaterialRequirement(1, 3); // 3x Bois de pin
-        sofa.AddMaterialRequirement(4, 4); // 4x Tissu
-        sofa.AddMaterialRequirement(5, 2); // 2x Cuir
-        products.Add(sofa);
-        
-        // Armoire : 5x Chêne + 3x Métal + 2x Vernis = 650€
-        Product wardrobe = new Product("Armoire", 650, 60);
-        wardrobe.AddMaterialRequirement(0, 5); // 5x Bois de chêne
-        wardrobe.AddMaterialRequirement(3, 3); // 3x Métal
-        wardrobe.AddMaterialRequirement(2, 2); // 2x Vernis
-        products.Add(wardrobe);
-    
-        Debug.Log("🔨 " + products.Count + " types de produits initialisés");
-    }
-    
+    // Produit 8 : Armoire - VERROUILLÉ (Niveau 15)
+    Product wardrobe = new Product("Armoire", 650, 60);
+    wardrobe.AddMaterialRequirement(0, 5);
+    wardrobe.AddMaterialRequirement(3, 3);
+    wardrobe.AddMaterialRequirement(2, 2);
+    wardrobe.isUnlocked = false;  // ← Verrouillé
+    wardrobe.unlockLevel = 15;
+    wardrobe.unlockConditionText = "Niveau 15 requis";
+    products.Add(wardrobe);
+
+    Debug.Log("🔨 " + products.Count + " types de produits initialisés (certains verrouillés)");
+}
+
     // Fonction pour créer les améliorations de départ
     void InitializeUpgrades()
     {
@@ -773,77 +797,78 @@ public Upgrade GetUpgrade(int index)
     }
     
     // Fonction pour mettre à jour toute l'interface
-    public void RefreshAllUI()
-    {
-        // Met à jour les matériaux
-        if (woodItemUI != null)
-            woodItemUI.UpdateDisplay(craftingMaterials[0]);
-        if (pineItemUI != null)
-            pineItemUI.UpdateDisplay(craftingMaterials[1]);
-        if (varnishItemUI != null)
-            varnishItemUI.UpdateDisplay(craftingMaterials[2]);
-        if (metalItemUI != null)
-            metalItemUI.UpdateDisplay(craftingMaterials[3]);
-        if (fabricItemUI != null)
-            fabricItemUI.UpdateDisplay(craftingMaterials[4]);
-        if (leatherItemUI != null)
-            leatherItemUI.UpdateDisplay(craftingMaterials[5]);
-        
+public void RefreshAllUI()
+{
+    // Met à jour les matériaux
+    if (woodItemUI != null && craftingMaterials.Count > 0)
+        woodItemUI.UpdateDisplay(craftingMaterials[0]);
+    if (pineItemUI != null && craftingMaterials.Count > 1)
+        pineItemUI.UpdateDisplay(craftingMaterials[1]);
+    if (varnishItemUI != null && craftingMaterials.Count > 2)
+        varnishItemUI.UpdateDisplay(craftingMaterials[2]);
+    if (metalItemUI != null && craftingMaterials.Count > 3)
+        metalItemUI.UpdateDisplay(craftingMaterials[3]);
+    if (fabricItemUI != null && craftingMaterials.Count > 4)
+        fabricItemUI.UpdateDisplay(craftingMaterials[4]);
+    if (leatherItemUI != null && craftingMaterials.Count > 5)
+        leatherItemUI.UpdateDisplay(craftingMaterials[5]);
+    
 
-        // Met à jour les produits (atelier)
-        if (tableItemUI != null)
-            tableItemUI.UpdateDisplay(products[0]);
-        if (chairItemUI != null)
-            chairItemUI.UpdateDisplay(products[1]);
-        if (shelfItemUI != null)
-            shelfItemUI.UpdateDisplay(products[2]);
-        if (lampItemUI != null)
-            lampItemUI.UpdateDisplay(products[3]);     
-        if (armchairItemUI != null)
-            armchairItemUI.UpdateDisplay(products[4]);  
-        if (deskItemUI != null)
-            deskItemUI.UpdateDisplay(products[5]);     
-        if (sofaItemUI != null)
-            sofaItemUI.UpdateDisplay(products[6]);     
-        if (wardrobeItemUI != null)
-            wardrobeItemUI.UpdateDisplay(products[7]);  
-    
-        // Met à jour les produits (vente)
-        if (saleTableItemUI != null)
-            saleTableItemUI.UpdateDisplay(products[0]);
-        if (saleChairItemUI != null)
-            saleChairItemUI.UpdateDisplay(products[1]);
-        if (saleShelfItemUI != null)
-            saleShelfItemUI.UpdateDisplay(products[2]);
-        if (saleLampItemUI != null)
-            saleLampItemUI.UpdateDisplay(products[3]);
-        if (saleArmchairItemUI != null)
-            saleArmchairItemUI.UpdateDisplay(products[4]);
-        if (saleDeskItemUI != null)
-            saleDeskItemUI.UpdateDisplay(products[5]);
-        if (saleSofaItemUI != null)
-            saleSofaItemUI.UpdateDisplay(products[6]);
-        if (saleWardrobefItemUI != null)
-            saleWardrobefItemUI.UpdateDisplay(products[7]);
-    
-        // Met à jour les améliorations
-        if (upgrade1ItemUI != null)
-            upgrade1ItemUI.UpdateDisplay(upgrades[0]);
-        if (upgrade2ItemUI != null)
-            upgrade2ItemUI.UpdateDisplay(upgrades[1]);
-        if (upgrade3ItemUI != null)
-            upgrade3ItemUI.UpdateDisplay(upgrades[2]);
-        if (upgrade4ItemUI != null)
-            upgrade4ItemUI.UpdateDisplay(upgrades[3]);
-        if (upgrade5ItemUI != null)
-            upgrade5ItemUI.UpdateDisplay(upgrades[4]);
-    
-        // Met à jour les notifications (NOUVEAU)
-        if (NotificationManager.Instance != null)
-        {
-            NotificationManager.Instance.UpdateAllNotifications();
-        }
+    // Met à jour les produits (atelier)
+    if (tableItemUI != null && products.Count > 0)
+        tableItemUI.UpdateDisplay(products[0]);
+    if (chairItemUI != null && products.Count > 1)
+        chairItemUI.UpdateDisplay(products[1]);
+    if (shelfItemUI != null && products.Count > 2)
+        shelfItemUI.UpdateDisplay(products[2]);
+    if (lampItemUI != null && products.Count > 3)
+        lampItemUI.UpdateDisplay(products[3]);     
+    if (armchairItemUI != null && products.Count > 4)
+        armchairItemUI.UpdateDisplay(products[4]);  
+    if (deskItemUI != null && products.Count > 5)
+        deskItemUI.UpdateDisplay(products[5]);     
+    if (sofaItemUI != null && products.Count > 6)
+        sofaItemUI.UpdateDisplay(products[6]);     
+    if (wardrobeItemUI != null && products.Count > 7)
+        wardrobeItemUI.UpdateDisplay(products[7]);  
+
+    // Met à jour les produits (vente)
+    if (saleTableItemUI != null && products.Count > 0)
+        saleTableItemUI.UpdateDisplay(products[0]);
+    if (saleChairItemUI != null && products.Count > 1)
+        saleChairItemUI.UpdateDisplay(products[1]);
+    if (saleShelfItemUI != null && products.Count > 2)
+        saleShelfItemUI.UpdateDisplay(products[2]);
+    if (saleLampItemUI != null && products.Count > 3)
+        saleLampItemUI.UpdateDisplay(products[3]);
+    if (saleArmchairItemUI != null && products.Count > 4)
+        saleArmchairItemUI.UpdateDisplay(products[4]);
+    if (saleDeskItemUI != null && products.Count > 5)
+        saleDeskItemUI.UpdateDisplay(products[5]);
+    if (saleSofaItemUI != null && products.Count > 6)
+        saleSofaItemUI.UpdateDisplay(products[6]);
+    if (saleWardrobefItemUI != null && products.Count > 7)
+        saleWardrobefItemUI.UpdateDisplay(products[7]);
+
+    // Met à jour les améliorations
+    if (upgrade1ItemUI != null && upgrades.Count > 0)
+        upgrade1ItemUI.UpdateDisplay(upgrades[0]);
+    if (upgrade2ItemUI != null && upgrades.Count > 1)
+        upgrade2ItemUI.UpdateDisplay(upgrades[1]);
+    if (upgrade3ItemUI != null && upgrades.Count > 2)
+        upgrade3ItemUI.UpdateDisplay(upgrades[2]);
+    if (upgrade4ItemUI != null && upgrades.Count > 3)
+        upgrade4ItemUI.UpdateDisplay(upgrades[3]);
+    if (upgrade5ItemUI != null && upgrades.Count > 4)
+        upgrade5ItemUI.UpdateDisplay(upgrades[4]);
+
+    // Met à jour les notifications
+    if (NotificationManager.Instance != null)
+    {
+        NotificationManager.Instance.UpdateAllNotifications();
     }
+}
+
     
     // Sauvegarde automatiquement quand on quitte le jeu
     void OnApplicationQuit()

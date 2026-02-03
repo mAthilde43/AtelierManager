@@ -72,6 +72,13 @@ public class ProgressionManager : MonoBehaviour
     
         // Récompenses du niveau
         GiveLevelRewards();
+        
+        // Vérifie si des recettes peuvent être débloquées
+        if (RecipeUnlockManager.Instance != null)
+        {
+            RecipeUnlockManager.Instance.OnLevelUp();
+        }
+
     }
     
     // Donne les récompenses du niveau

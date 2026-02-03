@@ -14,6 +14,10 @@ public class Product
     // Recette : liste des matériaux nécessaires
     public List<MaterialRequirement> recipe = new List<MaterialRequirement>();
     
+    public bool isUnlocked;              // Produit débloqué ?
+    public int unlockLevel;              // Niveau requis (0 = débloqué dès le début)
+    public string unlockConditionText;
+    
     // Constructeur
     public Product(string name, int price, int prodTime)
     {
@@ -23,6 +27,11 @@ public class Product
         productionTime = prodTime;
         icon = null;
         recipe = new List<MaterialRequirement>();
+        
+        isUnlocked = false;
+        unlockLevel = 0;
+        unlockConditionText = "";
+    
     }
     
     // Ajoute un matériau requis à la recette

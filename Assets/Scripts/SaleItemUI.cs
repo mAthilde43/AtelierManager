@@ -31,6 +31,19 @@ public class SaleItemUI : MonoBehaviour
     // Met à jour l'affichage
     public void UpdateDisplay(Product product)
     {
+        // ===== VÉRIFICATION DÉVERROUILLAGE =====
+        // Si le produit est verrouillé, cache complètement cet élément UI
+        if (!product.isUnlocked)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+        else
+        {
+            gameObject.SetActive(true);
+        }
+        // =======================================
+        
         productNameText.text = product.productName;
         priceText.text = "Prix: " + product.sellPrice + "€";
         stockText.text = "Dispo: " + product.quantity;
