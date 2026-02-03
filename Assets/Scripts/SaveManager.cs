@@ -57,10 +57,13 @@ public class SaveManager : MonoBehaviour
             PlayerPrefs.SetInt("Material_" + i + "_Quantity", gm.craftingMaterials[i].quantity);
         }
         
-        // === PRODUITS (stocks) ===
+        // === PRODUITS (stocks + déverrouillages) ===
         for (int i = 0; i < gm.products.Count; i++)
         {
             PlayerPrefs.SetInt("Product_" + i + "_Quantity", gm.products[i].quantity);
+            PlayerPrefs.SetInt("Product_" + i + "_Unlocked", gm.products[i].isUnlocked ? 1 : 0);
+            
+            Debug.Log("💾 Sauvegarde produit " + i + " (" + gm.products[i].productName + ") : Débloqué = " + gm.products[i].isUnlocked);
         }
         
         // === AMÉLIORATIONS (achetées ou non) ===
@@ -136,7 +139,7 @@ public class SaveManager : MonoBehaviour
                 }
             }
             
-            // Sauvegarde le compteur de commandes (avec réflexion pour accéder au champ privé)
+            // Sauvegarde le compteur de commandes
             var counterField = om.GetType().GetField("orderCounter", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             if (counterField != null)
             {
@@ -191,11 +194,23 @@ public class SaveManager : MonoBehaviour
             gm.craftingMaterials[i].quantity = quantity;
         }
         
-        // === PRODUITS ===
+        // === PRODUITS (stocks + déverrouillages) ===
         for (int i = 0; i < gm.products.Count; i++)
         {
             int quantity = PlayerPrefs.GetInt("Product_" + i + "_Quantity", 0);
             gm.products[i].quantity = quantity;
+            
+            // Charge le statut de déverrouillage
+            bool isUnlocked = PlayerPrefs.GetInt("Product_" + i + "_Unlocked", 0) == 1;
+            
+            Debug.Log("📂 Chargement produit " + i + " (" + gm.products[i].productName + ") : Débloqué en save = " + isUnlocked);
+            
+            // Si le produit était débloqué en sauvegarde, on le débloque
+            if (isUnlocked)
+            {
+                gm.products[i].isUnlocked = true;
+                Debug.Log("✅ Produit " + gm.products[i].productName + " débloqué depuis la sauvegarde");
+            }
         }
         
         // === AMÉLIORATIONS ===
