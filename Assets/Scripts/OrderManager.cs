@@ -198,10 +198,17 @@ public class OrderManager : MonoBehaviour
         RefreshOrdersUI();
     }
     
+    // Rafraîchit l'UI des commandes
     void RefreshOrdersUI()
     {
-        Debug.Log("🔄 Rafraîchissement UI commandes (à implémenter)");
+        // Trouve l'UI des commandes
+        OrdersUI ordersUI = FindFirstObjectByType<OrdersUI>();
+        if (ordersUI != null)
+        {
+            ordersUI.RefreshOrdersDisplay();
+        }
     }
+
     
     public Order GetOrder(string orderID)
     {

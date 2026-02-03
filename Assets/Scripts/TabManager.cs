@@ -10,6 +10,7 @@ public class TabManager : MonoBehaviour
     public GameObject upgradesPanel;
     public GameObject statsPanel;
     public GameObject employeesPanel;
+    public GameObject ordersPanel;
 
     // Références vers les boutons d'onglets
     public Button shopTabButton;
@@ -18,21 +19,18 @@ public class TabManager : MonoBehaviour
     public Button upgradesTabButton;
     public Button statsTabButton;
     public Button employeesTabButton;
+    public Button ordersTabButton;
     
     // Couleurs pour les boutons actifs/inactifs
-    private Color activeColor = new Color(1f, 1f, 1f, 1f);      // Blanc (actif)
-    private Color inactiveColor = new Color(0.7f, 0.7f, 0.7f, 1f); // Gris (inactif)
+    private Color activeColor = new Color(1f, 1f, 1f, 1f);
+    private Color inactiveColor = new Color(0.7f, 0.7f, 0.7f, 1f);
     
-    // ===== AJOUT =====
     private GameManager gameManager;
-    // =================
     
     void Start()
     {
-        // ===== AJOUT =====
         // Récupère le GameManager
         gameManager = FindObjectOfType<GameManager>();
-        // =================
         
         // Configure les boutons
         shopTabButton.onClick.AddListener(() => ShowTab("shop"));
@@ -40,7 +38,8 @@ public class TabManager : MonoBehaviour
         salesTabButton.onClick.AddListener(() => ShowTab("sales"));
         upgradesTabButton.onClick.AddListener(() => ShowTab("upgrades"));
         statsTabButton.onClick.AddListener(() => ShowTab("stats"));
-        employeesTabButton.onClick.AddListener(() => ShowTab("employees"));  // ← AJOUTE
+        employeesTabButton.onClick.AddListener(() => ShowTab("employees"));
+        ordersTabButton.onClick.AddListener(() => ShowTab("orders"));  // ← CORRIGÉ
     
         // Affiche la boutique par défaut au démarrage
         ShowTab("shop");
@@ -55,7 +54,8 @@ public class TabManager : MonoBehaviour
         salesPanel.SetActive(false);
         upgradesPanel.SetActive(false);
         statsPanel.SetActive(false);
-        employeesPanel.SetActive(false);  // ← Dans la section qui cache tous les panneaux
+        employeesPanel.SetActive(false);
+        ordersPanel.SetActive(false);
     
         // Réinitialise la couleur de tous les boutons
         ResetButtonColors();
@@ -87,11 +87,10 @@ public class TabManager : MonoBehaviour
                 Debug.Log("📂 Onglet Améliorations ouvert");
                 break;
             
-            case "stats":  
+            case "stats":
                 statsPanel.SetActive(true);
                 HighlightButton(statsTabButton);
             
-                // Rafraîchit les stats quand on ouvre l'onglet
                 StatsUI statsUI = statsPanel.GetComponent<StatsUI>();
                 if (statsUI != null)
                 {
@@ -101,11 +100,10 @@ public class TabManager : MonoBehaviour
                 Debug.Log("📂 Onglet Statistiques ouvert");
                 break;
             
-            case "employees":  
+            case "employees":
                 employeesPanel.SetActive(true);
                 HighlightButton(employeesTabButton);
     
-                // Rafraîchit les employés
                 EmployeesUI employeesUI = employeesPanel.GetComponent<EmployeesUI>();
                 if (employeesUI != null)
                 {
@@ -114,14 +112,25 @@ public class TabManager : MonoBehaviour
     
                 Debug.Log("📂 Onglet Employés ouvert");
                 break;
-
             
+            case "orders":
+                ordersPanel.SetActive(true);
+                HighlightButton(ordersTabButton);
+    
+                OrdersUI ordersUI = ordersPanel.GetComponent<OrdersUI>();
+                if (ordersUI != null)
+                {
+                    ordersUI.RefreshOrdersDisplay();
+                }
+    
+                Debug.Log("📂 Onglet Commandes ouvert");
+                break;
+
             default:
                 Debug.LogWarning("⚠️ Onglet inconnu : " + tabName);
                 shopPanel.SetActive(true);
                 break;
         }
-        
         
         // Rafraîchit l'UI pour mettre à jour les boutons
         if (gameManager != null)
@@ -129,7 +138,6 @@ public class TabManager : MonoBehaviour
             gameManager.RefreshAllUI();
             Debug.Log("🔄 UI rafraîchie après changement d'onglet");
         }
-        // =================
     }
     
     // Réinitialise la couleur de tous les boutons (inactifs)
@@ -153,14 +161,17 @@ public class TabManager : MonoBehaviour
         cb.normalColor = inactiveColor;
         upgradesTabButton.colors = cb;
         
-        cb = statsTabButton.colors;  
+        cb = statsTabButton.colors;
         cb.normalColor = inactiveColor;
         statsTabButton.colors = cb;
         
-        cb = employeesTabButton.colors;  
+        cb = employeesTabButton.colors;
         cb.normalColor = inactiveColor;
         employeesTabButton.colors = cb;
-
+        
+        cb = ordersTabButton.colors;
+        cb.normalColor = inactiveColor;
+        ordersTabButton.colors = cb;
     }
     
     // Met en surbrillance un bouton (actif)
