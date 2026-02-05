@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using TMPro;
 
 // Types de bâtiments
 public enum BuildingCategory
@@ -94,6 +95,8 @@ public class BuildingManager : MonoBehaviour
     
     // === VISUEL ===
     public Transform buildingContainer;  // Container pour les sprites
+    public GameObject visualElementPrefab;  // Prefab des éléments visuels
+    
     
     void Start()
     {
@@ -101,6 +104,8 @@ public class BuildingManager : MonoBehaviour
         progressionManager = FindObjectOfType<ProgressionManager>();
         
         InitializeBuildings();
+        
+        LoadBuildingData();
         
         Debug.Log("🏗️ BuildingManager initialisé avec " + allElements.Count + " éléments");
     }
@@ -492,6 +497,8 @@ public class BuildingManager : MonoBehaviour
             // Affiche visuellement (on fera ça après)
             ShowElementVisual(element);
             
+            SaveBuildingData();
+            
             Debug.Log("🏗️ Construit : " + element.elementName);
             
             // Son
@@ -518,18 +525,78 @@ public class BuildingManager : MonoBehaviour
         }
     }
     
-    // Applique le bonus d'un élément
+    // Applique le bonus d'un élément (ne fait que logger, les calculs sont dans les Get)
     void ApplyBonus(BuildingElement element)
     {
-        // On implémentera les bonus après
-        Debug.Log("💪 Bonus appliqué : " + element.bonusType + " +" + element.bonusValue);
+        Debug.Log("💪 Bonus appliqué : " + element.bonusType + " +" + element.bonusValue + "%");
     }
+
     
-    // Affiche visuellement l'élément (on fera ça après)
+    // Affiche visuellement l'élément dans l'atelier
     void ShowElementVisual(BuildingElement element)
     {
-        Debug.Log("🎨 Affichage visuel de : " + element.elementName);
+        if (buildingContainer == null || visualElementPrefab == null)
+        {
+            Debug.LogWarning("⚠️ Container ou prefab manquant !");
+            return;
+        }
+    
+        // Crée l'élément visuel
+        GameObject visualElement = Instantiate(visualElementPrefab, buildingContainer);
+    
+        // Trouve l'icône
+        TextMeshProUGUI iconText = visualElement.transform.Find("IconText")?.GetComponent<TextMeshProUGUI>();
+        if (iconText != null)
+        {
+            iconText.text = element.icon;
+        }
+    
+        // Position aléatoire dans le container (pour un effet naturel)
+        RectTransform rect = visualElement.GetComponent<RectTransform>();
+        if (rect != null)
+        {
+            // Position aléatoire
+            float randomX = Random.Range(-200f, 200f);
+            float randomY = Random.Range(-150f, 150f);
+            rect.anchoredPosition = new Vector2(randomX, randomY);
+        
+            // Rotation légère aléatoire
+            rect.rotation = Quaternion.Euler(0, 0, Random.Range(-10f, 10f));
+        }
+    
+        // Animation d'apparition (scale)
+        visualElement.transform.localScale = Vector3.zero;
+        StartCoroutine(AnimateElementAppearance(visualElement));
+    
+        Debug.Log("🎨 Élément visuel affiché : " + element.elementName);
     }
+
+// Animation d'apparition d'un élément
+    System.Collections.IEnumerator AnimateElementAppearance(GameObject element)
+    {
+        float duration = 0.5f;
+        float elapsed = 0f;
+    
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float progress = elapsed / duration;
+        
+            // Courbe d'animation (bounce)
+            float scale = Mathf.Sin(progress * Mathf.PI) * 1.2f;
+            if (progress > 0.5f)
+            {
+                scale = Mathf.Lerp(1.2f, 1f, (progress - 0.5f) * 2f);
+            }
+        
+            element.transform.localScale = Vector3.one * scale;
+        
+            yield return null;
+        }
+    
+        element.transform.localScale = Vector3.one;
+    }
+
     
     // Compte les éléments achetés par catégorie
     public int GetPurchasedCount(BuildingCategory category)
@@ -557,5 +624,208 @@ public class BuildingManager : MonoBehaviour
             }
         }
         return count;
+    }
+    
+    // Sauvegarde les éléments achetés
+    public void SaveBuildingData()
+    {
+        for (int i = 0; i < allElements.Count; i++)
+        {
+            string key = "BuildingElement_" + i + "_Purchased";
+            PlayerPrefs.SetInt(key, allElements[i].isPurchased ? 1 : 0);
+        }
+    
+        PlayerPrefs.Save();
+        Debug.Log("💾 Données de construction sauvegardées");
+    }
+    // Charge les éléments achetés
+    public void LoadBuildingData()
+    {
+        for (int i = 0; i < allElements.Count; i++)
+        {
+            string key = "BuildingElement_" + i + "_Purchased";
+
+            if (PlayerPrefs.HasKey(key))
+            {
+                bool isPurchased = PlayerPrefs.GetInt(key) == 1;
+                allElements[i].isPurchased = isPurchased;
+
+                // Si acheté, applique le bonus et affiche visuellement
+                if (isPurchased)
+                {
+                    ApplyBonus(allElements[i]);
+                    ShowElementVisual(allElements[i]);
+                }
+            }
+        }
+        
+        Debug.Log("📂 Données de construction chargées");
+    }
+    
+    // ===== CALCUL DES BONUS TOTAUX =====
+
+    // Retourne le multiplicateur total pour les ventes
+    public float GetSalesBonusMultiplier()
+    {
+        float bonus = 0f;
+
+        foreach (BuildingElement element in allElements)
+        {
+            if (element.isPurchased && element.bonusType == BonusType.SalesBonus)
+            {
+                bonus += element.bonusValue;
+            }
+        }
+
+        return 1f + (bonus / 100f);
+    }
+
+    // Retourne le multiplicateur pour la vitesse de production
+    public float GetProductionSpeedMultiplier()
+    {
+        float bonus = 0f;
+
+        foreach (BuildingElement element in allElements)
+        {
+            if (element.isPurchased && element.bonusType == BonusType.ProductionSpeed)
+            {
+                bonus += element.bonusValue;
+            }
+        }
+
+        return 1f + (bonus / 100f);
+    }
+
+    // Retourne le multiplicateur pour la réduction des matériaux
+    public float GetMaterialDiscountMultiplier()
+    {
+        float discount = 0f;
+
+        foreach (BuildingElement element in allElements)
+        {
+            if (element.isPurchased && element.bonusType == BonusType.MaterialDiscount)
+            {
+                discount += element.bonusValue;
+            }
+        }
+
+        return 1f - (discount / 100f);
+    }
+
+    // Retourne le multiplicateur pour les revenus quotidiens
+    public float GetDailyIncomeMultiplier()
+    {
+        float bonus = 0f;
+
+        foreach (BuildingElement element in allElements)
+        {
+            if (element.isPurchased && element.bonusType == BonusType.DailyIncome)
+            {
+                bonus += element.bonusValue;
+            }
+        }
+
+        return 1f + (bonus / 100f);
+    }
+
+    // Retourne le multiplicateur d'XP
+    public float GetXPBonusMultiplier()
+    {
+        float bonus = 0f;
+
+        foreach (BuildingElement element in allElements)
+        {
+            if (element.isPurchased && element.bonusType == BonusType.XPBonus)
+            {
+                bonus += element.bonusValue;
+            }
+        }
+
+        return 1f + (bonus / 100f);
+    }
+
+    // Retourne la capacité de stockage supplémentaire
+    public int GetStorageCapacityBonus()
+    {
+        int bonus = 0;
+
+        foreach (BuildingElement element in allElements)
+        {
+            if (element.isPurchased && element.bonusType == BonusType.StorageCapacity)
+            {
+                bonus += (int)element.bonusValue;
+            }
+        }
+
+        return bonus;
+    }
+
+    // Retourne le multiplicateur d'efficacité des employés
+    public float GetEmployeeEfficiencyMultiplier()
+    {
+        float bonus = 0f;
+
+        foreach (BuildingElement element in allElements)
+        {
+            if (element.isPurchased && element.bonusType == BonusType.EmployeeEfficiency)
+            {
+                bonus += element.bonusValue;
+            }
+        }
+
+        return 1f + (bonus / 100f);
+    }
+
+    // Retourne le multiplicateur pour les commandes
+    public float GetOrderBonusMultiplier()
+    {
+        float bonus = 0f;
+
+        foreach (BuildingElement element in allElements)
+        {
+            if (element.isPurchased && element.bonusType == BonusType.OrderBonus)
+            {
+                bonus += element.bonusValue;
+            }
+        }
+
+        return 1f + (bonus / 100f);
+    }
+
+    // ===== AFFICHAGE DES BONUS =====
+
+    // Retourne le texte des bonus actifs (pour l'UI)
+    public string GetActiveBonusText()
+    {
+        string text = "";
+
+        float salesBonus = (GetSalesBonusMultiplier() - 1f) * 100f;
+        if (salesBonus > 0)
+            text += "💰 Ventes : +" + salesBonus.ToString("F0") + "%\n";
+
+        float prodSpeed = (GetProductionSpeedMultiplier() - 1f) * 100f;
+        if (prodSpeed > 0)
+            text += "⚡ Production : +" + prodSpeed.ToString("F0") + "%\n";
+
+        float matDiscount = (1f - GetMaterialDiscountMultiplier()) * 100f;
+        if (matDiscount > 0)
+            text += "💸 Matériaux : -" + matDiscount.ToString("F0") + "%\n";
+
+        float xpBonus = (GetXPBonusMultiplier() - 1f) * 100f;
+        if (xpBonus > 0)
+            text += "⭐ XP : +" + xpBonus.ToString("F0") + "%\n";
+
+        int storageBonus = GetStorageCapacityBonus();
+        if (storageBonus > 0)
+            text += "📦 Stockage : +" + storageBonus + "\n";
+
+        float employeeBonus = (GetEmployeeEfficiencyMultiplier() - 1f) * 100f;
+        if (employeeBonus > 0)
+            text += "👷 Employés : +" + employeeBonus.ToString("F0") + "%\n";
+
+        if (text == "")
+            text = "Aucun bonus actif";
+
+        return text.TrimEnd('\n');
     }
 }

@@ -33,7 +33,27 @@ public class MaterialItemUI : MonoBehaviour
     public void UpdateDisplay(CraftingMaterial craftingMaterial)
     {
         nameText.text = craftingMaterial.materialName;
-        priceText.text = "Prix: " + craftingMaterial.price + "€";
+        
+// Calcule le prix réel avec réduction
+        float displayPrice = craftingMaterial.price;
+
+        if (BuildingManager.Instance != null)
+        {
+            displayPrice *= BuildingManager.Instance.GetMaterialDiscountMultiplier();
+        }
+
+        int finalPrice = Mathf.RoundToInt(displayPrice);
+
+// Affiche le prix réduit si différent
+        if (finalPrice < craftingMaterial.price)
+        {
+            priceText.text = "<s>" + craftingMaterial.price + "€</s> " + finalPrice + "€";
+        }
+        else
+        {
+            priceText.text = "Prix: " + craftingMaterial.price + "€";
+        }
+        
         stockText.text = "Stock: " + craftingMaterial.quantity;
     
         // ===== DEBUG =====
@@ -64,11 +84,26 @@ public class MaterialItemUI : MonoBehaviour
     // Fonction appelée quand on clique sur le bouton
     void OnBuyButtonClicked()
     {
+        // ===== CALCULE LE PRIX AVEC BONUS =====
+        CraftingMaterial mat = gameManager.GetMaterial(materialIndex);
+        if (mat == null) return;
+    
+        float baseCost = mat.price;
+    
+        // Applique la réduction des matériaux du Building
+        if (BuildingManager.Instance != null)
+        {
+            baseCost *= BuildingManager.Instance.GetMaterialDiscountMultiplier();
+        }
+    
+        int finalCost = Mathf.RoundToInt(baseCost);
+    
+        Debug.Log("💰 Prix affiché : " + mat.price + "€ → Prix réel : " + finalCost + "€");
+    
         // Achète 1 unité de ce matériau
         gameManager.BuyMaterial(materialIndex, 1);
-        
+    
         // Met à jour l'affichage
-        CraftingMaterial mat = gameManager.GetMaterial(materialIndex);
         if (mat != null)
         {
             UpdateDisplay(mat);

@@ -1,6 +1,6 @@
 using UnityEngine;
 using TMPro;
-using System.Collections.Generic; // Nécessaire pour utiliser les listes
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,37 +9,37 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI moneyText;
     
     // === MATÉRIAUX ===
-    public List<CraftingMaterial> craftingMaterials = new List<CraftingMaterial>(); // Liste de tous les matériaux
-    // === PRODUITS ===
-    public List<Product> products = new List<Product>(); // Liste de tous les produits
-    // === UI BOUTIQUE ===
-    // === UI BOUTIQUE ===
-    public MaterialItemUI woodItemUI;    // Élément UI pour le bois de chêne
-    public MaterialItemUI pineItemUI;    // Élément UI pour le bois de pin
-    public MaterialItemUI varnishItemUI; // Élément UI pour le vernis
-    public MaterialItemUI metalItemUI;   // Élément UI pour le métal
-    public MaterialItemUI fabricItemUI;  // Élément UI pour le tissu
-    public MaterialItemUI leatherItemUI; // Élément UI pour le cuire
+    public List<CraftingMaterial> craftingMaterials = new List<CraftingMaterial>();
     
-// === UI ATELIER ===
-    public ProductItemUI tableItemUI; // Élément UI pour la table en chêne
+    // === PRODUITS ===
+    public List<Product> products = new List<Product>();
+    
+    // === UI BOUTIQUE ===
+    public MaterialItemUI woodItemUI;
+    public MaterialItemUI pineItemUI;
+    public MaterialItemUI varnishItemUI;
+    public MaterialItemUI metalItemUI;
+    public MaterialItemUI fabricItemUI;
+    public MaterialItemUI leatherItemUI;
+    
+    // === UI ATELIER ===
+    public ProductItemUI tableItemUI;
     public ProductItemUI chairItemUI;
     public ProductItemUI shelfItemUI;
-    public ProductItemUI lampItemUI;      
-    public ProductItemUI armchairItemUI;  
-    public ProductItemUI deskItemUI;      
-    public ProductItemUI sofaItemUI;      
-    public ProductItemUI wardrobeItemUI;  
-    
+    public ProductItemUI lampItemUI;
+    public ProductItemUI armchairItemUI;
+    public ProductItemUI deskItemUI;
+    public ProductItemUI sofaItemUI;
+    public ProductItemUI wardrobeItemUI;
     
     // === UI VENTE ===
-    public SaleItemUI saleTableItemUI;  // Élément UI pour vendre la table
-    public SaleItemUI saleChairItemUI;  // Élément UI pour vendre la chaise
-    public SaleItemUI saleShelfItemUI;  // Élément UI pour vendre l'étagère
-    public SaleItemUI saleLampItemUI;  
-    public SaleItemUI saleArmchairItemUI; 
-    public SaleItemUI saleDeskItemUI; 
-    public SaleItemUI saleSofaItemUI; 
+    public SaleItemUI saleTableItemUI;
+    public SaleItemUI saleChairItemUI;
+    public SaleItemUI saleShelfItemUI;
+    public SaleItemUI saleLampItemUI;
+    public SaleItemUI saleArmchairItemUI;
+    public SaleItemUI saleDeskItemUI;
+    public SaleItemUI saleSofaItemUI;
     public SaleItemUI saleWardrobefItemUI;
     
     // === UI AMÉLIORATIONS ===
@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
     
     // === AMÉLIORATIONS ===
     public List<Upgrade> upgrades = new List<Upgrade>();
+    
     // === RÉFÉRENCES ===
     private ProgressionManager progressionManager;
     
@@ -58,25 +59,14 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("🎮 Atelier Manager démarré avec succès !");
 
-        // Initialise les matériaux de base
         InitializeMaterials();
-
-        // Initialise les produits
         InitializeProducts();
-    
-        // Initialise les améliorations
         InitializeUpgrades();
-
-        // Affiche l'argent au démarrage
         UpdateMoneyDisplay();
-
-        // Initialise l'UI de la boutique
         InitializeUI();
     
-        // Récupère le ProgressionManager
         progressionManager = FindObjectOfType<ProgressionManager>();
     
-        // === CHARGE LA SAUVEGARDE (si elle existe) ===
         SaveManager saveManager = SaveManager.Instance;
         if (saveManager != null)
         {
@@ -94,10 +84,8 @@ public class GameManager : MonoBehaviour
         }
     }
     
-    // Fonction pour créer les matériaux de départ
     void InitializeMaterials()
     {
-        // Crée 3 types de matériaux
         craftingMaterials.Add(new CraftingMaterial("Bois de chêne", 50));
         craftingMaterials.Add(new CraftingMaterial("Bois de pin", 30));
         craftingMaterials.Add(new CraftingMaterial("Vernis", 20));
@@ -108,93 +96,82 @@ public class GameManager : MonoBehaviour
         Debug.Log("📦 " + craftingMaterials.Count + " types de matériaux initialisés");
     }
     
-    // Fonction pour créer les produits de départ
-   void InitializeProducts()
-{
-    // Produit 1 : Table en chêne - DÉBLOQUÉ DÈS LE DÉBUT
-    Product tableChene = new Product("Table en chêne", 200, 5);
-    tableChene.AddMaterialRequirement(0, 3);
-    tableChene.AddMaterialRequirement(2, 1);
-    tableChene.isUnlocked = true;  // ← Débloqué dès le début
-    tableChene.unlockLevel = 0;
-    tableChene.unlockConditionText = "Disponible dès le début";
-    products.Add(tableChene);
+    void InitializeProducts()
+    {
+        Product tableChene = new Product("Table en chêne", 200, 5);
+        tableChene.AddMaterialRequirement(0, 3);
+        tableChene.AddMaterialRequirement(2, 1);
+        tableChene.isUnlocked = true;
+        tableChene.unlockLevel = 0;
+        tableChene.unlockConditionText = "Disponible dès le début";
+        products.Add(tableChene);
 
-    // Produit 2 : Chaise en pin - DÉBLOQUÉ DÈS LE DÉBUT
-    Product chaisePine = new Product("Chaise en pin", 80, 3);
-    chaisePine.AddMaterialRequirement(1, 2);
-    chaisePine.AddMaterialRequirement(2, 1);
-    chaisePine.isUnlocked = true;  // ← Débloqué dès le début
-    chaisePine.unlockLevel = 0;
-    chaisePine.unlockConditionText = "Disponible dès le début";
-    products.Add(chaisePine);
+        Product chaisePine = new Product("Chaise en pin", 80, 3);
+        chaisePine.AddMaterialRequirement(1, 2);
+        chaisePine.AddMaterialRequirement(2, 1);
+        chaisePine.isUnlocked = true;
+        chaisePine.unlockLevel = 0;
+        chaisePine.unlockConditionText = "Disponible dès le début";
+        products.Add(chaisePine);
 
-    // Produit 3 : Étagère mixte - DÉBLOQUÉ DÈS LE DÉBUT
-    Product etagere = new Product("Étagère mixte", 150, 4);
-    etagere.AddMaterialRequirement(0, 2);
-    etagere.AddMaterialRequirement(1, 2);
-    etagere.AddMaterialRequirement(2, 2);
-    etagere.isUnlocked = true;  // ← Débloqué dès le début
-    etagere.unlockLevel = 0;
-    etagere.unlockConditionText = "Disponible dès le début";
-    products.Add(etagere);
-    
-    // Produit 4 : Lampe - VERROUILLÉ (Niveau 3)
-    Product lamp = new Product("Lampe", 180, 25);
-    lamp.AddMaterialRequirement(3, 1);
-    lamp.AddMaterialRequirement(4, 1);
-    lamp.isUnlocked = false;  // ← Verrouillé
-    lamp.unlockLevel = 3;
-    lamp.unlockConditionText = "Niveau 3 requis";
-    products.Add(lamp);
+        Product etagere = new Product("Étagère mixte", 150, 4);
+        etagere.AddMaterialRequirement(0, 2);
+        etagere.AddMaterialRequirement(1, 2);
+        etagere.AddMaterialRequirement(2, 2);
+        etagere.isUnlocked = true;
+        etagere.unlockLevel = 0;
+        etagere.unlockConditionText = "Disponible dès le début";
+        products.Add(etagere);
+        
+        Product lamp = new Product("Lampe", 180, 25);
+        lamp.AddMaterialRequirement(3, 1);
+        lamp.AddMaterialRequirement(4, 1);
+        lamp.isUnlocked = false;
+        lamp.unlockLevel = 3;
+        lamp.unlockConditionText = "Niveau 3 requis";
+        products.Add(lamp);
 
-    // Produit 5 : Fauteuil - VERROUILLÉ (Niveau 5)
-    Product armchair = new Product("Fauteuil", 280, 35);
-    armchair.AddMaterialRequirement(1, 2);
-    armchair.AddMaterialRequirement(4, 2);
-    armchair.AddMaterialRequirement(5, 1);
-    armchair.isUnlocked = false;  // ← Verrouillé
-    armchair.unlockLevel = 5;
-    armchair.unlockConditionText = "Niveau 5 requis";
-    products.Add(armchair);
+        Product armchair = new Product("Fauteuil", 280, 35);
+        armchair.AddMaterialRequirement(1, 2);
+        armchair.AddMaterialRequirement(4, 2);
+        armchair.AddMaterialRequirement(5, 1);
+        armchair.isUnlocked = false;
+        armchair.unlockLevel = 5;
+        armchair.unlockConditionText = "Niveau 5 requis";
+        products.Add(armchair);
 
-    // Produit 6 : Bureau - VERROUILLÉ (Niveau 7)
-    Product desk = new Product("Bureau", 450, 40);
-    desk.AddMaterialRequirement(0, 4);
-    desk.AddMaterialRequirement(3, 2);
-    desk.AddMaterialRequirement(2, 1);
-    desk.isUnlocked = false;  // ← Verrouillé
-    desk.unlockLevel = 7;
-    desk.unlockConditionText = "Niveau 7 requis";
-    products.Add(desk);
+        Product desk = new Product("Bureau", 450, 40);
+        desk.AddMaterialRequirement(0, 4);
+        desk.AddMaterialRequirement(3, 2);
+        desk.AddMaterialRequirement(2, 1);
+        desk.isUnlocked = false;
+        desk.unlockLevel = 7;
+        desk.unlockConditionText = "Niveau 7 requis";
+        products.Add(desk);
 
-    // Produit 7 : Canapé - VERROUILLÉ (Niveau 10)
-    Product sofa = new Product("Canapé", 520, 50);
-    sofa.AddMaterialRequirement(1, 3);
-    sofa.AddMaterialRequirement(4, 4);
-    sofa.AddMaterialRequirement(5, 2);
-    sofa.isUnlocked = false;  // ← Verrouillé
-    sofa.unlockLevel = 10;
-    sofa.unlockConditionText = "Niveau 10 requis";
-    products.Add(sofa);
-    
-    // Produit 8 : Armoire - VERROUILLÉ (Niveau 15)
-    Product wardrobe = new Product("Armoire", 650, 60);
-    wardrobe.AddMaterialRequirement(0, 5);
-    wardrobe.AddMaterialRequirement(3, 3);
-    wardrobe.AddMaterialRequirement(2, 2);
-    wardrobe.isUnlocked = false;  // ← Verrouillé
-    wardrobe.unlockLevel = 15;
-    wardrobe.unlockConditionText = "Niveau 15 requis";
-    products.Add(wardrobe);
+        Product sofa = new Product("Canapé", 520, 50);
+        sofa.AddMaterialRequirement(1, 3);
+        sofa.AddMaterialRequirement(4, 4);
+        sofa.AddMaterialRequirement(5, 2);
+        sofa.isUnlocked = false;
+        sofa.unlockLevel = 10;
+        sofa.unlockConditionText = "Niveau 10 requis";
+        products.Add(sofa);
+        
+        Product wardrobe = new Product("Armoire", 650, 60);
+        wardrobe.AddMaterialRequirement(0, 5);
+        wardrobe.AddMaterialRequirement(3, 3);
+        wardrobe.AddMaterialRequirement(2, 2);
+        wardrobe.isUnlocked = false;
+        wardrobe.unlockLevel = 15;
+        wardrobe.unlockConditionText = "Niveau 15 requis";
+        products.Add(wardrobe);
 
-    Debug.Log("🔨 " + products.Count + " types de produits initialisés (certains verrouillés)");
-}
+        Debug.Log("🔨 " + products.Count + " types de produits initialisés");
+    }
 
-    // Fonction pour créer les améliorations de départ
     void InitializeUpgrades()
     {
-        // Amélioration 1 : Réduction coût matériaux
         upgrades.Add(new Upgrade(
             "Fournisseur de confiance",
             "Réduit le coût des matériaux de 10%",
@@ -203,7 +180,6 @@ public class GameManager : MonoBehaviour
             10
         ));
     
-        // Amélioration 2 : Bonus sur les ventes
         upgrades.Add(new Upgrade(
             "Meilleure réputation",
             "Augmente le prix de vente de 15%",
@@ -212,16 +188,14 @@ public class GameManager : MonoBehaviour
             15
         ));
     
-        // Amélioration 3 : Outils perfectionnés
         upgrades.Add(new Upgrade(
             "Outils perfectionnés",
-            "Production plus rapide (non implémenté)",
+            "Production plus rapide",
             400,
             UpgradeType.ProductionSpeed,
             20
         ));
     
-        // Amélioration 4 : Augmentation revenus quotidiens
         upgrades.Add(new Upgrade(
             "Contrat régulier",
             "Augmente les revenus quotidiens de 30€",
@@ -230,7 +204,6 @@ public class GameManager : MonoBehaviour
             30
         ));
     
-        // Amélioration 5 : Réduction charges
         upgrades.Add(new Upgrade(
             "Local optimisé",
             "Réduit les charges hebdomadaires de 50€",
@@ -242,7 +215,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("🔧 " + upgrades.Count + " améliorations disponibles");
     }
     
-    // === FONCTIONS ARGENT (inchangées) ===
     public void UpdateMoneyDisplay()
     {
         if (moneyText != null)
@@ -251,83 +223,68 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("⚠️ MoneyText n'est pas assigné dans l'Inspector !");
+            Debug.LogWarning("⚠️ MoneyText n'est pas assigné !");
         }
     }
     
-   public void AddMoney(int amount)
-{
-    playerMoney += amount;
-    UpdateMoneyDisplay();
-    Debug.Log("💰 +" + amount + "€ | Total: " + playerMoney + "€");
-    
-    // Son de gain d'argent
-    if (AudioManager.Instance != null)
+    public void AddMoney(int amount)
     {
-        AudioManager.Instance.PlayMoneyGain();
+        playerMoney += amount;
+        UpdateMoneyDisplay();
+        Debug.Log("💰 +" + amount + "€ | Total: " + playerMoney + "€");
+        
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayMoneyGain();
+        }
+        
+        if (FeedbackManager.Instance != null && moneyText != null)
+        {
+            Vector3 position = moneyText.transform.position;
+            FeedbackManager.Instance.ShowMoneyGain(amount, position);
+        }
+        
+        if (ObjectiveManager.Instance != null)
+        {
+            ObjectiveManager.Instance.OnMoneyEarned(amount);
+        }
+        
+        if (StatsManager.Instance != null)
+        {
+            StatsManager.Instance.OnMoneyEarned(amount);
+        }
     }
-    
-    // Feedback visuel (texte flottant)
-    if (FeedbackManager.Instance != null && moneyText != null)
-    {
-        Vector3 position = moneyText.transform.position;
-        FeedbackManager.Instance.ShowMoneyGain(amount, position);
-    }
-    
-    // Track pour les objectifs
-    if (ObjectiveManager.Instance != null)
-    {
-        ObjectiveManager.Instance.OnMoneyEarned(amount);
-    }
-    
-    // ===== AJOUTE CETTE LIGNE =====
-    // Track pour les statistiques
-    if (StatsManager.Instance != null)
-    {
-        StatsManager.Instance.OnMoneyEarned(amount);
-    }
-    // ==============================
-}
     
     public void RemoveMoney(int amount)
-{
-    playerMoney -= amount;
-    UpdateMoneyDisplay();
-    Debug.Log("💸 -" + amount + "€ | Total: " + playerMoney + "€");
-    
-    // Feedback visuel (texte flottant rouge)
-    if (FeedbackManager.Instance != null && moneyText != null)
     {
-        Vector3 position = moneyText.transform.position;
-        FeedbackManager.Instance.ShowMoneyLoss(amount, position);
+        playerMoney -= amount;
+        UpdateMoneyDisplay();
+        Debug.Log("💸 -" + amount + "€ | Total: " + playerMoney + "€");
+        
+        if (FeedbackManager.Instance != null && moneyText != null)
+        {
+            Vector3 position = moneyText.transform.position;
+            FeedbackManager.Instance.ShowMoneyLoss(amount, position);
+        }
+        
+        if (ObjectiveManager.Instance != null)
+        {
+            ObjectiveManager.Instance.OnMoneySpent(amount);
+        }
+        
+        if (StatsManager.Instance != null)
+        {
+            StatsManager.Instance.OnMoneySpent(amount);
+        }
     }
-    
-    // Track pour les objectifs
-    if (ObjectiveManager.Instance != null)
-    {
-        ObjectiveManager.Instance.OnMoneySpent(amount);
-    }
-    
-    // ===== AJOUTE CETTE LIGNE =====
-    // Track pour les statistiques
-    if (StatsManager.Instance != null)
-    {
-        StatsManager.Instance.OnMoneySpent(amount);
-    }
-    // ==============================
-}
     
     public bool HasEnoughMoney(int amount)
     {
         return playerMoney >= amount;
     }
     
-    // === FONCTIONS D'ACHAT DE MATÉRIAUX ===
-    
-    // Fonction pour acheter un matériau
     public void BuyMaterial(int materialIndex, int quantity)
     {
-        // Vérifie que l'index existe
         if (materialIndex < 0 || materialIndex >= craftingMaterials.Count)
         {
             Debug.LogError("❌ Index de matériau invalide !");
@@ -335,35 +292,41 @@ public class GameManager : MonoBehaviour
         }
         
         CraftingMaterial mat = craftingMaterials[materialIndex];
-        int totalCost = mat.price * quantity;
         
-        // Vérifie si on a assez d'argent
+        // ===== APPLIQUE LA RÉDUCTION DES MATÉRIAUX =====
+        float baseCost = mat.price * quantity;
+        
+        // Bonus Building (réduction matériaux)
+        if (BuildingManager.Instance != null)
+        {
+            baseCost *= BuildingManager.Instance.GetMaterialDiscountMultiplier();
+        }
+        
+        int totalCost = Mathf.RoundToInt(baseCost);
+        // ===============================================
+        
         if (HasEnoughMoney(totalCost))
         {
-            // Retire l'argent
             RemoveMoney(totalCost);
-            
-            // Ajoute les matériaux au stock
             mat.AddQuantity(quantity);
             
-            Debug.Log("✅ Achat réussi : " + quantity + "x " + mat.materialName + " pour " + totalCost + "€");
-            // Track pour les statistiques
-if (StatsManager.Instance != null)
-{
-    StatsManager.Instance.OnMaterialBought();
-}
+            Debug.Log("✅ Achat : " + quantity + "x " + mat.materialName + " pour " + totalCost + "€");
             
-            // Track pour les objectifs
+            if (StatsManager.Instance != null)
+            {
+                StatsManager.Instance.OnMaterialBought();
+            }
+            
             if (ObjectiveManager.Instance != null)
             {
                 ObjectiveManager.Instance.OnMaterialBought(quantity);
             }
-            // Son d'achat
+            
             if (AudioManager.Instance != null)
             {
                 AudioManager.Instance.PlayPurchase();
             }
-            // Met à jour les notifications
+            
             if (NotificationManager.Instance != null)
             {
                 NotificationManager.Instance.UpdateAllNotifications();
@@ -371,11 +334,10 @@ if (StatsManager.Instance != null)
         }
         else
         {
-            Debug.LogWarning("⚠️ Pas assez d'argent ! Il manque " + (totalCost - playerMoney) + "€");
+            Debug.LogWarning("⚠️ Pas assez d'argent ! Manque " + (totalCost - playerMoney) + "€");
         }
     }
     
-    // Fonction pour obtenir un matériau par son index
     public CraftingMaterial GetMaterial(int index)
     {
         if (index >= 0 && index < craftingMaterials.Count)
@@ -385,37 +347,21 @@ if (StatsManager.Instance != null)
         return null;
     }
     
-    // Fonction pour initialiser l'UI de la boutique
-    // Fonction pour initialiser l'UI de la boutique et de l'atelier
     void InitializeUI()
     {
-        // Configure les éléments UI des matériaux
         if (woodItemUI != null)
-        {
             woodItemUI.Setup(0, craftingMaterials[0], this);
-        }
         if (pineItemUI != null)
-        {
             pineItemUI.Setup(1, craftingMaterials[1], this);
-        }
         if (varnishItemUI != null)
-        {
             varnishItemUI.Setup(2, craftingMaterials[2], this);
-        }
         if (metalItemUI != null)
-        {
             metalItemUI.Setup(3, craftingMaterials[3], this);
-        } 
         if (fabricItemUI != null)
-        {
             fabricItemUI.Setup(4, craftingMaterials[4], this);
-        } 
         if (leatherItemUI != null)
-        {
             leatherItemUI.Setup(5, craftingMaterials[5], this);
-        }
     
-        // Configure les éléments UI des produits (atelier)
         if (tableItemUI != null)
             tableItemUI.Setup(0, products[0], this);
         if (chairItemUI != null)
@@ -423,17 +369,16 @@ if (StatsManager.Instance != null)
         if (shelfItemUI != null)
             shelfItemUI.Setup(2, products[2], this);
         if (lampItemUI != null)
-            lampItemUI.Setup(3, products[3], this);     
+            lampItemUI.Setup(3, products[3], this);
         if (armchairItemUI != null)
-            armchairItemUI.Setup(4, products[4],this);  
+            armchairItemUI.Setup(4, products[4], this);
         if (deskItemUI != null)
-            deskItemUI.Setup(5, products[5],this);     
+            deskItemUI.Setup(5, products[5], this);
         if (sofaItemUI != null)
-            sofaItemUI.Setup(6, products[6],this);     
+            sofaItemUI.Setup(6, products[6], this);
         if (wardrobeItemUI != null)
-            wardrobeItemUI.Setup(7, products[7],this);  
+            wardrobeItemUI.Setup(7, products[7], this);
     
-        // Configure les éléments UI de vente
         if (saleTableItemUI != null)
             saleTableItemUI.Setup(0, products[0], this);
         if (saleChairItemUI != null)
@@ -451,9 +396,6 @@ if (StatsManager.Instance != null)
         if (saleWardrobefItemUI != null)
             saleWardrobefItemUI.Setup(7, products[7], this);
         
-        
-        
-        // Configure les éléments UI des améliorations
         if (upgrade1ItemUI != null)
             upgrade1ItemUI.Setup(0, upgrades[0], this);
         if (upgrade2ItemUI != null)
@@ -466,12 +408,8 @@ if (StatsManager.Instance != null)
             upgrade5ItemUI.Setup(4, upgrades[4], this);
     }
     
-    // === FONCTIONS DE PRODUCTION ===
-
-// Fonction pour fabriquer un produit
     public void CraftProduct(int productIndex)
     {
-        // Vérifie que l'index existe
         if (productIndex < 0 || productIndex >= products.Count)
         {
             Debug.LogError("❌ Index de produit invalide !");
@@ -480,7 +418,6 @@ if (StatsManager.Instance != null)
     
         Product prod = products[productIndex];
     
-        // Vérifie si on a tous les matériaux nécessaires
         bool hasAllMaterials = true;
         foreach (MaterialRequirement req in prod.recipe)
         {
@@ -490,46 +427,39 @@ if (StatsManager.Instance != null)
                 hasAllMaterials = false;
                 if (mat != null)
                 {
-                    Debug.LogWarning("⚠️ Pas assez de " + mat.materialName + " (besoin: " + req.amount + ", stock: " + mat.quantity + ")");
+                    Debug.LogWarning("⚠️ Pas assez de " + mat.materialName);
                 }
                 break;
             }
         }
     
-        // Si on a tout, on fabrique
         if (hasAllMaterials)
         {
-            // Retire les matériaux du stock
             foreach (MaterialRequirement req in prod.recipe)
             {
                 CraftingMaterial mat = GetMaterial(req.materialIndex);
                 mat.RemoveQuantity(req.amount);
             }
         
-            // Ajoute le produit fini au stock
             prod.AddQuantity(1);
         
-            Debug.Log("✅ Production réussie : 1x " + prod.productName);
+            Debug.Log("✅ Production : 1x " + prod.productName);
 
-// Track pour les statistiques
-if (StatsManager.Instance != null)
-{
-    StatsManager.Instance.OnProductCrafted();
-}
+            if (StatsManager.Instance != null)
+            {
+                StatsManager.Instance.OnProductCrafted();
+            }
 
-            // Track pour les objectifs
             if (ObjectiveManager.Instance != null)
             {
                 ObjectiveManager.Instance.OnProductCrafted(1);
             }
             
-            // Son de craft
             if (AudioManager.Instance != null)
             {
                 AudioManager.Instance.PlayCraft();
             }
             
-            // Donne de l'XP pour la fabrication
             if (progressionManager != null)
             {
                 progressionManager.OnProductCrafted(prod.sellPrice);
@@ -537,19 +467,14 @@ if (StatsManager.Instance != null)
         }
         else
         {
-            Debug.LogWarning("⚠️ Matériaux insuffisants pour fabriquer " + prod.productName);
+            Debug.LogWarning("⚠️ Matériaux insuffisants pour " + prod.productName);
         }
     
-        // Met à jour toute l'interface
         RefreshAllUI();
     }
     
-    // === FONCTIONS DE VENTE ===
-
-// Fonction pour vendre un produit
     public void SellProduct(int productIndex, int quantity)
     {
-        // Vérifie que l'index existe
         if (productIndex < 0 || productIndex >= products.Count)
         {
             Debug.LogError("❌ Index de produit invalide !");
@@ -558,259 +483,224 @@ if (StatsManager.Instance != null)
     
         Product prod = products[productIndex];
     
-        // Vérifie si on a assez de produits en stock
         if (prod.HasEnoughQuantity(quantity))
         {
-           // Calcule le gain de base
-int baseEarnings = prod.sellPrice * quantity;
-
-// Applique le multiplicateur de combo
-float comboMultiplier = 1.0f;
-if (ComboManager.Instance != null)
-{
-    comboMultiplier = ComboManager.Instance.GetComboMultiplier();
-}
-
-int earnings = Mathf.RoundToInt(baseEarnings * comboMultiplier);
-
-// Affiche le bonus dans les logs
-if (comboMultiplier > 1.0f)
-{
-    int bonus = earnings - baseEarnings;
-    Debug.Log("💰 Bonus de combo : +" + bonus + "€ (x" + comboMultiplier.ToString("F1") + ")");
-}
-
+            // ===== APPLIQUE TOUS LES BONUS DE VENTE =====
+            float baseSellPrice = prod.sellPrice * quantity;
+            
+            // Bonus Building (prix de vente)
+            if (BuildingManager.Instance != null)
+            {
+                baseSellPrice *= BuildingManager.Instance.GetSalesBonusMultiplier();
+            }
+            
+            // Bonus Combo
+            if (ComboManager.Instance != null)
+            {
+                baseSellPrice *= ComboManager.Instance.GetComboMultiplier();
+            }
+            
+            // Bonus Booster
+            if (BoosterManager.Instance != null)
+            {
+                baseSellPrice *= BoosterManager.Instance.GetMoneyMultiplier();
+            }
+            
+            int earnings = Mathf.RoundToInt(baseSellPrice);
+            // ===========================================
         
-            // Retire le produit du stock
             prod.RemoveQuantity(quantity);
-        
-            // Ajoute l'argent
             AddMoney(earnings);
         
-            Debug.Log("✅ Vente réussie : " + quantity + "x " + prod.productName + " pour " + earnings + "€");
+            Debug.Log("✅ Vente : " + quantity + "x " + prod.productName + " = " + earnings + "€");
 
-// Notifie le combo system
-if (ComboManager.Instance != null)
-{
-    ComboManager.Instance.OnProductSold();
-}
+            if (ComboManager.Instance != null)
+            {
+                ComboManager.Instance.OnProductSold();
+            }
 
-			// Track pour les statistiques
-if (StatsManager.Instance != null)
-{
-    StatsManager.Instance.OnProductSold(prod.sellPrice);
-}
+            if (StatsManager.Instance != null)
+            {
+                StatsManager.Instance.OnProductSold(prod.sellPrice);
+            }
 
-            // Track pour les objectifs
             if (ObjectiveManager.Instance != null)
             {
                 ObjectiveManager.Instance.OnProductSold(quantity);
             }
             
-            // Son de vente
             if (AudioManager.Instance != null)
             {
                 AudioManager.Instance.PlaySell();
             }
             
-            // Donne de l'XP pour la vente
             if (progressionManager != null)
             {
                 progressionManager.OnProductSold(earnings);
             }
         
-            // Met à jour toute l'interface
             RefreshAllUI();
         }
         else
         {
-            Debug.LogWarning("⚠️ Stock insuffisant de " + prod.productName + " (stock: " + prod.quantity + ")");
+            Debug.LogWarning("⚠️ Stock insuffisant de " + prod.productName);
         }
     }
     
-    // === FONCTIONS D'AMÉLIORATIONS ===
-
-// Fonction pour acheter une amélioration
-public void BuyUpgrade(int upgradeIndex)
-{
-    // Vérifie que l'index existe
-    if (upgradeIndex < 0 || upgradeIndex >= upgrades.Count)
+    public void BuyUpgrade(int upgradeIndex)
     {
-        Debug.LogError("❌ Index d'amélioration invalide !");
-        return;
-    }
-    
-    Upgrade upg = upgrades[upgradeIndex];
-    
-    // Vérifie si déjà acheté
-    if (upg.isPurchased)
-    {
-        Debug.LogWarning("⚠️ Amélioration déjà achetée : " + upg.upgradeName);
-        return;
-    }
-    
-    // Vérifie si on a assez d'argent
-    if (HasEnoughMoney(upg.cost))
-    {
-        // Retire l'argent
-        RemoveMoney(upg.cost);
-        
-        // Achète l'amélioration
-        upg.Purchase();
-        
-        // Applique l'effet
-        ApplyUpgradeEffect(upg);
-        
-        Debug.Log("✅ Amélioration achetée : " + upg.upgradeName + " pour " + upg.cost + "€");
-		// Track pour les statistiques
-		if (StatsManager.Instance != null)
-		{
-    		StatsManager.Instance.OnUpgradeBought();
-		}
-
-        // Track pour les objectifs
-        if (ObjectiveManager.Instance != null)
+        if (upgradeIndex < 0 || upgradeIndex >= upgrades.Count)
         {
-            ObjectiveManager.Instance.OnUpgradeBought(1);
+            Debug.LogError("❌ Index d'amélioration invalide !");
+            return;
         }
         
-        // Son de succès
-        if (AudioManager.Instance != null)
+        Upgrade upg = upgrades[upgradeIndex];
+        
+        if (upg.isPurchased)
         {
-            AudioManager.Instance.PlaySuccess();
+            Debug.LogWarning("⚠️ Déjà acheté : " + upg.upgradeName);
+            return;
         }
         
-        // Donne de l'XP pour l'amélioration
-        if (progressionManager != null)
+        if (HasEnoughMoney(upg.cost))
         {
-            progressionManager.OnUpgradeBought();
+            RemoveMoney(upg.cost);
+            upg.Purchase();
+            ApplyUpgradeEffect(upg);
+            
+            Debug.Log("✅ Amélioration : " + upg.upgradeName);
+            
+            if (StatsManager.Instance != null)
+            {
+                StatsManager.Instance.OnUpgradeBought();
+            }
+
+            if (ObjectiveManager.Instance != null)
+            {
+                ObjectiveManager.Instance.OnUpgradeBought(1);
+            }
+            
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySuccess();
+            }
+            
+            if (progressionManager != null)
+            {
+                progressionManager.OnUpgradeBought();
+            }
+            
+            RefreshAllUI();
         }
+        else
+        {
+            Debug.LogWarning("⚠️ Pas assez d'argent !");
+            
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayError();
+            }
+        }
+    }
+
+    void ApplyUpgradeEffect(Upgrade upg)
+    {
+        TimeManager timeManager = FindObjectOfType<TimeManager>();
         
-        // Met à jour l'interface
-        RefreshAllUI();
-    }
-    else
-    {
-        Debug.LogWarning("⚠️ Pas assez d'argent pour " + upg.upgradeName + " ! Il manque " + (upg.cost - playerMoney) + "€");
-        // Son d'erreur
-        if (AudioManager.Instance != null)
+        switch (upg.type)
         {
-            AudioManager.Instance.PlayError();
+            case UpgradeType.MaterialDiscount:
+                foreach (CraftingMaterial mat in craftingMaterials)
+                {
+                    int reduction = Mathf.RoundToInt(mat.price * upg.value / 100f);
+                    mat.price -= reduction;
+                    if (mat.price < 1) mat.price = 1;
+                }
+                Debug.Log("📉 Prix matériaux réduits de " + upg.value + "%");
+                break;
+                
+            case UpgradeType.SalesBonus:
+                foreach (Product prod in products)
+                {
+                    int bonus = Mathf.RoundToInt(prod.sellPrice * upg.value / 100f);
+                    prod.sellPrice += bonus;
+                }
+                Debug.Log("📈 Prix vente augmentés de " + upg.value + "%");
+                break;
+                
+            case UpgradeType.ProductionSpeed:
+                Debug.Log("⚙️ Vitesse production augmentée");
+                break;
+                
+            case UpgradeType.DailyIncomeBoost:
+                if (timeManager != null)
+                {
+                    timeManager.dailyIncome += upg.value;
+                    Debug.Log("💵 Revenus quotidiens +" + upg.value + "€");
+                }
+                break;
+                
+            case UpgradeType.WeeklyCostReduction:
+                if (timeManager != null)
+                {
+                    timeManager.weeklyCost -= upg.value;
+                    if (timeManager.weeklyCost < 0) timeManager.weeklyCost = 0;
+                    Debug.Log("💸 Charges réduites de " + upg.value + "€");
+                }
+                break;
         }
     }
-}
 
-// Fonction pour appliquer l'effet d'une amélioration
-void ApplyUpgradeEffect(Upgrade upg)
-{
-    TimeManager timeManager = FindObjectOfType<TimeManager>();
-    
-    switch (upg.type)
+    public void ReapplyUpgradeEffect(Upgrade upg)
     {
-        case UpgradeType.MaterialDiscount:
-            // Réduit le prix de tous les matériaux
-            foreach (CraftingMaterial mat in craftingMaterials)
-            {
-                int reduction = Mathf.RoundToInt(mat.price * upg.value / 100f);
-                mat.price -= reduction;
-                if (mat.price < 1) mat.price = 1; // Minimum 1€
-            }
-            Debug.Log("📉 Prix des matériaux réduits de " + upg.value + "%");
-            break;
-            
-        case UpgradeType.SalesBonus:
-            // Augmente le prix de vente de tous les produits
-            foreach (Product prod in products)
-            {
-                int bonus = Mathf.RoundToInt(prod.sellPrice * upg.value / 100f);
-                prod.sellPrice += bonus;
-            }
-            Debug.Log("📈 Prix de vente augmentés de " + upg.value + "%");
-            break;
-            
-        case UpgradeType.ProductionSpeed:
-            // À implémenter plus tard avec un vrai système de temps de production
-            Debug.Log("⚙️ Vitesse de production augmentée (fonctionnalité à venir)");
-            break;
-            
-        case UpgradeType.DailyIncomeBoost:
-            // Augmente les revenus quotidiens
-            if (timeManager != null)
-            {
-                timeManager.dailyIncome += upg.value;
-                Debug.Log("💵 Revenus quotidiens augmentés de " + upg.value + "€ (nouveau total: " + timeManager.dailyIncome + "€/jour)");
-            }
-            break;
-            
-        case UpgradeType.WeeklyCostReduction:
-            // Réduit les charges hebdomadaires
-            if (timeManager != null)
-            {
-                timeManager.weeklyCost -= upg.value;
-                if (timeManager.weeklyCost < 0) timeManager.weeklyCost = 0;
-                Debug.Log("💸 Charges hebdomadaires réduites de " + upg.value + "€ (nouveau total: " + timeManager.weeklyCost + "€/semaine)");
-            }
-            break;
+        TimeManager timeManager = FindObjectOfType<TimeManager>();
+        
+        switch (upg.type)
+        {
+            case UpgradeType.MaterialDiscount:
+                foreach (CraftingMaterial mat in craftingMaterials)
+                {
+                    int reduction = Mathf.RoundToInt(mat.price * upg.value / 100f);
+                    mat.price -= reduction;
+                    if (mat.price < 1) mat.price = 1;
+                }
+                break;
+                
+            case UpgradeType.SalesBonus:
+                foreach (Product prod in products)
+                {
+                    int bonus = Mathf.RoundToInt(prod.sellPrice * upg.value / 100f);
+                    prod.sellPrice += bonus;
+                }
+                break;
+                
+            case UpgradeType.DailyIncomeBoost:
+                if (timeManager != null)
+                {
+                    timeManager.dailyIncome += upg.value;
+                }
+                break;
+                
+            case UpgradeType.WeeklyCostReduction:
+                if (timeManager != null)
+                {
+                    timeManager.weeklyCost -= upg.value;
+                    if (timeManager.weeklyCost < 0) timeManager.weeklyCost = 0;
+                }
+                break;
+        }
     }
-}
 
-// Fonction publique pour réappliquer un effet d'amélioration (utilisée au chargement)
-public void ReapplyUpgradeEffect(Upgrade upg)
-{
-    // Ne réapplique que les effets permanents (pas les bonus d'argent)
-    TimeManager timeManager = FindObjectOfType<TimeManager>();
-    
-    switch (upg.type)
+    public Upgrade GetUpgrade(int index)
     {
-        case UpgradeType.MaterialDiscount:
-            // Réduit le prix de tous les matériaux
-            foreach (CraftingMaterial mat in craftingMaterials)
-            {
-                int reduction = Mathf.RoundToInt(mat.price * upg.value / 100f);
-                mat.price -= reduction;
-                if (mat.price < 1) mat.price = 1;
-            }
-            break;
-            
-        case UpgradeType.SalesBonus:
-            // Augmente le prix de vente de tous les produits
-            foreach (Product prod in products)
-            {
-                int bonus = Mathf.RoundToInt(prod.sellPrice * upg.value / 100f);
-                prod.sellPrice += bonus;
-            }
-            break;
-            
-        case UpgradeType.DailyIncomeBoost:
-            // Augmente les revenus quotidiens
-            if (timeManager != null)
-            {
-                timeManager.dailyIncome += upg.value;
-            }
-            break;
-            
-        case UpgradeType.WeeklyCostReduction:
-            // Réduit les charges hebdomadaires
-            if (timeManager != null)
-            {
-                timeManager.weeklyCost -= upg.value;
-                if (timeManager.weeklyCost < 0) timeManager.weeklyCost = 0;
-            }
-            break;
+        if (index >= 0 && index < upgrades.Count)
+        {
+            return upgrades[index];
+        }
+        return null;
     }
-}
 
-// Fonction pour obtenir une amélioration par son index
-public Upgrade GetUpgrade(int index)
-{
-    if (index >= 0 && index < upgrades.Count)
-    {
-        return upgrades[index];
-    }
-    return null;
-}
-
-// Fonction pour obtenir un produit par son index
     public Product GetProduct(int index)
     {
         if (index >= 0 && index < products.Count)
@@ -820,81 +710,72 @@ public Upgrade GetUpgrade(int index)
         return null;
     }
     
-    // Fonction pour mettre à jour toute l'interface
-public void RefreshAllUI()
-{
-    // Met à jour les matériaux
-    if (woodItemUI != null && craftingMaterials.Count > 0)
-        woodItemUI.UpdateDisplay(craftingMaterials[0]);
-    if (pineItemUI != null && craftingMaterials.Count > 1)
-        pineItemUI.UpdateDisplay(craftingMaterials[1]);
-    if (varnishItemUI != null && craftingMaterials.Count > 2)
-        varnishItemUI.UpdateDisplay(craftingMaterials[2]);
-    if (metalItemUI != null && craftingMaterials.Count > 3)
-        metalItemUI.UpdateDisplay(craftingMaterials[3]);
-    if (fabricItemUI != null && craftingMaterials.Count > 4)
-        fabricItemUI.UpdateDisplay(craftingMaterials[4]);
-    if (leatherItemUI != null && craftingMaterials.Count > 5)
-        leatherItemUI.UpdateDisplay(craftingMaterials[5]);
-    
-
-    // Met à jour les produits (atelier)
-    if (tableItemUI != null && products.Count > 0)
-        tableItemUI.UpdateDisplay(products[0]);
-    if (chairItemUI != null && products.Count > 1)
-        chairItemUI.UpdateDisplay(products[1]);
-    if (shelfItemUI != null && products.Count > 2)
-        shelfItemUI.UpdateDisplay(products[2]);
-    if (lampItemUI != null && products.Count > 3)
-        lampItemUI.UpdateDisplay(products[3]);     
-    if (armchairItemUI != null && products.Count > 4)
-        armchairItemUI.UpdateDisplay(products[4]);  
-    if (deskItemUI != null && products.Count > 5)
-        deskItemUI.UpdateDisplay(products[5]);     
-    if (sofaItemUI != null && products.Count > 6)
-        sofaItemUI.UpdateDisplay(products[6]);     
-    if (wardrobeItemUI != null && products.Count > 7)
-        wardrobeItemUI.UpdateDisplay(products[7]);  
-
-    // Met à jour les produits (vente)
-    if (saleTableItemUI != null && products.Count > 0)
-        saleTableItemUI.UpdateDisplay(products[0]);
-    if (saleChairItemUI != null && products.Count > 1)
-        saleChairItemUI.UpdateDisplay(products[1]);
-    if (saleShelfItemUI != null && products.Count > 2)
-        saleShelfItemUI.UpdateDisplay(products[2]);
-    if (saleLampItemUI != null && products.Count > 3)
-        saleLampItemUI.UpdateDisplay(products[3]);
-    if (saleArmchairItemUI != null && products.Count > 4)
-        saleArmchairItemUI.UpdateDisplay(products[4]);
-    if (saleDeskItemUI != null && products.Count > 5)
-        saleDeskItemUI.UpdateDisplay(products[5]);
-    if (saleSofaItemUI != null && products.Count > 6)
-        saleSofaItemUI.UpdateDisplay(products[6]);
-    if (saleWardrobefItemUI != null && products.Count > 7)
-        saleWardrobefItemUI.UpdateDisplay(products[7]);
-
-    // Met à jour les améliorations
-    if (upgrade1ItemUI != null && upgrades.Count > 0)
-        upgrade1ItemUI.UpdateDisplay(upgrades[0]);
-    if (upgrade2ItemUI != null && upgrades.Count > 1)
-        upgrade2ItemUI.UpdateDisplay(upgrades[1]);
-    if (upgrade3ItemUI != null && upgrades.Count > 2)
-        upgrade3ItemUI.UpdateDisplay(upgrades[2]);
-    if (upgrade4ItemUI != null && upgrades.Count > 3)
-        upgrade4ItemUI.UpdateDisplay(upgrades[3]);
-    if (upgrade5ItemUI != null && upgrades.Count > 4)
-        upgrade5ItemUI.UpdateDisplay(upgrades[4]);
-
-    // Met à jour les notifications
-    if (NotificationManager.Instance != null)
+    public void RefreshAllUI()
     {
-        NotificationManager.Instance.UpdateAllNotifications();
-    }
-}
+        if (woodItemUI != null && craftingMaterials.Count > 0)
+            woodItemUI.UpdateDisplay(craftingMaterials[0]);
+        if (pineItemUI != null && craftingMaterials.Count > 1)
+            pineItemUI.UpdateDisplay(craftingMaterials[1]);
+        if (varnishItemUI != null && craftingMaterials.Count > 2)
+            varnishItemUI.UpdateDisplay(craftingMaterials[2]);
+        if (metalItemUI != null && craftingMaterials.Count > 3)
+            metalItemUI.UpdateDisplay(craftingMaterials[3]);
+        if (fabricItemUI != null && craftingMaterials.Count > 4)
+            fabricItemUI.UpdateDisplay(craftingMaterials[4]);
+        if (leatherItemUI != null && craftingMaterials.Count > 5)
+            leatherItemUI.UpdateDisplay(craftingMaterials[5]);
 
+        if (tableItemUI != null && products.Count > 0)
+            tableItemUI.UpdateDisplay(products[0]);
+        if (chairItemUI != null && products.Count > 1)
+            chairItemUI.UpdateDisplay(products[1]);
+        if (shelfItemUI != null && products.Count > 2)
+            shelfItemUI.UpdateDisplay(products[2]);
+        if (lampItemUI != null && products.Count > 3)
+            lampItemUI.UpdateDisplay(products[3]);
+        if (armchairItemUI != null && products.Count > 4)
+            armchairItemUI.UpdateDisplay(products[4]);
+        if (deskItemUI != null && products.Count > 5)
+            deskItemUI.UpdateDisplay(products[5]);
+        if (sofaItemUI != null && products.Count > 6)
+            sofaItemUI.UpdateDisplay(products[6]);
+        if (wardrobeItemUI != null && products.Count > 7)
+            wardrobeItemUI.UpdateDisplay(products[7]);
+
+        if (saleTableItemUI != null && products.Count > 0)
+            saleTableItemUI.UpdateDisplay(products[0]);
+        if (saleChairItemUI != null && products.Count > 1)
+            saleChairItemUI.UpdateDisplay(products[1]);
+        if (saleShelfItemUI != null && products.Count > 2)
+            saleShelfItemUI.UpdateDisplay(products[2]);
+        if (saleLampItemUI != null && products.Count > 3)
+            saleLampItemUI.UpdateDisplay(products[3]);
+        if (saleArmchairItemUI != null && products.Count > 4)
+            saleArmchairItemUI.UpdateDisplay(products[4]);
+        if (saleDeskItemUI != null && products.Count > 5)
+            saleDeskItemUI.UpdateDisplay(products[5]);
+        if (saleSofaItemUI != null && products.Count > 6)
+            saleSofaItemUI.UpdateDisplay(products[6]);
+        if (saleWardrobefItemUI != null && products.Count > 7)
+            saleWardrobefItemUI.UpdateDisplay(products[7]);
+
+        if (upgrade1ItemUI != null && upgrades.Count > 0)
+            upgrade1ItemUI.UpdateDisplay(upgrades[0]);
+        if (upgrade2ItemUI != null && upgrades.Count > 1)
+            upgrade2ItemUI.UpdateDisplay(upgrades[1]);
+        if (upgrade3ItemUI != null && upgrades.Count > 2)
+            upgrade3ItemUI.UpdateDisplay(upgrades[2]);
+        if (upgrade4ItemUI != null && upgrades.Count > 3)
+            upgrade4ItemUI.UpdateDisplay(upgrades[3]);
+        if (upgrade5ItemUI != null && upgrades.Count > 4)
+            upgrade5ItemUI.UpdateDisplay(upgrades[4]);
+
+        if (NotificationManager.Instance != null)
+        {
+            NotificationManager.Instance.UpdateAllNotifications();
+        }
+    }
     
-    // Sauvegarde automatiquement quand on quitte le jeu
     void OnApplicationQuit()
     {
         SaveManager saveManager = SaveManager.Instance;
@@ -905,15 +786,14 @@ public void RefreshAllUI()
             if (timeManager != null && progressionManager != null)
             {
                 saveManager.SaveGame(this, timeManager, progressionManager);
-                Debug.Log("💾 Sauvegarde automatique à la fermeture");
+                Debug.Log("💾 Sauvegarde auto fermeture");
             }
         }
     }
 
-// Sauvegarde aussi quand l'application perd le focus (mobile)
     void OnApplicationPause(bool pauseStatus)
     {
-        if (pauseStatus) // Le jeu est mis en pause (on quitte l'app sur mobile)
+        if (pauseStatus)
         {
             SaveManager saveManager = SaveManager.Instance;
             if (saveManager != null)
@@ -923,7 +803,7 @@ public void RefreshAllUI()
                 if (timeManager != null && progressionManager != null)
                 {
                     saveManager.SaveGame(this, timeManager, progressionManager);
-                    Debug.Log("💾 Sauvegarde automatique (pause)");
+                    Debug.Log("💾 Sauvegarde auto pause");
                 }
             }
         }

@@ -1,20 +1,20 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI; // ← Ajoute cette ligne tout en haut avec les autres using
+using UnityEngine.UI;
 
 public class ProgressionManager : MonoBehaviour
 {
     // === PROGRESSION ===
-    public int currentLevel = 1;              // Niveau actuel
-    public int currentExperience = 0;         // Expérience actuelle
-    public int experienceToNextLevel = 100;   // XP nécessaire pour niveau suivant
+    public int currentLevel = 1;
+    public int currentExperience = 0;
+    public int experienceToNextLevel = 100;
     
     // === UI ===
-    public TextMeshProUGUI levelText;         // Affichage du niveau
-    public TextMeshProUGUI xpText;            // Affichage de l'XP
-    public Image xpBarFill;  
-    public GameObject levelUpNotification;  
-    public TextMeshProUGUI levelUpText; 
+    public TextMeshProUGUI levelText;
+    public TextMeshProUGUI xpText;
+    public Image xpBarFill;
+    public GameObject levelUpNotification;
+    public TextMeshProUGUI levelUpText;
     
     // === RÉFÉRENCES ===
     private GameManager gameManager;
@@ -29,17 +29,37 @@ public class ProgressionManager : MonoBehaviour
     }
     
     // Ajoute de l'expérience
-    // Ajoute de l'expérience
     public void AddExperience(int amount)
     {
-        currentExperience += amount;
-        Debug.Log("⭐ +" + amount + " XP | Total: " + currentExperience + "/" + experienceToNextLevel);
+        if (amount <= 0) return;
+        
+        // ===== APPLIQUE LES MULTIPLICATEURS D'XP =====
+        float finalXP = amount;
+        
+        // Bonus Building
+        if (BuildingManager.Instance != null)
+        {
+            finalXP *= BuildingManager.Instance.GetXPBonusMultiplier();
+        }
+        
+        // Bonus Booster
+        if (BoosterManager.Instance != null)
+        {
+            finalXP *= BoosterManager.Instance.GetXPMultiplier();
+        }
+        
+        // Arrondit et ajoute
+        int xpToAdd = Mathf.RoundToInt(finalXP);
+        currentExperience += xpToAdd;
+        
+        Debug.Log("⭐ XP gagné : " + amount + " → " + xpToAdd + " (avec bonus)");
+        // ==============================================
     
         // Feedback visuel XP
         if (FeedbackManager.Instance != null && xpText != null)
         {
             Vector3 position = xpText.transform.position;
-            FeedbackManager.Instance.ShowXPGain(amount, position);
+            FeedbackManager.Instance.ShowXPGain(xpToAdd, position);
         }
     
         // Vérifie si on passe au niveau suivant
@@ -57,10 +77,11 @@ public class ProgressionManager : MonoBehaviour
         currentExperience -= experienceToNextLevel;
         currentLevel++;
     
-        // Augmente l'XP nécessaire pour le prochain niveau (difficulté croissante)
+        // Augmente l'XP nécessaire pour le prochain niveau
         experienceToNextLevel = Mathf.RoundToInt(experienceToNextLevel * 1.5f);
     
         Debug.Log("🎉 NIVEAU SUPÉRIEUR ! Niveau " + currentLevel + " atteint !");
+        
         // Son de level up
         if (AudioManager.Instance != null)
         {
@@ -78,7 +99,6 @@ public class ProgressionManager : MonoBehaviour
         {
             RecipeUnlockManager.Instance.OnLevelUp();
         }
-
     }
     
     // Donne les récompenses du niveau
@@ -104,7 +124,6 @@ public class ProgressionManager : MonoBehaviour
                 
             case 3:
                 Debug.Log("🔓 Niveau 3 : Nouveau matériau débloqué !");
-                // On ajoutera de vrais déblocages dans les prochaines étapes
                 break;
                 
             case 5:
@@ -141,7 +160,6 @@ public class ProgressionManager : MonoBehaviour
             // Lance l'animation
             StartCoroutine(AnimateXPBar(xpBarFill.fillAmount, targetFillAmount));
         }
-
     }
     
     // Fonction pour donner de l'XP selon l'action
@@ -178,7 +196,7 @@ public class ProgressionManager : MonoBehaviour
         }
     }
 
-// Cache la notification
+    // Cache la notification
     void HideLevelUpNotification()
     {
         if (levelUpNotification != null)
@@ -190,7 +208,7 @@ public class ProgressionManager : MonoBehaviour
     // === ANIMATION DE LA BARRE XP ===
     private System.Collections.IEnumerator AnimateXPBar(float startValue, float targetValue)
     {
-        float duration = 0.5f; // Durée de l'animation (0.5 seconde)
+        float duration = 0.5f;
         float elapsed = 0f;
     
         while (elapsed < duration)
@@ -208,5 +226,4 @@ public class ProgressionManager : MonoBehaviour
         // Assure que la valeur finale est exacte
         xpBarFill.fillAmount = targetValue;
     }
-
 }
