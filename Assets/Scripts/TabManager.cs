@@ -11,6 +11,7 @@ public class TabManager : MonoBehaviour
     public GameObject statsPanel;
     public GameObject employeesPanel;
     public GameObject ordersPanel;
+    public GameObject buildingPanel;
 
     // Références vers les boutons d'onglets
     public Button shopTabButton;
@@ -20,6 +21,7 @@ public class TabManager : MonoBehaviour
     public Button statsTabButton;
     public Button employeesTabButton;
     public Button ordersTabButton;
+    public Button buildingTabButton;
     
     // Couleurs pour les boutons actifs/inactifs
     private Color activeColor = new Color(1f, 1f, 1f, 1f);
@@ -39,7 +41,9 @@ public class TabManager : MonoBehaviour
         upgradesTabButton.onClick.AddListener(() => ShowTab("upgrades"));
         statsTabButton.onClick.AddListener(() => ShowTab("stats"));
         employeesTabButton.onClick.AddListener(() => ShowTab("employees"));
-        ordersTabButton.onClick.AddListener(() => ShowTab("orders"));  // ← CORRIGÉ
+        ordersTabButton.onClick.AddListener(() => ShowTab("orders"));  
+        buildingTabButton.onClick.AddListener(() => ShowTab("building"));  
+        
     
         // Affiche la boutique par défaut au démarrage
         ShowTab("shop");
@@ -58,6 +62,7 @@ public class TabManager : MonoBehaviour
         statsPanel.SetActive(false);
         employeesPanel.SetActive(false);
         ordersPanel.SetActive(false);
+        buildingPanel.SetActive(false);
     
         // Réinitialise la couleur de tous les boutons
         ResetButtonColors();
@@ -127,6 +132,14 @@ public class TabManager : MonoBehaviour
     
                 Debug.Log("📂 Onglet Commandes ouvert");
                 break;
+            
+            case "building":
+                buildingPanel.SetActive(true);
+                HighlightButton(buildingTabButton);  
+                Debug.Log("📂 Onglet Atelier affiché");
+                break;
+
+
 
             default:
                 Debug.LogWarning("⚠️ Onglet inconnu : " + tabName);
@@ -174,6 +187,10 @@ public class TabManager : MonoBehaviour
         cb = ordersTabButton.colors;
         cb.normalColor = inactiveColor;
         ordersTabButton.colors = cb;
+        
+        cb = buildingTabButton.colors;
+        cb.normalColor = inactiveColor;
+        buildingTabButton.colors = cb;
     }
     
     // Met en surbrillance un bouton (actif)
