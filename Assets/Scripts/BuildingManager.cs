@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
 
@@ -21,15 +22,15 @@ public class BuildingElement
     public int cost;
     public int unlockLevel;
     public bool isPurchased;
-    public string icon;  // Emoji pour l'icône
+    public string iconName;  // Nom du fichier d'icône (ex: "hammer")
     
     // Bonus
     public BonusType bonusType;
     public float bonusValue;
     
     // Visuel
-    public Vector2 position;  // Position dans l'atelier (pour le sprite)
-    public GameObject visualPrefab;  // Prefab visuel (optionnel)
+    public Vector2 position;
+    public GameObject visualPrefab;
     
     public BuildingElement(string name, string desc, BuildingCategory cat, int price, int level, string ico, BonusType bonus, float value)
     {
@@ -39,7 +40,7 @@ public class BuildingElement
         cost = price;
         unlockLevel = level;
         isPurchased = false;
-        icon = ico;
+        iconName = ico;
         bonusType = bonus;
         bonusValue = value;
         position = Vector2.zero;
@@ -50,14 +51,14 @@ public class BuildingElement
 public enum BonusType
 {
     None,
-    SalesBonus,           // Bonus sur les ventes
-    ProductionSpeed,      // Vitesse de production
-    MaterialDiscount,     // Réduction coût matériaux
-    DailyIncome,          // Revenus quotidiens
-    XPBonus,              // Bonus XP
-    StorageCapacity,      // Capacité de stockage
-    EmployeeEfficiency,   // Efficacité employés
-    OrderBonus            // Bonus commandes
+    SalesBonus,
+    ProductionSpeed,
+    MaterialDiscount,
+    DailyIncome,
+    XPBonus,
+    StorageCapacity,
+    EmployeeEfficiency,
+    OrderBonus
 }
 
 public class BuildingManager : MonoBehaviour
@@ -94,9 +95,11 @@ public class BuildingManager : MonoBehaviour
     private ProgressionManager progressionManager;
     
     // === VISUEL ===
-    public Transform buildingContainer;  // Container pour les sprites
-    public GameObject visualElementPrefab;  // Prefab des éléments visuels
-    
+    public Transform officeSlots;       // Zone Bureau (ÉTAGE 2 - Gauche)
+    public Transform workshopSlots;     // Zone Atelier (ÉTAGE 2 - Droite)
+    public Transform showroomSlots;     // Zone Showroom (ÉTAGE 1 - Gauche)
+    public Transform relaxSlots;        // Zone Détente (ÉTAGE 1 - Droite)
+    public GameObject visualElementPrefab;
     
     void Start()
     {
@@ -123,11 +126,11 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Structure,
             0,
             1,
-            "🏠",
+            "home",
             BonusType.None,
             0f
         ));
-        allElements[0].isPurchased = true;  // Déjà acheté
+        allElements[0].isPurchased = true;
         
         allElements.Add(new BuildingElement(
             "Showroom",
@@ -135,7 +138,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Structure,
             1000,
             3,
-            "🪟",
+            "shop",
             BonusType.SalesBonus,
             10f
         ));
@@ -146,7 +149,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Structure,
             1500,
             5,
-            "📦",
+            "storage",
             BonusType.StorageCapacity,
             50f
         ));
@@ -157,7 +160,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Structure,
             2000,
             7,
-            "💼",
+            "office",
             BonusType.DailyIncome,
             15f
         ));
@@ -168,7 +171,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Structure,
             3500,
             10,
-            "🏢",
+            "factory",
             BonusType.ProductionSpeed,
             20f
         ));
@@ -181,7 +184,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Equipment,
             600,
             2,
-            "🔨",
+            "workbench",
             BonusType.ProductionSpeed,
             10f
         ));
@@ -192,7 +195,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Equipment,
             900,
             4,
-            "🪚",
+            "saw",
             BonusType.MaterialDiscount,
             8f
         ));
@@ -203,7 +206,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Equipment,
             1100,
             5,
-            "⚙️",
+            "sander",
             BonusType.SalesBonus,
             8f
         ));
@@ -214,7 +217,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Equipment,
             1300,
             6,
-            "💨",
+            "compressor",
             BonusType.ProductionSpeed,
             12f
         ));
@@ -225,18 +228,18 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Equipment,
             1500,
             7,
-            "🔩",
+            "drill",
             BonusType.SalesBonus,
             10f
         ));
         
         allElements.Add(new BuildingElement(
             "Ordinateur de gestion",
-            "Optimise votre production. +5% tous bonus.",
+            "Optimise votre production. +15% XP.",
             BuildingCategory.Equipment,
             1800,
             8,
-            "🖥️",
+            "computer",
             BonusType.XPBonus,
             15f
         ));
@@ -247,7 +250,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Equipment,
             3000,
             10,
-            "🤖",
+            "robot",
             BonusType.ProductionSpeed,
             25f
         ));
@@ -258,7 +261,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Equipment,
             2500,
             9,
-            "🖨️",
+            "printer3d",
             BonusType.MaterialDiscount,
             12f
         ));
@@ -271,7 +274,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Furniture,
             300,
             2,
-            "🪑",
+            "chair",
             BonusType.EmployeeEfficiency,
             5f
         ));
@@ -282,7 +285,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Furniture,
             400,
             3,
-            "📚",
+            "shelf",
             BonusType.StorageCapacity,
             10f
         ));
@@ -293,7 +296,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Furniture,
             600,
             4,
-            "🗄️",
+            "locker",
             BonusType.MaterialDiscount,
             5f
         ));
@@ -304,7 +307,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Furniture,
             800,
             5,
-            "🪑",
+            "desk",
             BonusType.SalesBonus,
             8f
         ));
@@ -315,7 +318,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Furniture,
             900,
             6,
-            "🛋️",
+            "couch",
             BonusType.OrderBonus,
             5f
         ));
@@ -326,7 +329,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Furniture,
             1000,
             7,
-            "🪑",
+            "table",
             BonusType.EmployeeEfficiency,
             8f
         ));
@@ -337,7 +340,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Furniture,
             700,
             6,
-            "🚪",
+            "lockers",
             BonusType.EmployeeEfficiency,
             10f
         ));
@@ -350,7 +353,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Decoration,
             150,
             2,
-            "🪴",
+            "plant",
             BonusType.XPBonus,
             3f
         ));
@@ -361,7 +364,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Decoration,
             400,
             3,
-            "💡",
+            "light",
             BonusType.ProductionSpeed,
             5f
         ));
@@ -372,7 +375,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Decoration,
             300,
             3,
-            "🖼️",
+            "painting",
             BonusType.XPBonus,
             5f
         ));
@@ -383,7 +386,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Decoration,
             200,
             4,
-            "🕐",
+            "clock",
             BonusType.ProductionSpeed,
             3f
         ));
@@ -394,7 +397,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Decoration,
             500,
             5,
-            "🧶",
+            "carpet",
             BonusType.SalesBonus,
             5f
         ));
@@ -405,7 +408,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Decoration,
             800,
             6,
-            "⛲",
+            "fountain",
             BonusType.XPBonus,
             8f
         ));
@@ -416,18 +419,18 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Decoration,
             1000,
             8,
-            "🏆",
+            "trophy",
             BonusType.XPBonus,
             10f
         ));
         
         allElements.Add(new BuildingElement(
             "Aquarium",
-            "Détente et concentration. +7% tous bonus.",
+            "Détente et concentration. +7% XP.",
             BuildingCategory.Decoration,
             1200,
             9,
-            "🐠",
+            "aquarium",
             BonusType.XPBonus,
             7f
         ));
@@ -438,7 +441,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Decoration,
             1500,
             10,
-            "❄️",
+            "ac",
             BonusType.EmployeeEfficiency,
             10f
         ));
@@ -449,7 +452,7 @@ public class BuildingManager : MonoBehaviour
             BuildingCategory.Decoration,
             900,
             7,
-            "🔊",
+            "speaker",
             BonusType.ProductionSpeed,
             8f
         ));
@@ -468,46 +471,34 @@ public class BuildingManager : MonoBehaviour
         
         BuildingElement element = allElements[index];
         
-        // Vérifie si déjà acheté
         if (element.isPurchased)
         {
             Debug.LogWarning("⚠️ Déjà acheté : " + element.elementName);
             return;
         }
         
-        // Vérifie le niveau
         if (progressionManager != null && progressionManager.currentLevel < element.unlockLevel)
         {
             Debug.LogWarning("⚠️ Niveau " + element.unlockLevel + " requis !");
             return;
         }
         
-        // Vérifie l'argent
         if (gameManager != null && gameManager.HasEnoughMoney(element.cost))
         {
-            // Retire l'argent
             gameManager.RemoveMoney(element.cost);
-            
-            // Marque comme acheté
             element.isPurchased = true;
             
-            // Applique le bonus
             ApplyBonus(element);
-            
-            // Affiche visuellement (on fera ça après)
             ShowElementVisual(element);
-            
             SaveBuildingData();
             
             Debug.Log("🏗️ Construit : " + element.elementName);
             
-            // Son
             if (AudioManager.Instance != null)
             {
                 AudioManager.Instance.PlaySuccess();
             }
             
-            // Feedback
             if (FeedbackManager.Instance != null)
             {
                 Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
@@ -525,80 +516,93 @@ public class BuildingManager : MonoBehaviour
         }
     }
     
-    // Applique le bonus d'un élément (ne fait que logger, les calculs sont dans les Get)
     void ApplyBonus(BuildingElement element)
     {
         Debug.Log("💪 Bonus appliqué : " + element.bonusType + " +" + element.bonusValue + "%");
     }
-
     
     // Affiche visuellement l'élément dans l'atelier
     void ShowElementVisual(BuildingElement element)
     {
-        if (buildingContainer == null || visualElementPrefab == null)
+        // Détermine dans quelle zone placer l'élément
+        Transform targetZone = GetZoneForCategory(element.category);
+        
+        if (targetZone == null || visualElementPrefab == null)
         {
-            Debug.LogWarning("⚠️ Container ou prefab manquant !");
+            Debug.LogWarning("⚠️ Zone ou prefab manquant !");
             return;
         }
-    
-        // Crée l'élément visuel
-        GameObject visualElement = Instantiate(visualElementPrefab, buildingContainer);
-    
-        // Trouve l'icône
-        TextMeshProUGUI iconText = visualElement.transform.Find("IconText")?.GetComponent<TextMeshProUGUI>();
-        if (iconText != null)
-        {
-            iconText.text = element.icon;
-        }
-    
-        // Position aléatoire dans le container (pour un effet naturel)
-        RectTransform rect = visualElement.GetComponent<RectTransform>();
-        if (rect != null)
-        {
-            // Position aléatoire
-            float randomX = Random.Range(-200f, 200f);
-            float randomY = Random.Range(-150f, 150f);
-            rect.anchoredPosition = new Vector2(randomX, randomY);
         
-            // Rotation légère aléatoire
-            rect.rotation = Quaternion.Euler(0, 0, Random.Range(-10f, 10f));
+        // Crée l'élément visuel dans la bonne zone
+        GameObject visualElement = Instantiate(visualElementPrefab, targetZone);
+        
+        // Trouve le composant Image pour l'icône
+        Image iconImage = visualElement.transform.Find("Icon")?.GetComponent<Image>();
+        if (iconImage != null)
+        {
+            // Charge le sprite depuis Resources/Icons/
+            Sprite sprite = Resources.Load<Sprite>("Icons/" + element.iconName);
+            if (sprite != null)
+            {
+                iconImage.sprite = sprite;
+                Debug.Log("✅ Icône chargée : " + element.iconName);
+            }
+            else
+            {
+                Debug.LogWarning("⚠️ Icône introuvable : Icons/" + element.iconName);
+            }
         }
-    
-        // Animation d'apparition (scale)
+        
+        // Animation d'apparition
         visualElement.transform.localScale = Vector3.zero;
         StartCoroutine(AnimateElementAppearance(visualElement));
-    
-        Debug.Log("🎨 Élément visuel affiché : " + element.elementName);
+        
+        Debug.Log("🎨 Élément visuel affiché : " + element.elementName + " dans " + targetZone.name);
     }
-
-// Animation d'apparition d'un élément
+    
+    // Retourne la zone correspondant à la catégorie
+    Transform GetZoneForCategory(BuildingCategory category)
+    {
+        switch (category)
+        {
+            case BuildingCategory.Structure:
+                return officeSlots;
+            case BuildingCategory.Equipment:
+                return workshopSlots;
+            case BuildingCategory.Furniture:
+                return showroomSlots;
+            case BuildingCategory.Decoration:
+                return relaxSlots;
+            default:
+                return officeSlots;
+        }
+    }
+    
+    // Animation d'apparition d'un élément
     System.Collections.IEnumerator AnimateElementAppearance(GameObject element)
     {
         float duration = 0.5f;
         float elapsed = 0f;
-    
+        
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
             float progress = elapsed / duration;
-        
-            // Courbe d'animation (bounce)
+            
             float scale = Mathf.Sin(progress * Mathf.PI) * 1.2f;
             if (progress > 0.5f)
             {
                 scale = Mathf.Lerp(1.2f, 1f, (progress - 0.5f) * 2f);
             }
-        
+            
             element.transform.localScale = Vector3.one * scale;
-        
+            
             yield return null;
         }
-    
+        
         element.transform.localScale = Vector3.one;
     }
-
     
-    // Compte les éléments achetés par catégorie
     public int GetPurchasedCount(BuildingCategory category)
     {
         int count = 0;
@@ -612,7 +616,6 @@ public class BuildingManager : MonoBehaviour
         return count;
     }
     
-    // Compte le total acheté
     public int GetTotalPurchased()
     {
         int count = 0;
@@ -626,7 +629,6 @@ public class BuildingManager : MonoBehaviour
         return count;
     }
     
-    // Sauvegarde les éléments achetés
     public void SaveBuildingData()
     {
         for (int i = 0; i < allElements.Count; i++)
@@ -634,23 +636,22 @@ public class BuildingManager : MonoBehaviour
             string key = "BuildingElement_" + i + "_Purchased";
             PlayerPrefs.SetInt(key, allElements[i].isPurchased ? 1 : 0);
         }
-    
+        
         PlayerPrefs.Save();
         Debug.Log("💾 Données de construction sauvegardées");
     }
-    // Charge les éléments achetés
+    
     public void LoadBuildingData()
     {
         for (int i = 0; i < allElements.Count; i++)
         {
             string key = "BuildingElement_" + i + "_Purchased";
-
+            
             if (PlayerPrefs.HasKey(key))
             {
                 bool isPurchased = PlayerPrefs.GetInt(key) == 1;
                 allElements[i].isPurchased = isPurchased;
-
-                // Si acheté, applique le bonus et affiche visuellement
+                
                 if (isPurchased)
                 {
                     ApplyBonus(allElements[i]);
@@ -663,12 +664,10 @@ public class BuildingManager : MonoBehaviour
     }
     
     // ===== CALCUL DES BONUS TOTAUX =====
-
-    // Retourne le multiplicateur total pour les ventes
+    
     public float GetSalesBonusMultiplier()
     {
         float bonus = 0f;
-
         foreach (BuildingElement element in allElements)
         {
             if (element.isPurchased && element.bonusType == BonusType.SalesBonus)
@@ -676,15 +675,12 @@ public class BuildingManager : MonoBehaviour
                 bonus += element.bonusValue;
             }
         }
-
         return 1f + (bonus / 100f);
     }
-
-    // Retourne le multiplicateur pour la vitesse de production
+    
     public float GetProductionSpeedMultiplier()
     {
         float bonus = 0f;
-
         foreach (BuildingElement element in allElements)
         {
             if (element.isPurchased && element.bonusType == BonusType.ProductionSpeed)
@@ -692,15 +688,12 @@ public class BuildingManager : MonoBehaviour
                 bonus += element.bonusValue;
             }
         }
-
         return 1f + (bonus / 100f);
     }
-
-    // Retourne le multiplicateur pour la réduction des matériaux
+    
     public float GetMaterialDiscountMultiplier()
     {
         float discount = 0f;
-
         foreach (BuildingElement element in allElements)
         {
             if (element.isPurchased && element.bonusType == BonusType.MaterialDiscount)
@@ -708,15 +701,12 @@ public class BuildingManager : MonoBehaviour
                 discount += element.bonusValue;
             }
         }
-
         return 1f - (discount / 100f);
     }
-
-    // Retourne le multiplicateur pour les revenus quotidiens
+    
     public float GetDailyIncomeMultiplier()
     {
         float bonus = 0f;
-
         foreach (BuildingElement element in allElements)
         {
             if (element.isPurchased && element.bonusType == BonusType.DailyIncome)
@@ -724,15 +714,12 @@ public class BuildingManager : MonoBehaviour
                 bonus += element.bonusValue;
             }
         }
-
         return 1f + (bonus / 100f);
     }
-
-    // Retourne le multiplicateur d'XP
+    
     public float GetXPBonusMultiplier()
     {
         float bonus = 0f;
-
         foreach (BuildingElement element in allElements)
         {
             if (element.isPurchased && element.bonusType == BonusType.XPBonus)
@@ -740,15 +727,12 @@ public class BuildingManager : MonoBehaviour
                 bonus += element.bonusValue;
             }
         }
-
         return 1f + (bonus / 100f);
     }
-
-    // Retourne la capacité de stockage supplémentaire
+    
     public int GetStorageCapacityBonus()
     {
         int bonus = 0;
-
         foreach (BuildingElement element in allElements)
         {
             if (element.isPurchased && element.bonusType == BonusType.StorageCapacity)
@@ -756,15 +740,12 @@ public class BuildingManager : MonoBehaviour
                 bonus += (int)element.bonusValue;
             }
         }
-
         return bonus;
     }
-
-    // Retourne le multiplicateur d'efficacité des employés
+    
     public float GetEmployeeEfficiencyMultiplier()
     {
         float bonus = 0f;
-
         foreach (BuildingElement element in allElements)
         {
             if (element.isPurchased && element.bonusType == BonusType.EmployeeEfficiency)
@@ -772,15 +753,12 @@ public class BuildingManager : MonoBehaviour
                 bonus += element.bonusValue;
             }
         }
-
         return 1f + (bonus / 100f);
     }
-
-    // Retourne le multiplicateur pour les commandes
+    
     public float GetOrderBonusMultiplier()
     {
         float bonus = 0f;
-
         foreach (BuildingElement element in allElements)
         {
             if (element.isPurchased && element.bonusType == BonusType.OrderBonus)
@@ -788,44 +766,40 @@ public class BuildingManager : MonoBehaviour
                 bonus += element.bonusValue;
             }
         }
-
         return 1f + (bonus / 100f);
     }
-
-    // ===== AFFICHAGE DES BONUS =====
-
-    // Retourne le texte des bonus actifs (pour l'UI)
+    
     public string GetActiveBonusText()
     {
         string text = "";
-
+        
         float salesBonus = (GetSalesBonusMultiplier() - 1f) * 100f;
         if (salesBonus > 0)
             text += "💰 Ventes : +" + salesBonus.ToString("F0") + "%\n";
-
+        
         float prodSpeed = (GetProductionSpeedMultiplier() - 1f) * 100f;
         if (prodSpeed > 0)
             text += "⚡ Production : +" + prodSpeed.ToString("F0") + "%\n";
-
+        
         float matDiscount = (1f - GetMaterialDiscountMultiplier()) * 100f;
         if (matDiscount > 0)
             text += "💸 Matériaux : -" + matDiscount.ToString("F0") + "%\n";
-
+        
         float xpBonus = (GetXPBonusMultiplier() - 1f) * 100f;
         if (xpBonus > 0)
             text += "⭐ XP : +" + xpBonus.ToString("F0") + "%\n";
-
+        
         int storageBonus = GetStorageCapacityBonus();
         if (storageBonus > 0)
             text += "📦 Stockage : +" + storageBonus + "\n";
-
+        
         float employeeBonus = (GetEmployeeEfficiencyMultiplier() - 1f) * 100f;
         if (employeeBonus > 0)
             text += "👷 Employés : +" + employeeBonus.ToString("F0") + "%\n";
-
+        
         if (text == "")
             text = "Aucun bonus actif";
-
+        
         return text.TrimEnd('\n');
     }
 }

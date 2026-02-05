@@ -92,7 +92,7 @@ public class BuildingUI : MonoBehaviour
         
         // Remplit les infos
         if (iconText != null)
-            iconText.text = element.icon;
+            iconText.text = element.iconName;
         
         if (nameText != null)
             nameText.text = element.elementName;
