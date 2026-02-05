@@ -130,12 +130,18 @@ public class ProgressionManager : MonoBehaviour
             xpText.text = currentExperience + " / " + experienceToNextLevel + " XP";
         }
     
-        // Met à jour la barre d'XP
+        // Met à jour la barre d'XP avec animation fluide
         if (xpBarFill != null)
         {
-            float fillAmount = (float)currentExperience / (float)experienceToNextLevel;
-            xpBarFill.fillAmount = fillAmount;
+            float targetFillAmount = (float)currentExperience / (float)experienceToNextLevel;
+    
+            // Arrête l'animation précédente si elle existe
+            StopCoroutine("AnimateXPBar");
+    
+            // Lance l'animation
+            StartCoroutine(AnimateXPBar(xpBarFill.fillAmount, targetFillAmount));
         }
+
     }
     
     // Fonction pour donner de l'XP selon l'action
@@ -180,4 +186,27 @@ public class ProgressionManager : MonoBehaviour
             levelUpNotification.SetActive(false);
         }
     }
+    
+    // === ANIMATION DE LA BARRE XP ===
+    private System.Collections.IEnumerator AnimateXPBar(float startValue, float targetValue)
+    {
+        float duration = 0.5f; // Durée de l'animation (0.5 seconde)
+        float elapsed = 0f;
+    
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+        
+            // Courbe d'animation (ease out)
+            t = 1f - Mathf.Pow(1f - t, 3f);
+        
+            xpBarFill.fillAmount = Mathf.Lerp(startValue, targetValue, t);
+            yield return null;
+        }
+    
+        // Assure que la valeur finale est exacte
+        xpBarFill.fillAmount = targetValue;
+    }
+
 }

@@ -45,6 +45,8 @@ public class TabManager : MonoBehaviour
         ShowTab("shop");
     }
     
+    
+    
     // Fonction pour afficher un onglet
     public void ShowTab(string tabName)
     {
