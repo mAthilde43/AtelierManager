@@ -561,8 +561,25 @@ if (StatsManager.Instance != null)
         // Vérifie si on a assez de produits en stock
         if (prod.HasEnoughQuantity(quantity))
         {
-            // Calcule le gain
-            int earnings = prod.sellPrice * quantity;
+           // Calcule le gain de base
+int baseEarnings = prod.sellPrice * quantity;
+
+// Applique le multiplicateur de combo
+float comboMultiplier = 1.0f;
+if (ComboManager.Instance != null)
+{
+    comboMultiplier = ComboManager.Instance.GetComboMultiplier();
+}
+
+int earnings = Mathf.RoundToInt(baseEarnings * comboMultiplier);
+
+// Affiche le bonus dans les logs
+if (comboMultiplier > 1.0f)
+{
+    int bonus = earnings - baseEarnings;
+    Debug.Log("💰 Bonus de combo : +" + bonus + "€ (x" + comboMultiplier.ToString("F1") + ")");
+}
+
         
             // Retire le produit du stock
             prod.RemoveQuantity(quantity);
@@ -571,6 +588,13 @@ if (StatsManager.Instance != null)
             AddMoney(earnings);
         
             Debug.Log("✅ Vente réussie : " + quantity + "x " + prod.productName + " pour " + earnings + "€");
+
+// Notifie le combo system
+if (ComboManager.Instance != null)
+{
+    ComboManager.Instance.OnProductSold();
+}
+
 			// Track pour les statistiques
 if (StatsManager.Instance != null)
 {
