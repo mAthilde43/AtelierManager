@@ -78,7 +78,7 @@ public class EmployeeManager : MonoBehaviour
     employees.Clear();
     
     // ========================================
-    // NIVEAU 1-3 : EMPLOYÉS DE BASE
+    // NIVEAU 1-5 : EMPLOYÉS DE BASE
     // ========================================
     
     employees.Add(new Employee(
@@ -96,7 +96,7 @@ public class EmployeeManager : MonoBehaviour
         250,
         25,
         18f,    // Vend toutes les 18 secondes
-        1
+        3
     ));
     
     employees.Add(new Employee(
@@ -105,11 +105,11 @@ public class EmployeeManager : MonoBehaviour
         200,
         20,
         20f,    // Achète toutes les 20 secondes
-        2
+        5
     ));
     
     // ========================================
-    // NIVEAU 4-6 : EMPLOYÉS INTERMÉDIAIRES
+    // NIVEAU 5-8 : EMPLOYÉS INTERMÉDIAIRES
     // ========================================
     
     employees.Add(new Employee(
@@ -118,7 +118,7 @@ public class EmployeeManager : MonoBehaviour
         600,
         60,
         10f,    // Plus rapide
-        4
+        5
     ));
     
     employees.Add(new Employee(
@@ -127,7 +127,7 @@ public class EmployeeManager : MonoBehaviour
         550,
         55,
         12f,
-        4
+        7
     ));
     
     employees.Add(new Employee(
@@ -136,11 +136,11 @@ public class EmployeeManager : MonoBehaviour
         500,
         50,
         15f,
-        5
+        8
     ));
     
     // ========================================
-    // NIVEAU 7-9 : EMPLOYÉS AVANCÉS
+    // NIVEAU 9-12 : EMPLOYÉS AVANCÉS
     // ========================================
     
     employees.Add(new Employee(
@@ -149,7 +149,7 @@ public class EmployeeManager : MonoBehaviour
         1000,
         100,
         7f,     // Très rapide
-        7
+        9
     ));
     
     employees.Add(new Employee(
@@ -158,7 +158,7 @@ public class EmployeeManager : MonoBehaviour
         950,
         95,
         8f,
-        7
+        11
     ));
     
     employees.Add(new Employee(
@@ -167,11 +167,11 @@ public class EmployeeManager : MonoBehaviour
         900,
         90,
         10f,
-        8
+        12
     ));
     
     // ========================================
-    // NIVEAU 10+ : EMPLOYÉS D'ÉLITE
+    // NIVEAU 13+ : EMPLOYÉS D'ÉLITE
     // ========================================
     
     employees.Add(new Employee(
@@ -180,7 +180,7 @@ public class EmployeeManager : MonoBehaviour
         2000,
         200,
         5f,     // Ultra rapide
-        10
+        14
     ));
     
     employees.Add(new Employee(
@@ -189,7 +189,7 @@ public class EmployeeManager : MonoBehaviour
         1900,
         190,
         6f,
-        10
+        17
     ));
     
     employees.Add(new Employee(
@@ -198,11 +198,11 @@ public class EmployeeManager : MonoBehaviour
         1800,
         180,
         7f,
-        11
+        19
     ));
     
     // ========================================
-    // NIVEAU 13+ : EMPLOYÉS PREMIUM
+    // NIVEAU 20+ : EMPLOYÉS PREMIUM
     // ========================================
     
     employees.Add(new Employee(
@@ -211,7 +211,7 @@ public class EmployeeManager : MonoBehaviour
         3500,
         350,
         4f,     // Extrêmement rapide
-        13
+        24
     ));
     
     employees.Add(new Employee(
@@ -220,7 +220,7 @@ public class EmployeeManager : MonoBehaviour
         3300,
         330,
         4.5f,
-        13
+        27
     ));
     
     employees.Add(new Employee(
@@ -229,11 +229,11 @@ public class EmployeeManager : MonoBehaviour
         3000,
         300,
         5f,
-        14
+        35
     ));
     
     // ========================================
-    // NIVEAU 17+ : EMPLOYÉS ULTIME
+    // NIVEAU 35+ : EMPLOYÉS ULTIME
     // ========================================
     
     employees.Add(new Employee(
@@ -242,7 +242,7 @@ public class EmployeeManager : MonoBehaviour
         5000,
         500,
         3f,     // Super rapide
-        17
+        37
     ));
     
     employees.Add(new Employee(
@@ -251,7 +251,7 @@ public class EmployeeManager : MonoBehaviour
         4800,
         480,
         3.5f,
-        17
+        46
     ));
     
     employees.Add(new Employee(
@@ -260,7 +260,7 @@ public class EmployeeManager : MonoBehaviour
         4500,
         450,
         4f,
-        18
+        55
     ));
     
     Debug.Log("" + employees.Count + " employés initialisés");
