@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class EmployeesUI : MonoBehaviour
 {
     [Header("References")]
-    public Transform employeesContainer;
+    public Transform employeesContainer;  
     public GameObject employeeItemPrefab;
     
     private EmployeeManager employeeManager;
@@ -14,17 +14,31 @@ public class EmployeesUI : MonoBehaviour
     {
         employeeManager = EmployeeManager.Instance;
         
-        // Génère l'UI des employés
         RefreshEmployeesDisplay();
     }
     
-    // Rafraîchit l'affichage des employés
     public void RefreshEmployeesDisplay()
     {
         if (employeeManager == null || employeesContainer == null || employeeItemPrefab == null)
         {
+            Debug.LogWarning("EmployeesUI : Références manquantes !");
             return;
         }
+        
+        ProgressionManager pm = FindObjectOfType<ProgressionManager>();
+        int playerLevel = pm != null ? pm.currentLevel : 1;
+        
+        int unlockedCount = 0;
+        foreach (Employee emp in employeeManager.employees)
+        {
+            if (emp.unlockLevel <= playerLevel)
+            {
+                unlockedCount++;
+            }
+        }
+        
+        Debug.Log("Affichage des employés (Niveau " + playerLevel + ")");
+        Debug.Log("" + unlockedCount + " / " + employeeManager.employees.Count + " employés débloqués");
         
         // Nettoie les anciens items
         foreach (EmployeeItemUI item in employeeItems)
@@ -47,13 +61,14 @@ public class EmployeesUI : MonoBehaviour
             }
         }
         
-        Debug.Log("" + employeeItems.Count + " employés affichés");
+        Debug.Log("" + employeeItems.Count + " employés affichés dans l'UI");
+        
+        // Force la mise à jour du Content Size Fitter
+        UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(employeesContainer.GetComponent<RectTransform>());
     }
     
-    // Met à jour tous les affichages (appelé périodiquement)
     void Update()
     {
-        // Met à jour l'affichage toutes les 0.5 secondes
         if (Time.frameCount % 30 == 0)
         {
             UpdateAllDisplays();
@@ -66,7 +81,10 @@ public class EmployeesUI : MonoBehaviour
         
         for (int i = 0; i < employeeItems.Count && i < employeeManager.employees.Count; i++)
         {
-            employeeItems[i].UpdateDisplay(employeeManager.employees[i]);
+            if (employeeItems[i] != null)
+            {
+                employeeItems[i].UpdateDisplay(employeeManager.employees[i]);
+            }
         }
     }
 }

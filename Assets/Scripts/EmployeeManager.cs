@@ -74,52 +74,198 @@ public class EmployeeManager : MonoBehaviour
     
     // Initialise la liste des employés disponibles
     void InitializeEmployees()
-    {
-        employees.Clear();
-        
-        // === CRAFTERS (Fabricants) ===
-        employees.Add(new Employee(
-            "Jean - Menuisier",
-            EmployeeType.Crafter,
-            500,    // Coût d'embauche
-            50,     // Salaire hebdomadaire
-            10f     // Fabrique toutes les 10 secondes
-        ));
-        
-        employees.Add(new Employee(
-            "Marie - Artisane",
-            EmployeeType.Crafter,
-            1000,
-            100,
-            8f      // Plus rapide
-        ));
-        
-        // === SELLERS (Vendeurs) ===
-        employees.Add(new Employee(
-            "Paul - Vendeur",
-            EmployeeType.Seller,
-            400,
-            40,
-            12f     // Vend toutes les 12 secondes
-        ));
-        
-        employees.Add(new Employee(
-            "Sophie - Vendeuse",
-            EmployeeType.Seller,
-            800,
-            80,
-            10f
-        ));
-        
-        // === GATHERERS (Acheteurs) ===
-        employees.Add(new Employee(
-            "Luc - Acheteur",
-            EmployeeType.Gatherer,
-            300,
-            30,
-            15f     // Achète toutes les 15 secondes
-        ));
-    }
+{
+    employees.Clear();
+    
+    // ========================================
+    // NIVEAU 1-3 : EMPLOYÉS DE BASE
+    // ========================================
+    
+    employees.Add(new Employee(
+        "Jean - Apprenti Menuisier",
+        EmployeeType.Crafter,
+        300,    // Coût d'embauche
+        30,     // Salaire hebdomadaire
+        15f,    // Fabrique toutes les 15 secondes
+        1       // Niveau requis
+    ));
+    
+    employees.Add(new Employee(
+        "Paul - Vendeur Débutant",
+        EmployeeType.Seller,
+        250,
+        25,
+        18f,    // Vend toutes les 18 secondes
+        1
+    ));
+    
+    employees.Add(new Employee(
+        "Luc - Acheteur Junior",
+        EmployeeType.Gatherer,
+        200,
+        20,
+        20f,    // Achète toutes les 20 secondes
+        2
+    ));
+    
+    // ========================================
+    // NIVEAU 4-6 : EMPLOYÉS INTERMÉDIAIRES
+    // ========================================
+    
+    employees.Add(new Employee(
+        "Marie - Artisane Confirmée",
+        EmployeeType.Crafter,
+        600,
+        60,
+        10f,    // Plus rapide
+        4
+    ));
+    
+    employees.Add(new Employee(
+        "Sophie - Vendeuse Experte",
+        EmployeeType.Seller,
+        550,
+        55,
+        12f,
+        4
+    ));
+    
+    employees.Add(new Employee(
+        "Thomas - Acheteur Confirmé",
+        EmployeeType.Gatherer,
+        500,
+        50,
+        15f,
+        5
+    ));
+    
+    // ========================================
+    // NIVEAU 7-9 : EMPLOYÉS AVANCÉS
+    // ========================================
+    
+    employees.Add(new Employee(
+        "Pierre - Maître Artisan",
+        EmployeeType.Crafter,
+        1000,
+        100,
+        7f,     // Très rapide
+        7
+    ));
+    
+    employees.Add(new Employee(
+        "Claire - Directrice des Ventes",
+        EmployeeType.Seller,
+        950,
+        95,
+        8f,
+        7
+    ));
+    
+    employees.Add(new Employee(
+        "Marc - Chef Acheteur",
+        EmployeeType.Gatherer,
+        900,
+        90,
+        10f,
+        8
+    ));
+    
+    // ========================================
+    // NIVEAU 10+ : EMPLOYÉS D'ÉLITE
+    // ========================================
+    
+    employees.Add(new Employee(
+        "Antoine - Artisan Légendaire",
+        EmployeeType.Crafter,
+        2000,
+        200,
+        5f,     // Ultra rapide
+        10
+    ));
+    
+    employees.Add(new Employee(
+        "Isabelle - Vendeuse Experte",
+        EmployeeType.Seller,
+        1900,
+        190,
+        6f,
+        10
+    ));
+    
+    employees.Add(new Employee(
+        "François - Négociateur Expert",
+        EmployeeType.Gatherer,
+        1800,
+        180,
+        7f,
+        11
+    ));
+    
+    // ========================================
+    // NIVEAU 13+ : EMPLOYÉS PREMIUM
+    // ========================================
+    
+    employees.Add(new Employee(
+        "Élise - Maître d'Œuvre",
+        EmployeeType.Crafter,
+        3500,
+        350,
+        4f,     // Extrêmement rapide
+        13
+    ));
+    
+    employees.Add(new Employee(
+        "Victor - Directeur Commercial",
+        EmployeeType.Seller,
+        3300,
+        330,
+        4.5f,
+        13
+    ));
+    
+    employees.Add(new Employee(
+        "Camille - Expert en Logistique",
+        EmployeeType.Gatherer,
+        3000,
+        300,
+        5f,
+        14
+    ));
+    
+    // ========================================
+    // NIVEAU 17+ : EMPLOYÉS ULTIME
+    // ========================================
+    
+    employees.Add(new Employee(
+        "Alexandre - Génie de l'Artisanat",
+        EmployeeType.Crafter,
+        5000,
+        500,
+        3f,     // Super rapide
+        17
+    ));
+    
+    employees.Add(new Employee(
+        "Charlotte - Reine des Ventes",
+        EmployeeType.Seller,
+        4800,
+        480,
+        3.5f,
+        17
+    ));
+    
+    employees.Add(new Employee(
+        "Maxime - Roi des Négociations",
+        EmployeeType.Gatherer,
+        4500,
+        450,
+        4f,
+        18
+    ));
+    
+    Debug.Log("" + employees.Count + " employés initialisés");
+}
+
     
     // Effectue l'action de l'employé
     void PerformEmployeeAction(Employee emp)

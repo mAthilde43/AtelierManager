@@ -20,10 +20,12 @@ public class Employee
     public bool isHired;                  // Employé embauché ?
     public bool isActive;                 // Employé actif (travaille) ?
     
-    public float productionTimer;        // Timer interne
+    public float productionTimer;         // Timer interne
+    
+    public int unlockLevel;               // Niveau requis pour débloquer
     
     // Constructeur
-    public Employee(string name, EmployeeType empType, int cost, int salary, float speed)
+    public Employee(string name, EmployeeType empType, int cost, int salary, float speed, int reqLevel)
     {
         employeeName = name;
         type = empType;
@@ -34,30 +36,19 @@ public class Employee
         isHired = false;
         isActive = false;
         productionTimer = 0f;
+        unlockLevel = reqLevel;  
     }
     
     // Met à jour l'employé (appelé chaque frame)
     public void Update(float deltaTime)
     {
-        Debug.Log($" {employeeName}.Update() - isHired={isHired}, isActive={isActive}, deltaTime={deltaTime:F4}");
-    
         if (!isHired || !isActive)
         {
-            Debug.LogWarning($"⏸️ {employeeName} - Sortie early (not hired or not active)");
             return;
         }
     
-        Debug.Log($"{employeeName} - Passage du test, incrémentation du timer");
         productionTimer += deltaTime;
-        Debug.Log($"{employeeName} - Timer après ajout: {productionTimer:F2} / {productionSpeed}");
-    
-        //if (productionTimer >= productionSpeed)
-        //{
-          //  Debug.Log($"🎉 {employeeName} - Timer >= speed ! Réinitialisation.");
-            //productionTimer = 0f;
-        //}
     }
-
     
     // Vérifie si l'employé est prêt à effectuer une action
     public bool IsReadyToWork()
@@ -92,6 +83,6 @@ public class Employee
     {
         level++;
         productionSpeed *= 0.9f; // 10% plus rapide
-        Debug.Log("" + employeeName + " niveau " + level);
+        Debug.Log("" + employeeName + " niveau " + level + " !");
     }
 }

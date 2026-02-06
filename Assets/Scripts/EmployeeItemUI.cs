@@ -16,6 +16,7 @@ public class EmployeeItemUI : MonoBehaviour
     public Slider workProgressBar;
     
     private int employeeIndex;
+    private Employee currentEmployee;
     private EmployeeManager employeeManager;
     
     // Initialise l'item
@@ -25,17 +26,25 @@ public class EmployeeItemUI : MonoBehaviour
         employeeManager = em;
         
         // Configure les boutons
-        hireButton.onClick.RemoveAllListeners();
-        hireButton.onClick.AddListener(OnHireClicked);
+        if (hireButton != null)
+        {
+            hireButton.onClick.RemoveAllListeners();
+            hireButton.onClick.AddListener(OnHireClicked);
+        }
         
-        toggleButton.onClick.RemoveAllListeners();
-        toggleButton.onClick.AddListener(OnToggleClicked);
+        if (toggleButton != null)
+        {
+            toggleButton.onClick.RemoveAllListeners();
+            toggleButton.onClick.AddListener(OnToggleClicked);
+        }
     }
     
     // Met à jour l'affichage
     public void UpdateDisplay(Employee emp)
     {
         if (emp == null) return;
+        
+        currentEmployee = emp;
         
         // Nom
         if (nameText != null)
@@ -50,16 +59,16 @@ public class EmployeeItemUI : MonoBehaviour
             switch (emp.type)
             {
                 case EmployeeType.Crafter:
-                    typeString = "Fabricant";
+                    typeString = "🔨 Fabricant";
                     break;
                 case EmployeeType.Seller:
-                    typeString = "Vendeur";
+                    typeString = "💼 Vendeur";
                     break;
                 case EmployeeType.Gatherer:
-                    typeString = "Acheteur";
+                    typeString = "📦 Acheteur";
                     break;
             }
-            typeText.text = "Type: " + typeString;
+            typeText.text = typeString;
         }
         
         // Coût d'embauche
@@ -71,67 +80,96 @@ public class EmployeeItemUI : MonoBehaviour
         // Salaire
         if (salaryText != null)
         {
-            salaryText.text = "Salaire: " + emp.salaryPerWeek + "€/semaine";
+            salaryText.text = "Salaire: " + emp.salaryPerWeek + "€/sem";
         }
         
         // Vitesse
         if (speedText != null)
         {
-            speedText.text = "" + emp.productionSpeed.ToString("F0") + "s/action";
+            speedText.text = "Vitesse: " + emp.productionSpeed.ToString("F0") + "s";
         }
         
-        // Statut et boutons
-        if (emp.isHired)
+        // ===== VÉRIFICATION DU NIVEAU =====
+        ProgressionManager pm = FindObjectOfType<ProgressionManager>();
+        int playerLevel = pm != null ? pm.currentLevel : 1;
+        bool isUnlocked = emp.unlockLevel <= playerLevel;
+        
+        // Statut
+        if (statusText != null)
         {
-            // Employé embauché
-            if (statusText != null)
+            if (!isUnlocked)
             {
-                statusText.text = emp.isActive ? "Actif" : "Inactif";
-                statusText.color = emp.isActive ? new Color(0.2f, 0.8f, 0.2f) : new Color(0.8f, 0.3f, 0.3f);
+                // Employé verrouillé
+                statusText.text = "Niveau " + emp.unlockLevel + " requis";
+                statusText.color = new Color(0.65f, 0.2f, 0.2f);  // Rouge
             }
-            
-            // Cache le bouton embaucher
-            if (hireButton != null)
+            else if (emp.isHired)
             {
+                // Employé embauché
+                statusText.text = emp.isActive ? "Actif" : "Inactif";
+                statusText.color = emp.isActive ? new Color(0.1f, 0.6f, 0.1f) : new Color(0.65f, 0.2f, 0.2f);
+            }
+            else
+            {
+                // Employé disponible
+                statusText.text = "Disponible";
+                statusText.color = new Color(1f, 1f, 1f);  // Blanc
+            }
+        }
+        
+        // Bouton embaucher
+        if (hireButton != null)
+        {
+            if (!isUnlocked)
+            {
+                // Verrouillé
+                hireButton.gameObject.SetActive(true);
+                hireButton.interactable = false;
+                
+                TextMeshProUGUI buttonText = hireButton.GetComponentInChildren<TextMeshProUGUI>();
+                if (buttonText != null)
+                {
+                    buttonText.text = "Verrouillé";
+                }
+            }
+            else if (emp.isHired)
+            {
+                // Déjà embauché
                 hireButton.gameObject.SetActive(false);
             }
-            
-            // Affiche le bouton activer/désactiver
-            if (toggleButton != null)
+            else
+            {
+                // Disponible à l'embauche
+                hireButton.gameObject.SetActive(true);
+                
+                GameManager gm = FindObjectOfType<GameManager>();
+                if (gm != null)
+                {
+                    hireButton.interactable = gm.HasEnoughMoney(emp.hireCost);
+                }
+                
+                TextMeshProUGUI buttonText = hireButton.GetComponentInChildren<TextMeshProUGUI>();
+                if (buttonText != null)
+                {
+                    buttonText.text = "Embaucher";
+                }
+            }
+        }
+        
+        // Bouton toggle
+        if (toggleButton != null)
+        {
+            if (emp.isHired && isUnlocked)
             {
                 toggleButton.gameObject.SetActive(true);
+                
                 TextMeshProUGUI toggleText = toggleButton.GetComponentInChildren<TextMeshProUGUI>();
                 if (toggleText != null)
                 {
                     toggleText.text = emp.isActive ? "Désactiver" : "Activer";
                 }
             }
-            
-        }
-        else
-        {
-            // Employé non embauché
-            if (statusText != null)
-            {
-                statusText.text = "Non embauché";
-                statusText.color = new Color(0.5f, 0.5f, 0.5f);
-            }
-            
-            // Affiche le bouton embaucher
-            if (hireButton != null)
-            {
-                hireButton.gameObject.SetActive(true);
-                
-                // Désactive si pas assez d'argent
-                GameManager gm = FindObjectOfType<GameManager>();
-                if (gm != null)
-                {
-                    hireButton.interactable = gm.HasEnoughMoney(emp.hireCost);
-                }
-            }
-            
-            // Cache le bouton activer/désactiver
-            if (toggleButton != null)
+            else
             {
                 toggleButton.gameObject.SetActive(false);
             }
@@ -140,20 +178,26 @@ public class EmployeeItemUI : MonoBehaviour
         // Barre de progression
         if (workProgressBar != null)
         {
-            if (emp.isHired && emp.isActive)
+            if (emp.isHired && emp.isActive && isUnlocked)
             {
-                // Affiche la barre et met à jour sa valeur
                 workProgressBar.gameObject.SetActive(true);
                 
-                // Calcule le pourcentage (productionTimer / productionSpeed)
                 float progress = Mathf.Clamp01(emp.productionTimer / emp.productionSpeed);
                 workProgressBar.value = progress;
             }
             else
             {
-                // Cache la barre si pas embauché ou inactif
                 workProgressBar.gameObject.SetActive(false);
             }
+        }
+    }
+    
+    // Met à jour seulement l'affichage (sans passer l'employé)
+    public void UpdateDisplay()
+    {
+        if (currentEmployee != null)
+        {
+            UpdateDisplay(currentEmployee);
         }
     }
     
@@ -164,14 +208,12 @@ public class EmployeeItemUI : MonoBehaviour
         {
             employeeManager.HireEmployee(employeeIndex);
             
-            // Met à jour l'affichage
             Employee emp = employeeManager.GetEmployee(employeeIndex);
             if (emp != null)
             {
                 UpdateDisplay(emp);
             }
             
-            // Rafraîchit l'UI globale
             GameManager gm = FindObjectOfType<GameManager>();
             if (gm != null)
             {
@@ -187,7 +229,6 @@ public class EmployeeItemUI : MonoBehaviour
         {
             employeeManager.ToggleEmployee(employeeIndex);
             
-            // Met à jour l'affichage
             Employee emp = employeeManager.GetEmployee(employeeIndex);
             if (emp != null)
             {
