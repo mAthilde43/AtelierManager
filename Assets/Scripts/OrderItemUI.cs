@@ -67,13 +67,13 @@ public class OrderItemUI : MonoBehaviour
         // Récompense
         if (rewardText != null)
         {
-            rewardText.text = "💰 Récompense: " + currentOrder.reward + "€";
+            rewardText.text = "Récompense: " + currentOrder.reward + "€";
         }
         
         // Temps restant
         if (timeText != null)
         {
-            timeText.text = "⏱️ " + currentOrder.GetFormattedTimeRemaining();
+            timeText.text = "" + currentOrder.GetFormattedTimeRemaining();
             
             // Change la couleur selon le temps restant
             float progress = currentOrder.GetTimeProgress();
@@ -127,7 +127,7 @@ public class OrderItemUI : MonoBehaviour
             TextMeshProUGUI buttonText = deliverButton.GetComponentInChildren<TextMeshProUGUI>();
             if (buttonText != null)
             {
-                buttonText.text = canDeliver ? "📦 Livrer" : "❌ Stock insuffisant";
+                buttonText.text = canDeliver ? "Livrer" : "Stock insuffisant";
             }
         }
     }

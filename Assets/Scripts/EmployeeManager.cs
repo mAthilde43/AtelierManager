@@ -32,7 +32,6 @@ public class EmployeeManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
     }
-
     
     // === LISTE DES EMPLOYÉS ===
     public List<Employee> employees = new List<Employee>();
@@ -47,6 +46,9 @@ public class EmployeeManager : MonoBehaviour
         // Initialise les employés disponibles
         InitializeEmployees();
         
+        // Charge les employés sauvegardés
+        LoadEmployees();
+        
         Debug.Log("🧑‍💼 EmployeeManager initialisé avec " + employees.Count + " employés");
     }
     
@@ -57,21 +59,18 @@ public class EmployeeManager : MonoBehaviour
         {
             if (emp.isHired && emp.isActive)
             {
-                Debug.Log($"🔍 {emp.employeeName} est actif et travaille");  
-            
                 emp.Update(Time.deltaTime);
             
                 // Si l'employé est prêt à travailler
                 if (emp.IsReadyToWork())
                 {
-                    Debug.Log($"⚡ {emp.employeeName} est prêt à travailler !");  
+                    Debug.Log($"⚡ {emp.employeeName} est prêt à travailler !");
                     PerformEmployeeAction(emp);
                     emp.ResetTimer();
                 }
             }
         }
     }
-
     
     // Initialise la liste des employés disponibles
     void InitializeEmployees()
@@ -141,22 +140,18 @@ public class EmployeeManager : MonoBehaviour
         switch (emp.type)
         {
             case EmployeeType.Crafter:
-                // Fabrique un produit aléatoire si possible
                 CraftRandomProduct();
                 break;
         
             case EmployeeType.Seller:
-                // Vend un produit aléatoire si possible
                 SellRandomProduct();
                 break;
         
             case EmployeeType.Gatherer:
-                // Achète un matériau aléatoire
                 BuyRandomMaterial();
                 break;
         }
     }
-
     
     // Fabrique un produit aléatoire
     void CraftRandomProduct()
@@ -209,7 +204,6 @@ public class EmployeeManager : MonoBehaviour
             Debug.LogWarning("⚠️ Aucun produit ne peut être fabriqué (manque de matériaux)");
         }
     }
-
     
     // Vend un produit aléatoire
     void SellRandomProduct()
@@ -247,7 +241,6 @@ public class EmployeeManager : MonoBehaviour
             Debug.LogWarning("⚠️ Aucun produit en stock à vendre");
         }
     }
-
     
     // Achète un matériau aléatoire
     void BuyRandomMaterial()
@@ -278,7 +271,6 @@ public class EmployeeManager : MonoBehaviour
             Debug.LogWarning($"⚠️ Pas assez d'argent pour acheter {mat.materialName} ({mat.price}€)");
         }
     }
-
     
     // Embauche un employé
     public void HireEmployee(int employeeIndex)
@@ -287,6 +279,7 @@ public class EmployeeManager : MonoBehaviour
         {
             gameManager = FindObjectOfType<GameManager>();
         }
+        
         if (employeeIndex < 0 || employeeIndex >= employees.Count)
         {
             Debug.LogError("❌ Index d'employé invalide !");
@@ -295,25 +288,23 @@ public class EmployeeManager : MonoBehaviour
         
         Employee emp = employees[employeeIndex];
         
-        // Vérifie si déjà embauché
         if (emp.isHired)
         {
             Debug.LogWarning("⚠️ " + emp.employeeName + " est déjà embauché !");
             return;
         }
         
-        // Vérifie si assez d'argent
         if (!gameManager.HasEnoughMoney(emp.hireCost))
         {
             Debug.LogWarning("⚠️ Pas assez d'argent pour embaucher " + emp.employeeName + " !");
             return;
         }
         
-        // Retire l'argent
         gameManager.RemoveMoney(emp.hireCost);
-        
-        // Embauche
         emp.Hire();
+        
+        // Sauvegarde après embauche
+        SaveEmployees();
         
         Debug.Log("✅ " + emp.employeeName + " embauché pour " + emp.hireCost + "€ !");
     }
@@ -336,6 +327,9 @@ public class EmployeeManager : MonoBehaviour
         }
         
         emp.ToggleActive();
+        
+        // Sauvegarde après changement d'état
+        SaveEmployees();
     }
     
     // Paie tous les salaires (appelé chaque semaine)
@@ -345,6 +339,7 @@ public class EmployeeManager : MonoBehaviour
         {
             gameManager = FindObjectOfType<GameManager>();
         }
+        
         int totalSalaries = 0;
         
         foreach (Employee emp in employees)
@@ -370,5 +365,94 @@ public class EmployeeManager : MonoBehaviour
             return employees[index];
         }
         return null;
+    }
+    
+    // ===== SAUVEGARDE ET CHARGEMENT =====
+    
+    // Sauvegarde les employés
+    public void SaveEmployees()
+    {
+        int hiredCount = 0;
+        
+        for (int i = 0; i < employees.Count; i++)
+        {
+            Employee emp = employees[i];
+            
+            if (emp.isHired)
+            {
+                string key = "Employee_" + i;
+                PlayerPrefs.SetInt(key + "_Hired", 1);
+                PlayerPrefs.SetInt(key + "_Active", emp.isActive ? 1 : 0);
+                hiredCount++;
+            }
+            else
+            {
+                string key = "Employee_" + i;
+                PlayerPrefs.SetInt(key + "_Hired", 0);
+            }
+        }
+        
+        PlayerPrefs.SetInt("EmployeeCount", hiredCount);
+        PlayerPrefs.Save();
+        
+        Debug.Log("💾 Employés sauvegardés (" + hiredCount + " embauchés)");
+    }
+    
+    // Charge les employés
+    public void LoadEmployees()
+    {
+        if (!PlayerPrefs.HasKey("EmployeeCount"))
+        {
+            Debug.Log("🆕 Aucune sauvegarde d'employés trouvée");
+            return;
+        }
+        
+        int savedCount = PlayerPrefs.GetInt("EmployeeCount");
+        Debug.Log("📂 Chargement de " + savedCount + " employés...");
+        
+        for (int i = 0; i < employees.Count; i++)
+        {
+            string key = "Employee_" + i;
+            
+            if (PlayerPrefs.HasKey(key + "_Hired"))
+            {
+                bool isHired = PlayerPrefs.GetInt(key + "_Hired") == 1;
+                
+                if (isHired)
+                {
+                    employees[i].isHired = true;
+                    employees[i].isActive = PlayerPrefs.GetInt(key + "_Active") == 1;
+                    
+                    Debug.Log("✅ " + employees[i].employeeName + " chargé (Actif: " + employees[i].isActive + ")");
+                }
+            }
+        }
+        
+        Debug.Log("📂 Employés chargés avec succès !");
+    }
+    
+    // Réinitialise tous les employés (nouvelle partie)
+    public void ResetEmployees()
+    {
+        Debug.Log("🔄 Réinitialisation des employés...");
+        
+        // Supprime toutes les sauvegardes d'employés
+        PlayerPrefs.DeleteKey("EmployeeCount");
+        
+        for (int i = 0; i < employees.Count; i++)
+        {
+            string key = "Employee_" + i;
+            PlayerPrefs.DeleteKey(key + "_Hired");
+            PlayerPrefs.DeleteKey(key + "_Active");
+            
+            // Réinitialise l'employé en mémoire
+            employees[i].isHired = false;
+            employees[i].isActive = false;
+            employees[i].productionTimer = 0f;
+        }
+        
+        PlayerPrefs.Save();
+        
+        Debug.Log("✅ Employés réinitialisés !");
     }
 }

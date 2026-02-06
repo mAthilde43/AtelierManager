@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
     
     void Start()
     {
-        Debug.Log("🎮 Atelier Manager démarré avec succès !");
+        Debug.Log("Atelier Manager démarré avec succès !");
 
         InitializeMaterials();
         InitializeProducts();
@@ -73,14 +73,16 @@ public class GameManager : MonoBehaviour
             TimeManager timeManager = FindObjectOfType<TimeManager>();
         
             if (saveManager.HasSaveData())
-            {
-                saveManager.LoadGame(this, timeManager, progressionManager);
-                Debug.Log("📂 Partie chargée !");
-            }
-            else
-            {
-                Debug.Log("🆕 Nouvelle partie");
-            }
+{
+    saveManager.LoadGame(this, timeManager, progressionManager);
+    Debug.Log("Partie chargée !");
+}
+else
+{
+    saveManager.ResetGame();
+    Debug.Log("Nouvelle partie - Données réinitialisées");
+}
+
         }
     }
     
@@ -93,7 +95,7 @@ public class GameManager : MonoBehaviour
         craftingMaterials.Add(new CraftingMaterial("Tissu", 40));
         craftingMaterials.Add(new CraftingMaterial("Cuir", 60));
         
-        Debug.Log("📦 " + craftingMaterials.Count + " types de matériaux initialisés");
+        Debug.Log("" + craftingMaterials.Count + " types de matériaux initialisés");
     }
     
     void InitializeProducts()
@@ -127,7 +129,7 @@ public class GameManager : MonoBehaviour
         lamp.AddMaterialRequirement(3, 1);
         lamp.AddMaterialRequirement(4, 1);
         lamp.isUnlocked = false;
-        lamp.unlockLevel = 3;
+        lamp.unlockLevel = 7;
         lamp.unlockConditionText = "Niveau 3 requis";
         products.Add(lamp);
 
@@ -136,7 +138,7 @@ public class GameManager : MonoBehaviour
         armchair.AddMaterialRequirement(4, 2);
         armchair.AddMaterialRequirement(5, 1);
         armchair.isUnlocked = false;
-        armchair.unlockLevel = 5;
+        armchair.unlockLevel = 10;
         armchair.unlockConditionText = "Niveau 5 requis";
         products.Add(armchair);
 
@@ -145,7 +147,7 @@ public class GameManager : MonoBehaviour
         desk.AddMaterialRequirement(3, 2);
         desk.AddMaterialRequirement(2, 1);
         desk.isUnlocked = false;
-        desk.unlockLevel = 7;
+        desk.unlockLevel = 15;
         desk.unlockConditionText = "Niveau 7 requis";
         products.Add(desk);
 
@@ -154,7 +156,7 @@ public class GameManager : MonoBehaviour
         sofa.AddMaterialRequirement(4, 4);
         sofa.AddMaterialRequirement(5, 2);
         sofa.isUnlocked = false;
-        sofa.unlockLevel = 10;
+        sofa.unlockLevel = 20;
         sofa.unlockConditionText = "Niveau 10 requis";
         products.Add(sofa);
         
@@ -163,11 +165,11 @@ public class GameManager : MonoBehaviour
         wardrobe.AddMaterialRequirement(3, 3);
         wardrobe.AddMaterialRequirement(2, 2);
         wardrobe.isUnlocked = false;
-        wardrobe.unlockLevel = 15;
+        wardrobe.unlockLevel = 25;
         wardrobe.unlockConditionText = "Niveau 15 requis";
         products.Add(wardrobe);
 
-        Debug.Log("🔨 " + products.Count + " types de produits initialisés");
+        Debug.Log("" + products.Count + " types de produits initialisés");
     }
 
     void InitializeUpgrades()
@@ -212,26 +214,47 @@ public class GameManager : MonoBehaviour
             50
         ));
     
-        Debug.Log("🔧 " + upgrades.Count + " améliorations disponibles");
+        Debug.Log("" + upgrades.Count + " améliorations disponibles");
     }
     
     public void UpdateMoneyDisplay()
+{
+    if (moneyText != null)
     {
-        if (moneyText != null)
-        {
-            moneyText.text = playerMoney + " €";
-        }
-        else
-        {
-            Debug.LogWarning("⚠️ MoneyText n'est pas assigné !");
-        }
+        moneyText.text = FormatMoney(playerMoney) + " €";
     }
+    else
+    {
+        Debug.LogWarning("MoneyText n'est pas assigné !");
+    }
+}
+
+string FormatMoney(int amount)
+{
+    if (amount >= 1000000)
+    {
+        return (amount / 1000000f).ToString("F1") + "M";
+    }
+    else if (amount >= 100000)
+    {
+        return (amount / 1000f).ToString("F0") + "K";
+    }
+    else if (amount >= 10000)
+    {
+        return (amount / 1000f).ToString("F1") + "K";
+    }
+    else
+    {
+        return amount.ToString();
+    }
+}
+
     
     public void AddMoney(int amount)
     {
         playerMoney += amount;
         UpdateMoneyDisplay();
-        Debug.Log("💰 +" + amount + "€ | Total: " + playerMoney + "€");
+        Debug.Log("+" + amount + "€ | Total: " + playerMoney + "€");
         
         if (AudioManager.Instance != null)
         {
@@ -253,13 +276,18 @@ public class GameManager : MonoBehaviour
         {
             StatsManager.Instance.OnMoneyEarned(amount);
         }
+		
+		if (NotificationManager.Instance != null)
+    	{
+    	    NotificationManager.Instance.UpdateAllNotifications();
+    	}
     }
     
     public void RemoveMoney(int amount)
     {
         playerMoney -= amount;
         UpdateMoneyDisplay();
-        Debug.Log("💸 -" + amount + "€ | Total: " + playerMoney + "€");
+        Debug.Log("-" + amount + "€ | Total: " + playerMoney + "€");
         
         if (FeedbackManager.Instance != null && moneyText != null)
         {
@@ -276,6 +304,10 @@ public class GameManager : MonoBehaviour
         {
             StatsManager.Instance.OnMoneySpent(amount);
         }
+   		 if (NotificationManager.Instance != null)
+   		 {
+    	    NotificationManager.Instance.UpdateAllNotifications();
+    	 }
     }
     
     public bool HasEnoughMoney(int amount)
@@ -287,7 +319,7 @@ public class GameManager : MonoBehaviour
     {
         if (materialIndex < 0 || materialIndex >= craftingMaterials.Count)
         {
-            Debug.LogError("❌ Index de matériau invalide !");
+            Debug.LogError("Index de matériau invalide !");
             return;
         }
         
@@ -310,7 +342,7 @@ public class GameManager : MonoBehaviour
             RemoveMoney(totalCost);
             mat.AddQuantity(quantity);
             
-            Debug.Log("✅ Achat : " + quantity + "x " + mat.materialName + " pour " + totalCost + "€");
+            Debug.Log("Achat : " + quantity + "x " + mat.materialName + " pour " + totalCost + "€");
             
             if (StatsManager.Instance != null)
             {
@@ -334,8 +366,10 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("⚠️ Pas assez d'argent ! Manque " + (totalCost - playerMoney) + "€");
+            Debug.LogWarning("Pas assez d'argent ! Manque " + (totalCost - playerMoney) + "€");
         }
+
+		RefreshAllUI();
     }
     
     public CraftingMaterial GetMaterial(int index)
@@ -412,7 +446,7 @@ public class GameManager : MonoBehaviour
     {
         if (productIndex < 0 || productIndex >= products.Count)
         {
-            Debug.LogError("❌ Index de produit invalide !");
+            Debug.LogError("Index de produit invalide !");
             return;
         }
     
@@ -427,7 +461,7 @@ public class GameManager : MonoBehaviour
                 hasAllMaterials = false;
                 if (mat != null)
                 {
-                    Debug.LogWarning("⚠️ Pas assez de " + mat.materialName);
+                    Debug.LogWarning("Pas assez de " + mat.materialName);
                 }
                 break;
             }
@@ -443,7 +477,7 @@ public class GameManager : MonoBehaviour
         
             prod.AddQuantity(1);
         
-            Debug.Log("✅ Production : 1x " + prod.productName);
+            Debug.Log("Production : 1x " + prod.productName);
 
             if (StatsManager.Instance != null)
             {
@@ -467,7 +501,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("⚠️ Matériaux insuffisants pour " + prod.productName);
+            Debug.LogWarning("Matériaux insuffisants pour " + prod.productName);
         }
     
         RefreshAllUI();
@@ -477,7 +511,7 @@ public class GameManager : MonoBehaviour
     {
         if (productIndex < 0 || productIndex >= products.Count)
         {
-            Debug.LogError("❌ Index de produit invalide !");
+            Debug.LogError("Index de produit invalide !");
             return;
         }
     
@@ -512,7 +546,7 @@ public class GameManager : MonoBehaviour
             prod.RemoveQuantity(quantity);
             AddMoney(earnings);
         
-            Debug.Log("✅ Vente : " + quantity + "x " + prod.productName + " = " + earnings + "€");
+            Debug.Log("Vente : " + quantity + "x " + prod.productName + " = " + earnings + "€");
 
             if (ComboManager.Instance != null)
             {
@@ -543,7 +577,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("⚠️ Stock insuffisant de " + prod.productName);
+            Debug.LogWarning("Stock insuffisant de " + prod.productName);
         }
     }
     
@@ -551,7 +585,7 @@ public class GameManager : MonoBehaviour
     {
         if (upgradeIndex < 0 || upgradeIndex >= upgrades.Count)
         {
-            Debug.LogError("❌ Index d'amélioration invalide !");
+            Debug.LogError("Index d'amélioration invalide !");
             return;
         }
         
@@ -559,7 +593,7 @@ public class GameManager : MonoBehaviour
         
         if (upg.isPurchased)
         {
-            Debug.LogWarning("⚠️ Déjà acheté : " + upg.upgradeName);
+            Debug.LogWarning("Déjà acheté : " + upg.upgradeName);
             return;
         }
         
@@ -569,7 +603,7 @@ public class GameManager : MonoBehaviour
             upg.Purchase();
             ApplyUpgradeEffect(upg);
             
-            Debug.Log("✅ Amélioration : " + upg.upgradeName);
+            Debug.Log("Amélioration : " + upg.upgradeName);
             
             if (StatsManager.Instance != null)
             {
@@ -595,7 +629,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("⚠️ Pas assez d'argent !");
+            Debug.LogWarning("Pas assez d'argent !");
             
             if (AudioManager.Instance != null)
             {
@@ -617,7 +651,7 @@ public class GameManager : MonoBehaviour
                     mat.price -= reduction;
                     if (mat.price < 1) mat.price = 1;
                 }
-                Debug.Log("📉 Prix matériaux réduits de " + upg.value + "%");
+                Debug.Log("Prix matériaux réduits de " + upg.value + "%");
                 break;
                 
             case UpgradeType.SalesBonus:
@@ -626,18 +660,18 @@ public class GameManager : MonoBehaviour
                     int bonus = Mathf.RoundToInt(prod.sellPrice * upg.value / 100f);
                     prod.sellPrice += bonus;
                 }
-                Debug.Log("📈 Prix vente augmentés de " + upg.value + "%");
+                Debug.Log("Prix vente augmentés de " + upg.value + "%");
                 break;
                 
             case UpgradeType.ProductionSpeed:
-                Debug.Log("⚙️ Vitesse production augmentée");
+                Debug.Log("⚙Vitesse production augmentée");
                 break;
                 
             case UpgradeType.DailyIncomeBoost:
                 if (timeManager != null)
                 {
                     timeManager.dailyIncome += upg.value;
-                    Debug.Log("💵 Revenus quotidiens +" + upg.value + "€");
+                    Debug.Log("Revenus quotidiens +" + upg.value + "€");
                 }
                 break;
                 
@@ -646,7 +680,7 @@ public class GameManager : MonoBehaviour
                 {
                     timeManager.weeklyCost -= upg.value;
                     if (timeManager.weeklyCost < 0) timeManager.weeklyCost = 0;
-                    Debug.Log("💸 Charges réduites de " + upg.value + "€");
+                    Debug.Log("Charges réduites de " + upg.value + "€");
                 }
                 break;
         }
@@ -786,7 +820,7 @@ public class GameManager : MonoBehaviour
             if (timeManager != null && progressionManager != null)
             {
                 saveManager.SaveGame(this, timeManager, progressionManager);
-                Debug.Log("💾 Sauvegarde auto fermeture");
+                Debug.Log("Sauvegarde auto fermeture");
             }
         }
     }
@@ -803,7 +837,7 @@ public class GameManager : MonoBehaviour
                 if (timeManager != null && progressionManager != null)
                 {
                     saveManager.SaveGame(this, timeManager, progressionManager);
-                    Debug.Log("💾 Sauvegarde auto pause");
+                    Debug.Log("Sauvegarde auto pause");
                 }
             }
         }

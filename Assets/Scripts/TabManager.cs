@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TabManager : MonoBehaviour
 {
@@ -23,6 +24,9 @@ public class TabManager : MonoBehaviour
     public Button ordersTabButton;
     public Button buildingTabButton;
     
+    // === DÉBLOCAGE ONGLETS ===
+    public int buildingUnlockLevel = 10;  // Niveau requis pour débloquer l'atelier
+    
     // Couleurs pour les boutons actifs/inactifs
     private Color activeColor = new Color(1f, 1f, 1f, 1f);
     private Color inactiveColor = new Color(0.7f, 0.7f, 0.7f, 1f);
@@ -44,12 +48,42 @@ public class TabManager : MonoBehaviour
         ordersTabButton.onClick.AddListener(() => ShowTab("orders"));  
         buildingTabButton.onClick.AddListener(() => ShowTab("building"));  
         
-    
+        // Vérifie l'accès à l'onglet Atelier
+        Invoke("UpdateBuildingTabAccess", 0.1f);
+        
         // Affiche la boutique par défaut au démarrage
         ShowTab("shop");
     }
     
-    
+    // Met à jour l'accès à l'onglet Atelier
+    public void UpdateBuildingTabAccess()
+    {
+        ProgressionManager progressionManager = FindObjectOfType<ProgressionManager>();
+        
+        if (progressionManager != null && buildingTabButton != null)
+        {
+            bool canAccessBuilding = progressionManager.currentLevel >= buildingUnlockLevel;
+            
+            // Active/désactive le bouton
+            buildingTabButton.interactable = canAccessBuilding;
+            
+            // Change le texte du bouton
+            TextMeshProUGUI buttonText = buildingTabButton.GetComponentInChildren<TextMeshProUGUI>();
+            if (buttonText != null)
+            {
+                if (canAccessBuilding)
+                {
+                    buttonText.text = "🏠 Atelier";
+                }
+                else
+                {
+                    buttonText.text = "🔒 Niv." + buildingUnlockLevel;
+                }
+            }
+            
+            Debug.Log("🔓 Atelier " + (canAccessBuilding ? "ACCESSIBLE" : "VERROUILLÉ (Niv." + buildingUnlockLevel + " requis)"));
+        }
+    }
     
     // Fonction pour afficher un onglet
     public void ShowTab(string tabName)
@@ -138,8 +172,6 @@ public class TabManager : MonoBehaviour
                 HighlightButton(buildingTabButton);  
                 Debug.Log("📂 Onglet Atelier affiché");
                 break;
-
-
 
             default:
                 Debug.LogWarning("⚠️ Onglet inconnu : " + tabName);

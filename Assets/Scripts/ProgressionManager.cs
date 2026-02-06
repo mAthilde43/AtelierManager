@@ -99,6 +99,15 @@ public class ProgressionManager : MonoBehaviour
         {
             RecipeUnlockManager.Instance.OnLevelUp();
         }
+        
+        // ===== NOUVEAU CODE =====
+        // Met à jour l'accès à l'onglet Atelier
+        TabManager tabManager = FindObjectOfType<TabManager>();
+        if (tabManager != null)
+        {
+            tabManager.UpdateBuildingTabAccess();
+        }
+        // ========================
     }
     
     // Donne les récompenses du niveau
@@ -111,6 +120,20 @@ public class ProgressionManager : MonoBehaviour
         
         // Déblocages selon le niveau
         UnlockContentAtLevel(currentLevel);
+        
+        // ===== NOUVEAU CODE =====
+        // Notification de déblocage de l'atelier
+        if (currentLevel == 10)
+        {
+            if (FeedbackManager.Instance != null)
+            {
+                Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
+                FeedbackManager.Instance.ShowSuccess("🏗️ ATELIER DÉBLOQUÉ !\nVous pouvez maintenant améliorer votre espace !", screenCenter);
+            }
+            
+            Debug.Log("🏗️ ATELIER DÉBLOQUÉ ! Vous pouvez maintenant construire et améliorer votre espace de travail !");
+        }
+        // ========================
     }
     
     // Débloque du contenu selon le niveau

@@ -11,7 +11,7 @@ public class OrderManager : MonoBehaviour
         {
             if (instance == null)
             {
-                instance = FindFirstObjectByType<OrderManager>();  // ← Corrigé
+                instance = FindFirstObjectByType<OrderManager>();  
             }
             return instance;
         }
@@ -51,7 +51,7 @@ public class OrderManager : MonoBehaviour
     {
         gameManager = FindFirstObjectByType<GameManager>();  // ← Corrigé
         
-        Debug.Log("📋 OrderManager initialisé");
+        Debug.Log("OrderManager initialisé");
         
         GenerateRandomOrder();
     }
@@ -109,7 +109,7 @@ public class OrderManager : MonoBehaviour
     {
         if (gameManager == null)
         {
-            gameManager = FindFirstObjectByType<GameManager>();  // ← Corrigé
+            gameManager = FindFirstObjectByType<GameManager>();  
             if (gameManager == null) return;
         }
         
@@ -117,7 +117,7 @@ public class OrderManager : MonoBehaviour
         string orderID = "CMD_" + orderCounter.ToString("D3");
         string clientName = clientNames[Random.Range(0, clientNames.Length)];
         
-        ProgressionManager pm = FindFirstObjectByType<ProgressionManager>();  // ← Corrigé
+        ProgressionManager pm = FindFirstObjectByType<ProgressionManager>();  
         int playerLevel = pm != null ? pm.currentLevel : 1;
         
         int numProducts = Mathf.Min(1 + (playerLevel / 3), 4);
@@ -156,7 +156,7 @@ public class OrderManager : MonoBehaviour
         
         activeOrders.Add(newOrder);
         
-        Debug.Log("📋 Nouvelle commande : " + orderID + " de " + clientName + " - " + newOrder.reward + "€ - " + newOrder.GetFormattedTimeRemaining());
+        Debug.Log("Nouvelle commande : " + orderID + " de " + clientName + " - " + newOrder.reward + "€ - " + newOrder.GetFormattedTimeRemaining());
         
         RefreshOrdersUI();
     }
@@ -167,13 +167,13 @@ public class OrderManager : MonoBehaviour
         
         if (!order.CanBeCompleted(gameManager))
         {
-            Debug.LogWarning("⚠️ Impossible de compléter la commande : stock insuffisant");
+            Debug.LogWarning("⚠Impossible de compléter la commande : stock insuffisant");
             return;
         }
         
         order.Complete(gameManager);
         
-        ProgressionManager pm = FindFirstObjectByType<ProgressionManager>();  // ← Corrigé
+        ProgressionManager pm = FindFirstObjectByType<ProgressionManager>();
         if (pm != null)
         {
             int xpBonus = order.reward / 2;
@@ -194,7 +194,7 @@ public class OrderManager : MonoBehaviour
     
     void OnOrderFailed(Order order)
     {
-        Debug.Log("❌ Commande échouée : " + order.orderID + " de " + order.clientName);
+        Debug.Log("Commande échouée : " + order.orderID + " de " + order.clientName);
         RefreshOrdersUI();
     }
     
