@@ -32,6 +32,13 @@ public class TimeManager : MonoBehaviour
         
         Debug.Log("TimeManager initialisé - Jour " + currentDay + ", Semaine " + currentWeek);
     }
+
+	public void OnGameLoaded()
+{
+    // Met à jour l'affichage avec les valeurs chargées
+    UpdateTimeDisplay();
+    Debug.Log("📅 Temps chargé : Jour " + currentDay + ", Semaine " + currentWeek);
+}
     
     void Update()
     {

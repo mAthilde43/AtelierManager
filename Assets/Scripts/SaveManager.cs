@@ -186,6 +186,9 @@ public class SaveManager : MonoBehaviour
         tm.currentDay = PlayerPrefs.GetInt("CurrentDay", 1);
         tm.currentWeek = PlayerPrefs.GetInt("CurrentWeek", 1);
 
+        // Met à jour l'affichage du TimeManager
+        tm.OnGameLoaded();
+
         // === PROGRESSION ===
         pm.currentLevel = PlayerPrefs.GetInt("CurrentLevel", 1);
         pm.currentExperience = PlayerPrefs.GetInt("CurrentExperience", 0);
