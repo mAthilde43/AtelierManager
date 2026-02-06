@@ -115,350 +115,351 @@ public class BuildingManager : MonoBehaviour
     
     // Initialise tous les éléments constructibles
     void InitializeBuildings()
-    {
-        allElements.Clear();
-        
-        // ===== STRUCTURES (5 éléments) =====
-        
-        allElements.Add(new BuildingElement(
-            "Atelier de base",
-            "Votre premier atelier ! Gratuit et déjà construit.",
-            BuildingCategory.Structure,
-            0,
-            1,
-            "home",
-            BonusType.None,
-            0f
-        ));
-        allElements[0].isPurchased = true;
-        
-        allElements.Add(new BuildingElement(
-            "Showroom",
-            "Une vitrine pour exposer vos créations. +10% prix de vente.",
-            BuildingCategory.Structure,
-            1000,
-            3,
-            "shop",
-            BonusType.SalesBonus,
-            10f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Zone de stockage",
-            "Espace supplémentaire pour vos matériaux. +50 capacité.",
-            BuildingCategory.Structure,
-            1500,
-            5,
-            "storage",
-            BonusType.StorageCapacity,
-            50f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Bureau administratif",
-            "Pour gérer votre entreprise. +15% revenus quotidiens.",
-            BuildingCategory.Structure,
-            2000,
-            7,
-            "office",
-            BonusType.DailyIncome,
-            15f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Annexe de production",
-            "Doublez votre espace de travail ! +20% vitesse production.",
-            BuildingCategory.Structure,
-            3500,
-            10,
-            "factory",
-            BonusType.ProductionSpeed,
-            20f
-        ));
-        
-        // ===== ÉQUIPEMENTS (8 éléments) =====
-        
-        allElements.Add(new BuildingElement(
-            "Établi professionnel",
-            "Un établi de qualité. +10% vitesse de production.",
-            BuildingCategory.Equipment,
-            600,
-            2,
-            "workbench",
-            BonusType.ProductionSpeed,
-            10f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Scie électrique",
-            "Coupe précise et rapide. -8% coût matériaux.",
-            BuildingCategory.Equipment,
-            900,
-            4,
-            "saw",
-            BonusType.MaterialDiscount,
-            8f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Ponceuse industrielle",
-            "Finitions parfaites. +8% prix de vente.",
-            BuildingCategory.Equipment,
-            1100,
-            5,
-            "sander",
-            BonusType.SalesBonus,
-            8f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Compresseur d'air",
-            "Pour tous vos outils pneumatiques. +12% vitesse.",
-            BuildingCategory.Equipment,
-            1300,
-            6,
-            "compressor",
-            BonusType.ProductionSpeed,
-            12f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Perceuse à colonne",
-            "Précision maximale. +10% qualité produits.",
-            BuildingCategory.Equipment,
-            1500,
-            7,
-            "drill",
-            BonusType.SalesBonus,
-            10f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Ordinateur de gestion",
-            "Optimise votre production. +15% XP.",
-            BuildingCategory.Equipment,
-            1800,
-            8,
-            "computer",
-            BonusType.XPBonus,
-            15f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Robot d'assemblage",
-            "Automatisation partielle ! +25% vitesse production.",
-            BuildingCategory.Equipment,
-            3000,
-            10,
-            "robot",
-            BonusType.ProductionSpeed,
-            25f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Imprimante 3D",
-            "Prototypage rapide. -12% coût matériaux.",
-            BuildingCategory.Equipment,
-            2500,
-            9,
-            "printer3d",
-            BonusType.MaterialDiscount,
-            12f
-        ));
-        
-        // ===== MEUBLES (7 éléments) =====
-        
-        allElements.Add(new BuildingElement(
-            "Chaise ergonomique",
-            "Confort au travail. +5% efficacité employés.",
-            BuildingCategory.Furniture,
-            300,
-            2,
-            "chair",
-            BonusType.EmployeeEfficiency,
-            5f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Étagères murales",
-            "Organisation optimale. +10 capacité stockage.",
-            BuildingCategory.Furniture,
-            400,
-            3,
-            "shelf",
-            BonusType.StorageCapacity,
-            10f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Armoire sécurisée",
-            "Protégez vos outils. -5% coût maintenance.",
-            BuildingCategory.Furniture,
-            600,
-            4,
-            "locker",
-            BonusType.MaterialDiscount,
-            5f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Bureau design",
-            "Impressionnez vos clients ! +8% prix de vente.",
-            BuildingCategory.Furniture,
-            800,
-            5,
-            "desk",
-            BonusType.SalesBonus,
-            8f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Canapé d'accueil",
-            "Zone d'attente confortable. +5% commandes.",
-            BuildingCategory.Furniture,
-            900,
-            6,
-            "couch",
-            BonusType.OrderBonus,
-            5f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Table de réunion",
-            "Organisez vos équipes. +8% efficacité employés.",
-            BuildingCategory.Furniture,
-            1000,
-            7,
-            "table",
-            BonusType.EmployeeEfficiency,
-            8f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Casiers vestiaires",
-            "Espace pour vos employés. +10% efficacité.",
-            BuildingCategory.Furniture,
-            700,
-            6,
-            "lockers",
-            BonusType.EmployeeEfficiency,
-            10f
-        ));
-        
-        // ===== DÉCORATIONS (10 éléments) =====
-        
-        allElements.Add(new BuildingElement(
-            "Plante verte",
-            "Air frais et zen. +3% XP.",
-            BuildingCategory.Decoration,
-            150,
-            2,
-            "plant",
-            BonusType.XPBonus,
-            3f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Éclairage LED",
-            "Lumière parfaite. +5% vitesse production.",
-            BuildingCategory.Decoration,
-            400,
-            3,
-            "light",
-            BonusType.ProductionSpeed,
-            5f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Tableau motivant",
-            "Inspirez vos équipes ! +5% XP.",
-            BuildingCategory.Decoration,
-            300,
-            3,
-            "painting",
-            BonusType.XPBonus,
-            5f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Horloge murale",
-            "Gestion du temps optimale. +3% vitesse.",
-            BuildingCategory.Decoration,
-            200,
-            4,
-            "clock",
-            BonusType.ProductionSpeed,
-            3f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Tapis oriental",
-            "Style et confort. +5% prix de vente.",
-            BuildingCategory.Decoration,
-            500,
-            5,
-            "carpet",
-            BonusType.SalesBonus,
-            5f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Fontaine décorative",
-            "Ambiance relaxante. +8% XP.",
-            BuildingCategory.Decoration,
-            800,
-            6,
-            "fountain",
-            BonusType.XPBonus,
-            8f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Trophées de récompenses",
-            "Célébrez vos succès ! +10% XP.",
-            BuildingCategory.Decoration,
-            1000,
-            8,
-            "trophy",
-            BonusType.XPBonus,
-            10f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Aquarium",
-            "Détente et concentration. +7% XP.",
-            BuildingCategory.Decoration,
-            1200,
-            9,
-            "aquarium",
-            BonusType.XPBonus,
-            7f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Climatisation",
-            "Confort optimal. +10% efficacité employés.",
-            BuildingCategory.Decoration,
-            1500,
-            10,
-            "ac",
-            BonusType.EmployeeEfficiency,
-            10f
-        ));
-        
-        allElements.Add(new BuildingElement(
-            "Système audio",
-            "Musique motivante. +8% productivité générale.",
-            BuildingCategory.Decoration,
-            900,
-            7,
-            "speaker",
-            BonusType.ProductionSpeed,
-            8f
-        ));
-        
-        Debug.Log("" + allElements.Count + " éléments de construction créés");
-    }
+{
+    allElements.Clear();
+    
+    // ===== STRUCTURES (5 éléments) =====
+    
+    allElements.Add(new BuildingElement(
+        "Atelier de base",
+        "Votre premier atelier ! Gratuit et déjà construit.",
+        BuildingCategory.Structure,
+        0,
+        1,
+        "home",  
+        BonusType.None,
+        0f
+    ));
+    allElements[0].isPurchased = true;
+    
+    allElements.Add(new BuildingElement(
+        "Showroom",
+        "Une vitrine pour exposer vos créations. +10% prix de vente.",
+        BuildingCategory.Structure,
+        1000,
+        3,
+        "shop",
+        BonusType.SalesBonus,
+        10f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Zone de stockage",
+        "Espace supplémentaire pour vos matériaux. +50 capacité.",
+        BuildingCategory.Structure,
+        1500,
+        5,
+        "storage",
+        BonusType.StorageCapacity,
+        50f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Bureau administratif",
+        "Pour gérer votre entreprise. +15% revenus quotidiens.",
+        BuildingCategory.Structure,
+        2000,
+        7,
+        "office",
+        BonusType.DailyIncome,
+        15f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Annexe de production",
+        "Doublez votre espace de travail ! +20% vitesse production.",
+        BuildingCategory.Structure,
+        3500,
+        10,
+        "factory",
+        BonusType.ProductionSpeed,
+        20f
+    ));
+    
+    // ===== ÉQUIPEMENTS (8 éléments) =====
+    
+    allElements.Add(new BuildingElement(
+        "Établi professionnel",
+        "Un établi de qualité. +10% vitesse de production.",
+        BuildingCategory.Equipment,
+        600,
+        2,
+        "workbench",
+        BonusType.ProductionSpeed,
+        10f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Scie électrique",
+        "Coupe précise et rapide. -8% coût matériaux.",
+        BuildingCategory.Equipment,
+        900,
+        4,
+        "saw",
+        BonusType.MaterialDiscount,
+        8f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Ponceuse industrielle",
+        "Finitions parfaites. +8% prix de vente.",
+        BuildingCategory.Equipment,
+        1100,
+        5,
+        "sander",
+        BonusType.SalesBonus,
+        8f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Compresseur d'air",
+        "Pour tous vos outils pneumatiques. +12% vitesse.",
+        BuildingCategory.Equipment,
+        1300,
+        6,
+        "compressor",
+        BonusType.ProductionSpeed,
+        12f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Perceuse à colonne",
+        "Précision maximale. +10% qualité produits.",
+        BuildingCategory.Equipment,
+        1500,
+        7,
+        "drill",
+        BonusType.SalesBonus,
+        10f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Ordinateur de gestion",
+        "Optimise votre production. +15% XP.",
+        BuildingCategory.Equipment,
+        1800,
+        8,
+        "computer",
+        BonusType.XPBonus,
+        15f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Robot d'assemblage",
+        "Automatisation partielle ! +25% vitesse production.",
+        BuildingCategory.Equipment,
+        3000,
+        10,
+        "robot",
+        BonusType.ProductionSpeed,
+        25f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Imprimante 3D",
+        "Prototypage rapide. -12% coût matériaux.",
+        BuildingCategory.Equipment,
+        2500,
+        9,
+        "printer3d",
+        BonusType.MaterialDiscount,
+        12f
+    ));
+    
+    // ===== MEUBLES (7 éléments) =====
+    
+    allElements.Add(new BuildingElement(
+        "Chaise ergonomique",
+        "Confort au travail. +5% efficacité employés.",
+        BuildingCategory.Furniture,
+        300,
+        2,
+        "chair",
+        BonusType.EmployeeEfficiency,
+        5f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Étagères murales",
+        "Organisation optimale. +10 capacité stockage.",
+        BuildingCategory.Furniture,
+        400,
+        3,
+        "shelf",
+        BonusType.StorageCapacity,
+        10f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Armoire sécurisée",
+        "Protégez vos outils. -5% coût maintenance.",
+        BuildingCategory.Furniture,
+        600,
+        4,
+        "locker",
+        BonusType.MaterialDiscount,
+        5f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Bureau design",
+        "Impressionnez vos clients ! +8% prix de vente.",
+        BuildingCategory.Furniture,
+        800,
+        5,
+        "desk",
+        BonusType.SalesBonus,
+        8f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Canapé d'accueil",
+        "Zone d'attente confortable. +5% commandes.",
+        BuildingCategory.Furniture,
+        900,
+        6,
+        "couch",
+        BonusType.OrderBonus,
+        5f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Table de réunion",
+        "Organisez vos équipes. +8% efficacité employés.",
+        BuildingCategory.Furniture,
+        1000,
+        7,
+        "table",
+        BonusType.EmployeeEfficiency,
+        8f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Casiers vestiaires",
+        "Espace pour vos employés. +10% efficacité.",
+        BuildingCategory.Furniture,
+        700,
+        6,
+        "lockers",
+        BonusType.EmployeeEfficiency,
+        10f
+    ));
+    
+    // ===== DÉCORATIONS (10 éléments) =====
+    
+    allElements.Add(new BuildingElement(
+        "Plante verte",
+        "Air frais et zen. +3% XP.",
+        BuildingCategory.Decoration,
+        150,
+        2,
+        "plant",
+        BonusType.XPBonus,
+        3f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Éclairage LED",
+        "Lumière parfaite. +5% vitesse production.",
+        BuildingCategory.Decoration,
+        400,
+        3,
+        "light",
+        BonusType.ProductionSpeed,
+        5f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Tableau motivant",
+        "Inspirez vos équipes ! +5% XP.",
+        BuildingCategory.Decoration,
+        300,
+        3,
+        "painting",
+        BonusType.XPBonus,
+        5f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Horloge murale",
+        "Gestion du temps optimale. +3% vitesse.",
+        BuildingCategory.Decoration,
+        200,
+        4,
+        "clock",
+        BonusType.ProductionSpeed,
+        3f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Tapis oriental",
+        "Style et confort. +5% prix de vente.",
+        BuildingCategory.Decoration,
+        500,
+        5,
+        "carpet",
+        BonusType.SalesBonus,
+        5f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Fontaine décorative",
+        "Ambiance relaxante. +8% XP.",
+        BuildingCategory.Decoration,
+        800,
+        6,
+        "fountain",
+        BonusType.XPBonus,
+        8f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Trophées de récompenses",
+        "Célébrez vos succès ! +10% XP.",
+        BuildingCategory.Decoration,
+        1000,
+        8,
+        "trophy",
+        BonusType.XPBonus,
+        10f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Aquarium",
+        "Détente et concentration. +7% XP.",
+        BuildingCategory.Decoration,
+        1200,
+        9,
+        "aquarium",
+        BonusType.XPBonus,
+        7f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Climatisation",
+        "Confort optimal. +10% efficacité employés.",
+        BuildingCategory.Decoration,
+        1500,
+        10,
+        "ac",
+        BonusType.EmployeeEfficiency,
+        10f
+    ));
+    
+    allElements.Add(new BuildingElement(
+        "Système audio",
+        "Musique motivante. +8% productivité générale.",
+        BuildingCategory.Decoration,
+        900,
+        7,
+        "speaker",
+        BonusType.ProductionSpeed,
+        8f
+    ));
+    
+    Debug.Log("🏗️ " + allElements.Count + " éléments de construction créés");
+}
+
     
     // Achète un élément
     public void PurchaseElement(int index)

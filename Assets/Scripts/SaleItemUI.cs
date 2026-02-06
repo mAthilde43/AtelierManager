@@ -62,7 +62,6 @@ public class SaleItemUI : MonoBehaviour
             pointerExit.callback.AddListener((data) => { OnPointerExit(); });
             trigger.triggers.Add(pointerExit);
         }
-        // ==================================
     }
     
     // Met à jour l'affichage
@@ -78,7 +77,6 @@ public class SaleItemUI : MonoBehaviour
         {
             gameObject.SetActive(true);
         }
-        // =======================================
         
         productNameText.text = product.productName;
         priceText.text = "Prix: " + product.sellPrice + "€";
@@ -92,7 +90,6 @@ public class SaleItemUI : MonoBehaviour
         
         // ===== MET À JOUR LE TEXTE DU BOUTON =====
         UpdateButtonText();
-        // =========================================
     }
     
     // ===== SYSTÈME X1/X5/X10 =====
@@ -175,7 +172,7 @@ public class SaleItemUI : MonoBehaviour
             FeedbackManager.Instance.ShowSuccess("Mode x" + sellQuantity, sellButton.transform.position);
         }
         
-        Debug.Log("🔄 Mode de vente changé : x" + sellQuantity);
+        Debug.Log("Mode de vente changé : x" + sellQuantity);
     }
     
     void UpdateButtonText()
@@ -203,11 +200,11 @@ public class SaleItemUI : MonoBehaviour
             if (actualQuantity > 0)
             {
                 gameManager.SellProduct(productIndex, actualQuantity);
-                Debug.Log("✅ " + actualQuantity + " produit(s) vendu(s) !");
+                Debug.Log("" + actualQuantity + " produit(s) vendu(s) !");
             }
             else
             {
-                Debug.LogWarning("⚠️ Stock insuffisant !");
+                Debug.LogWarning("Stock insuffisant !");
                 
                 if (FeedbackManager.Instance != null && sellButton != null)
                 {
@@ -219,6 +216,4 @@ public class SaleItemUI : MonoBehaviour
             UpdateDisplay(prod);
         }
     }
-    
-    // ==============================
 }

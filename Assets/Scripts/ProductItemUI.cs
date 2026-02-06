@@ -79,7 +79,7 @@ public class ProductItemUI : MonoBehaviour
         {
             gameObject.SetActive(true);
         }
-        // =======================================
+        
         
         productNameText.text = product.productName;
         sellPriceText.text = "Vente: " + product.sellPrice + "€";
@@ -117,7 +117,6 @@ public class ProductItemUI : MonoBehaviour
         
         // ===== MET À JOUR LE TEXTE DU BOUTON =====
         UpdateButtonText();
-        // =========================================
     }
     
     // ===== SYSTÈME X1/X5/X10 =====
@@ -200,7 +199,7 @@ public class ProductItemUI : MonoBehaviour
             FeedbackManager.Instance.ShowSuccess("Mode x" + craftQuantity, craftButton.transform.position);
         }
         
-        Debug.Log("🔄 Mode de fabrication changé : x" + craftQuantity);
+        Debug.Log("Mode de fabrication changé : x" + craftQuantity);
     }
     
     void UpdateButtonText()
@@ -251,7 +250,7 @@ public class ProductItemUI : MonoBehaviour
             
             if (crafted < craftQuantity)
             {
-                Debug.LogWarning("⚠️ Seulement " + crafted + " produit(s) fabriqué(s) (manque de matériaux)");
+                Debug.LogWarning("Seulement " + crafted + " produit(s) fabriqué(s) (manque de matériaux)");
                 
                 if (FeedbackManager.Instance != null && craftButton != null)
                 {
@@ -260,13 +259,11 @@ public class ProductItemUI : MonoBehaviour
             }
             else
             {
-                Debug.Log("✅ " + crafted + " produit(s) fabriqué(s) !");
+                Debug.Log("" + crafted + " produit(s) fabriqué(s) !");
             }
             
             // Met à jour l'affichage
             UpdateDisplay(prod);
         }
     }
-    
-    // ==============================
 }

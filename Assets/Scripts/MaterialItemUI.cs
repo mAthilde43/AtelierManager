@@ -243,7 +243,7 @@ public class MaterialItemUI : MonoBehaviour
             
             int finalCost = Mathf.RoundToInt(baseCost);
             
-            Debug.Log("💰 Achat x" + purchaseQuantity + " : " + currentMaterial.price + "€ → " + finalCost + "€");
+            Debug.Log("Achat x" + purchaseQuantity + " : " + currentMaterial.price + "€ → " + finalCost + "€");
             
             // Achète la quantité sélectionnée
             gameManager.BuyMaterial(materialIndex, purchaseQuantity);
