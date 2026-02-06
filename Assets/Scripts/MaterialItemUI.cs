@@ -21,7 +21,7 @@ public class MaterialItemUI : MonoBehaviour
     private int purchaseQuantity = 1;        // Quantité actuelle (1, 5 ou 10)
     private float holdTimer = 0f;            // Timer pour le maintien
     private bool isHolding = false;          // Bouton maintenu ?
-    private float holdDuration = 3f;         // Durée requise (3 secondes)
+    private float holdDuration = 1f;         // Durée requise (2 secondes)
     
     // Initialise l'élément
     public void Setup(int index, CraftingMaterial craftingMaterial, GameManager gm)
@@ -212,7 +212,7 @@ public class MaterialItemUI : MonoBehaviour
             FeedbackManager.Instance.ShowSuccess("Mode x" + purchaseQuantity, buyButton.transform.position);
         }
         
-        Debug.Log("🔄 Mode d'achat changé : x" + purchaseQuantity);
+        Debug.Log("Mode d'achat changé : x" + purchaseQuantity);
     }
     
     // Met à jour le texte du bouton

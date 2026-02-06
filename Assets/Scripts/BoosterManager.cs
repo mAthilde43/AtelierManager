@@ -308,42 +308,53 @@ public class BoosterManager : MonoBehaviour
 
     
     // Achète le booster actuel
+    // Achète le booster actuel
     void BuyCurrentBooster()
     {
-        if (currentOffer == null) return;
-        
+        // ===== PROTECTION CONTRE NULL =====
+        if (currentOffer == null)
+        {
+            Debug.LogWarning("⚠️ Aucun booster à acheter !");
+            CloseBoosterPopup();
+            return;
+        }
+    
+        // Sauvegarde le booster dans une variable locale
+        Booster boosterToActivate = currentOffer;
+    
         // Vérifie si on a assez d'argent
-        if (gameManager != null && gameManager.HasEnoughMoney(currentOffer.cost))
+        if (gameManager != null && gameManager.HasEnoughMoney(boosterToActivate.cost))
         {
             // Retire l'argent
-            gameManager.RemoveMoney(currentOffer.cost);
-            
+            gameManager.RemoveMoney(boosterToActivate.cost);
+        
             // Active le booster
-            ActivateBooster(currentOffer);
-            
-            // Cache la popup et l'offre
-            CloseBoosterPopup();
-            HideBoosterOffer();
-            
-            Debug.Log("Booster acheté : " + currentOffer.boosterName);
-            
+            ActivateBooster(boosterToActivate);
+        
+            Debug.Log("✅ Booster acheté : " + boosterToActivate.boosterName);
+        
             // Son de succès
             if (AudioManager.Instance != null)
             {
                 AudioManager.Instance.PlaySuccess();
             }
-            
+        
             // Feedback visuel
             if (FeedbackManager.Instance != null)
             {
                 Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
-                FeedbackManager.Instance.ShowSuccess("⚡ " + currentOffer.boosterName.ToUpper() + " ACTIVÉ !", screenCenter);
+                FeedbackManager.Instance.ShowSuccess("⚡ " + boosterToActivate.boosterName.ToUpper() + " ACTIVÉ !", screenCenter);
             }
+        
+            // Cache la popup et l'offre APRÈS avoir utilisé currentOffer
+            CloseBoosterPopup();
+            HideBoosterOffer();
+            
         }
         else
         {
-            Debug.LogWarning("Pas assez d'argent pour " + currentOffer.boosterName);
-            
+            Debug.LogWarning("⚠️ Pas assez d'argent pour " + boosterToActivate.boosterName);
+        
             // Son d'erreur
             if (AudioManager.Instance != null)
             {
@@ -351,6 +362,7 @@ public class BoosterManager : MonoBehaviour
             }
         }
     }
+
     
     // Active un booster
     void ActivateBooster(Booster booster)
