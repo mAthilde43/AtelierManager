@@ -39,11 +39,11 @@ public class EventPopupUI : MonoBehaviour
             string choice1String = gameEvent.choice1Text + "\n";
             if (gameEvent.choice1Cost < 0)
             {
-                choice1String += "💸 Coût: " + (-gameEvent.choice1Cost) + "€";
+                choice1String += "Coût: " + (-gameEvent.choice1Cost) + "€";
             }
             else if (gameEvent.choice1Cost > 0)
             {
-                choice1String += "💰 Gain: +" + gameEvent.choice1Cost + "€";
+                choice1String += "Gain: +" + gameEvent.choice1Cost + "€";
             }
 
             if (gameEvent.choice1Effect > 0)
@@ -59,11 +59,11 @@ public class EventPopupUI : MonoBehaviour
             string choice2String = gameEvent.choice2Text + "\n";
             if (gameEvent.choice2Cost < 0)
             {
-                choice2String += "💸 Coût: " + (-gameEvent.choice2Cost) + "€";
+                choice2String += "Coût: " + (-gameEvent.choice2Cost) + "€";
             }
             else if (gameEvent.choice2Cost > 0)
             {
-                choice2String += "💰 Gain: +" + gameEvent.choice2Cost + "€";
+                choice2String += "Gain: +" + gameEvent.choice2Cost + "€";
             }
 
             if (gameEvent.choice2Effect > 0)
@@ -102,14 +102,14 @@ public class EventPopupUI : MonoBehaviour
 
     void OnChoice1Clicked()
     {
-        Debug.Log("🔵 Choix 1 cliqué");
+        Debug.Log("Choix 1 cliqué");
         if (eventManager != null)
         {
             eventManager.OnChoiceMade(1);
         }
         else
         {
-            Debug.LogError("❌ EventManager est null !");
+            Debug.LogError("EventManager est null !");
         }
     }
     
@@ -122,7 +122,7 @@ public class EventPopupUI : MonoBehaviour
         }
         else
         {
-            Debug.LogError("❌ EventManager est null !");
+            Debug.LogError("EventManager est null !");
         }
     }
     
@@ -135,7 +135,7 @@ public class EventPopupUI : MonoBehaviour
         }
         else
         {
-            Debug.LogError("❌ EventManager est null !");
+            Debug.LogError("EventManager est null !");
         }
     }
 }

@@ -39,7 +39,7 @@ public class Employee
     // Met à jour l'employé (appelé chaque frame)
     public void Update(float deltaTime)
     {
-        Debug.Log($"📍 {employeeName}.Update() - isHired={isHired}, isActive={isActive}, deltaTime={deltaTime:F4}");
+        Debug.Log($" {employeeName}.Update() - isHired={isHired}, isActive={isActive}, deltaTime={deltaTime:F4}");
     
         if (!isHired || !isActive)
         {
@@ -47,9 +47,9 @@ public class Employee
             return;
         }
     
-        Debug.Log($"✅ {employeeName} - Passage du test, incrémentation du timer");
+        Debug.Log($"{employeeName} - Passage du test, incrémentation du timer");
         productionTimer += deltaTime;
-        Debug.Log($"⏱️ {employeeName} - Timer après ajout: {productionTimer:F2} / {productionSpeed}");
+        Debug.Log($"{employeeName} - Timer après ajout: {productionTimer:F2} / {productionSpeed}");
     
         //if (productionTimer >= productionSpeed)
         //{
@@ -77,14 +77,14 @@ public class Employee
         isHired = true;
         isActive = true;
         productionTimer = 0f;
-        Debug.Log("✅ " + employeeName + " embauché !");
+        Debug.Log("" + employeeName + " embauché !");
     }
     
     // Active/désactive l'employé
     public void ToggleActive()
     {
         isActive = !isActive;
-        Debug.Log(employeeName + (isActive ? " 🟢 activé" : " 🔴 désactivé"));
+        Debug.Log(employeeName + (isActive ? "activé" : "désactivé"));
     }
     
     // Améliore l'employé (augmente vitesse, réduit coût)
@@ -92,6 +92,6 @@ public class Employee
     {
         level++;
         productionSpeed *= 0.9f; // 10% plus rapide
-        Debug.Log("⬆️ " + employeeName + " niveau " + level + " !");
+        Debug.Log("" + employeeName + " niveau " + level);
     }
 }

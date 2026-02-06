@@ -37,7 +37,7 @@ public class SaveManager : MonoBehaviour
     {
         if (gm == null || tm == null || pm == null)
         {
-            Debug.LogError("❌ Impossible de sauvegarder : références manquantes !");
+            Debug.LogError("Impossible de sauvegarder : références manquantes !");
             return;
         }
 
@@ -65,7 +65,7 @@ public class SaveManager : MonoBehaviour
             PlayerPrefs.SetInt("Product_" + i + "_Quantity", gm.products[i].quantity);
             PlayerPrefs.SetInt("Product_" + i + "_Unlocked", gm.products[i].isUnlocked ? 1 : 0);
 
-            Debug.Log("💾 Sauvegarde produit " + i + " (" + gm.products[i].productName + ") : Débloqué = " +
+            Debug.Log("Sauvegarde produit " + i + " (" + gm.products[i].productName + ") : Débloqué = " +
                       gm.products[i].isUnlocked);
         }
 
@@ -92,7 +92,7 @@ public class SaveManager : MonoBehaviour
             PlayerPrefs.SetInt("Stats_HighestMoneyAmount", sm.stats.highestMoneyAmount);
             PlayerPrefs.SetInt("Stats_MostExpensiveProductSold", sm.stats.mostExpensiveProductSold);
 
-            Debug.Log("💾 Statistiques sauvegardées");
+            Debug.Log("Statistiques sauvegardées");
         }
 
         // ===== EMPLOYÉS =====
@@ -107,7 +107,7 @@ public class SaveManager : MonoBehaviour
                 PlayerPrefs.SetInt("Employee_" + i + "_Level", emp.level);
             }
 
-            Debug.Log("💾 Employés sauvegardés");
+            Debug.Log("Employés sauvegardés");
         }
 
         // ===== COMMANDES =====
@@ -145,7 +145,7 @@ public class SaveManager : MonoBehaviour
                 PlayerPrefs.SetInt("OrderCounter", orderCounter);
             }
 
-            Debug.Log("💾 Commandes sauvegardées");
+            Debug.Log("Commandes sauvegardées");
         }
 
         // ===== BÂTIMENTS =====
@@ -158,7 +158,7 @@ public class SaveManager : MonoBehaviour
         PlayerPrefs.SetString("LastSaveDate", System.DateTime.Now.ToString());
 
         PlayerPrefs.Save();
-        Debug.Log("💾 Jeu sauvegardé avec succès !");
+        Debug.Log("Jeu sauvegardé avec succès !");
     }
 
     // Charge toutes les données
@@ -166,17 +166,17 @@ public class SaveManager : MonoBehaviour
     {
         if (!HasSaveData())
         {
-            Debug.Log("ℹ️ Aucune sauvegarde trouvée - Nouvelle partie");
+            Debug.Log("Aucune sauvegarde trouvée - Nouvelle partie");
             return;
         }
 
         if (gm == null || tm == null || pm == null)
         {
-            Debug.LogError("❌ Impossible de charger : références manquantes !");
+            Debug.LogError("Impossible de charger : références manquantes !");
             return;
         }
 
-        Debug.Log("📂 Chargement de la sauvegarde...");
+        Debug.Log("Chargement de la sauvegarde...");
 
         // === ARGENT ===
         gm.playerMoney = PlayerPrefs.GetInt("PlayerMoney", 1000);
@@ -206,13 +206,13 @@ public class SaveManager : MonoBehaviour
 
             bool isUnlocked = PlayerPrefs.GetInt("Product_" + i + "_Unlocked", 0) == 1;
 
-            Debug.Log("📂 Chargement produit " + i + " (" + gm.products[i].productName + ") : Débloqué en save = " +
+            Debug.Log("Chargement produit " + i + " (" + gm.products[i].productName + ") : Débloqué en save = " +
                       isUnlocked);
 
             if (isUnlocked)
             {
                 gm.products[i].isUnlocked = true;
-                Debug.Log("✅ Produit " + gm.products[i].productName + " débloqué depuis la sauvegarde");
+                Debug.Log("Produit " + gm.products[i].productName + " débloqué depuis la sauvegarde");
             }
         }
 
@@ -246,7 +246,7 @@ public class SaveManager : MonoBehaviour
             sm.stats.highestMoneyAmount = PlayerPrefs.GetInt("Stats_HighestMoneyAmount", 0);
             sm.stats.mostExpensiveProductSold = PlayerPrefs.GetInt("Stats_MostExpensiveProductSold", 0);
 
-            Debug.Log("📊 Statistiques chargées");
+            Debug.Log("Statistiques chargées");
         }
 
         // ===== EMPLOYÉS =====
@@ -267,7 +267,7 @@ public class SaveManager : MonoBehaviour
                 }
             }
 
-            Debug.Log("📊 Employés chargés");
+            Debug.Log("Employés chargés");
         }
 
         // ===== COMMANDES =====
@@ -317,14 +317,14 @@ public class SaveManager : MonoBehaviour
                     }
                 }
 
-                Debug.Log("📊 Commandes chargées : " + om.activeOrders.Count + " actives");
+                Debug.Log("Commandes chargées : " + om.activeOrders.Count + " actives");
             }
         }
 
         gm.RefreshAllUI();
 
         string lastSave = PlayerPrefs.GetString("LastSaveDate", "Inconnue");
-        Debug.Log("✅ Sauvegarde chargée ! Dernière sauvegarde : " + lastSave);
+        Debug.Log("Sauvegarde chargée ! Dernière sauvegarde : " + lastSave);
 
         TabManager tabManager = FindObjectOfType<TabManager>();
         if (tabManager != null)
@@ -332,7 +332,7 @@ public class SaveManager : MonoBehaviour
             tabManager.UpdateBuildingTabAccess();
         }
 
-        Debug.Log("📂 Partie chargée complètement !");
+        Debug.Log("Partie chargée complètement !");
     }
 
     // Vérifie si une sauvegarde existe
@@ -346,13 +346,13 @@ public class SaveManager : MonoBehaviour
     {
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
-        Debug.Log("🗑️ Sauvegarde supprimée - Nouvelle partie");
+        Debug.Log("Sauvegarde supprimée - Nouvelle partie");
     }
     
     // Réinitialise TOUTES les données de sauvegarde (Nouvelle Partie)
     public void ResetGame()
     {
-        Debug.Log("🔄 Réinitialisation de toutes les données...");
+        Debug.Log("Réinitialisation de toutes les données...");
         
         // Supprime TOUTES les PlayerPrefs
         PlayerPrefs.DeleteAll();
@@ -396,7 +396,7 @@ public class SaveManager : MonoBehaviour
         
         PlayerPrefs.Save();
         
-        Debug.Log("✅ Toutes les données ont été réinitialisées !");
+        Debug.Log("Toutes les données ont été réinitialisées !");
     }
     
     // Sauvegarde automatique toutes les X secondes
@@ -423,7 +423,7 @@ public class SaveManager : MonoBehaviour
         if (gm != null && tm != null && pm != null)
         {
             SaveGame(gm, tm, pm);
-            Debug.Log("💾 Sauvegarde automatique effectuée");
+            Debug.Log("Sauvegarde automatique effectuée");
         
             ShowSaveIndicator();
         }

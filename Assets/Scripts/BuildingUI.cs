@@ -27,7 +27,7 @@ public class BuildingUI : MonoBehaviour
         // Initialise l'affichage
         RefreshDisplay();
         
-        Debug.Log("🎨 BuildingUI initialisé");
+        Debug.Log("BuildingUI initialisé");
     }
     
     // Rafraîchit l'affichage complet
@@ -35,7 +35,7 @@ public class BuildingUI : MonoBehaviour
     {
         if (buildingManager == null || elementsContainer == null || elementPrefab == null)
         {
-            Debug.LogError("❌ BuildingUI : Références manquantes !");
+            Debug.LogError("BuildingUI : Références manquantes !");
             return;
         }
         
@@ -51,7 +51,7 @@ public class BuildingUI : MonoBehaviour
         // Met à jour le texte de progression
         UpdateProgressText();
         
-        Debug.Log("🔄 BuildingUI rafraîchi : " + elementUIList.Count + " éléments affichés");
+        Debug.Log("BuildingUI rafraîchi : " + elementUIList.Count + " éléments affichés");
     }
     
     // Crée un élément UI
@@ -140,7 +140,7 @@ public class BuildingUI : MonoBehaviour
                     TextMeshProUGUI buttonText = buyButton.GetComponentInChildren<TextMeshProUGUI>();
                     if (buttonText != null)
                     {
-                        buttonText.text = "🔒 Verrouillé";
+                        buttonText.text = "Verrouillé";
                     }
                 }
                 else if (!canAfford)

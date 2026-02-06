@@ -46,9 +46,9 @@ public class TutorialManager : MonoBehaviour
     // === ÉTAPES DU TUTORIEL ===
     private string[] stepTitles = {
         "Bienvenue dans votre atelier !",
-        "Acheter des matériaux",
-        "Fabriquer un produit",
-        "Vendre votre création",
+        "• Acheter des matériaux",
+        "• Fabriquer un produit",
+        "• Vendre votre création",
         "Félicitations !"
     };
     
@@ -79,7 +79,7 @@ public class TutorialManager : MonoBehaviour
         "• Continuez à acheter, fabriquer et vendre\n" +
         "• Montez de niveau pour débloquer de nouveaux produits\n" +
         "• Développez votre empire du meuble !\n\n" +
-        "Bonne chance, artisan ! 💪"
+        "Bonne chance, artisan !"
     };
     
     void Start()
@@ -156,7 +156,7 @@ public class TutorialManager : MonoBehaviour
             highlightArrow.SetActive(step >= 1 && step <= 3);
         }
         
-        Debug.Log("📚 Étape " + (step + 1) + "/" + stepTitles.Length);
+        Debug.Log("Étape " + (step + 1) + "/" + stepTitles.Length);
     }
     
     // Passe à l'étape suivante
@@ -198,7 +198,7 @@ public class TutorialManager : MonoBehaviour
         PlayerPrefs.SetInt("TutorialCompleted", 1);
         PlayerPrefs.Save();
         
-        Debug.Log("✅ Tutoriel terminé !");
+        Debug.Log("Tutoriel terminé !");
         
         // Feedback
         if (FeedbackManager.Instance != null)
@@ -218,7 +218,7 @@ public class TutorialManager : MonoBehaviour
     void SkipTutorial()
     {
         CompleteTutorial();
-        Debug.Log("⏭️ Tutoriel ignoré");
+        Debug.Log("Tutoriel ignoré");
     }
     
     // Pour réinitialiser (debug)

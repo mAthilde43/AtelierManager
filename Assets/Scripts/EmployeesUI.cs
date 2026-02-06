@@ -47,7 +47,7 @@ public class EmployeesUI : MonoBehaviour
             }
         }
         
-        Debug.Log("🧑‍💼 " + employeeItems.Count + " employés affichés");
+        Debug.Log("" + employeeItems.Count + " employés affichés");
     }
     
     // Met à jour tous les affichages (appelé périodiquement)

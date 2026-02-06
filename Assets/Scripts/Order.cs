@@ -59,7 +59,7 @@ public class Order
         {
             timeRemaining = 0;
             isFailed = true;
-            Debug.Log("❌ Commande échouée : " + orderID + " (temps écoulé)");
+            Debug.Log("Commande échouée : " + orderID + " (temps écoulé)");
         }
     }
     
@@ -102,7 +102,7 @@ public class Order
         // Marque comme complétée
         isCompleted = true;
         
-        Debug.Log("✅ Commande complétée : " + orderID + " - Récompense : " + reward + "€");
+        Debug.Log("Commande complétée : " + orderID + " - Récompense : " + reward + "€");
     }
     
     // Obtient le temps restant formaté (MM:SS)

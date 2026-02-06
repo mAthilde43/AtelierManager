@@ -44,7 +44,7 @@ public class Product
     public void AddQuantity(int amount)
     {
         quantity += amount;
-        Debug.Log("📦 +" + amount + " " + productName + " produit(s) | Stock total: " + quantity);
+        Debug.Log("+" + amount + " " + productName + " produit(s) | Stock total: " + quantity);
     }
     
     // Retire du stock de produits finis (lors de la vente)
@@ -53,12 +53,12 @@ public class Product
         if (quantity >= amount)
         {
             quantity -= amount;
-            Debug.Log("📤 -" + amount + " " + productName + " vendu(s) | Stock restant: " + quantity);
+            Debug.Log("-" + amount + " " + productName + " vendu(s) | Stock restant: " + quantity);
             return true;
         }
         else
         {
-            Debug.LogWarning("⚠️ Stock insuffisant de " + productName);
+            Debug.LogWarning("Stock insuffisant de " + productName);
             return false;
         }
     }

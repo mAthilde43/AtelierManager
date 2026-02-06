@@ -41,7 +41,7 @@ public class NotificationManager : MonoBehaviour
         // Cache tous les badges au départ
         HideAllBadges();
         
-        Debug.Log("🔔 NotificationManager initialisé");
+        Debug.Log("NotificationManager initialisé");
     }
     
     // Cache tous les badges

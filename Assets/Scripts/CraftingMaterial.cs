@@ -22,7 +22,7 @@ public class CraftingMaterial
     public void AddQuantity(int amount)
     {
         quantity += amount;
-        Debug.Log("📦 +" + amount + " " + materialName + " | Stock total: " + quantity);
+        Debug.Log("+" + amount + " " + materialName + " | Stock total: " + quantity);
     }
     
     // Fonction pour retirer du stock
@@ -31,12 +31,12 @@ public class CraftingMaterial
         if (quantity >= amount)
         {
             quantity -= amount;
-            Debug.Log("📤 -" + amount + " " + materialName + " | Stock restant: " + quantity);
+            Debug.Log("-" + amount + " " + materialName + " | Stock restant: " + quantity);
             return true;
         }
         else
         {
-            Debug.LogWarning("⚠️ Stock insuffisant de " + materialName);
+            Debug.LogWarning("Stock insuffisant de " + materialName);
             return false;
         }
     }

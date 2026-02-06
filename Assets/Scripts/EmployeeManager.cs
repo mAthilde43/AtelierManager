@@ -19,16 +19,16 @@ public class EmployeeManager : MonoBehaviour
     
     void Awake()
     {
-        Debug.Log("🔍 EmployeeManager.Awake() appelé sur " + gameObject.name);
+        Debug.Log("EmployeeManager.Awake() appelé sur " + gameObject.name);
     
         if (instance != null && instance != this)
         {
-            Debug.LogWarning("⚠️ Instance d'EmployeeManager déjà existante ! Destruction de " + gameObject.name);
+            Debug.LogWarning("Instance d'EmployeeManager déjà existante ! Destruction de " + gameObject.name);
             Destroy(gameObject);
             return;
         }
     
-        Debug.Log("✅ EmployeeManager devient l'instance singleton");
+        Debug.Log("EmployeeManager devient l'instance singleton");
         instance = this;
         DontDestroyOnLoad(gameObject);
     }
@@ -49,7 +49,7 @@ public class EmployeeManager : MonoBehaviour
         // Charge les employés sauvegardés
         LoadEmployees();
         
-        Debug.Log("🧑‍💼 EmployeeManager initialisé avec " + employees.Count + " employés");
+        Debug.Log("EmployeeManager initialisé avec " + employees.Count + " employés");
     }
     
     void Update()
@@ -128,12 +128,12 @@ public class EmployeeManager : MonoBehaviour
         if (gameManager == null)
         {
             gameManager = FindObjectOfType<GameManager>();
-            Debug.Log("🔄 GameManager rafraîchi dans EmployeeManager");
+            Debug.Log("GameManager rafraîchi dans EmployeeManager");
         }
     
         if (gameManager == null)
         {
-            Debug.LogError("❌ GameManager introuvable !");
+            Debug.LogError("GameManager introuvable !");
             return;
         }
     
@@ -156,15 +156,15 @@ public class EmployeeManager : MonoBehaviour
     // Fabrique un produit aléatoire
     void CraftRandomProduct()
     {
-        Debug.Log("🔍 CraftRandomProduct appelé");
+        Debug.Log("CraftRandomProduct appelé");
     
         if (gameManager == null)
         {
-            Debug.LogError("❌ gameManager est NULL dans CraftRandomProduct !");
+            Debug.LogError("gameManager est NULL dans CraftRandomProduct !");
             return;
         }
     
-        Debug.Log($"🔍 Nombre de produits : {gameManager.products.Count}");
+        Debug.Log($"Nombre de produits : {gameManager.products.Count}");
     
         // Trouve un produit qu'on peut fabriquer
         List<int> craftableProducts = new List<int>();
@@ -190,18 +190,18 @@ public class EmployeeManager : MonoBehaviour
             }
         }
     
-        Debug.Log($"🔍 Produits fabricables : {craftableProducts.Count}");
+        Debug.Log($"Produits fabricables : {craftableProducts.Count}");
     
         // Si au moins un produit peut être fabriqué
         if (craftableProducts.Count > 0)
         {
             int randomIndex = craftableProducts[Random.Range(0, craftableProducts.Count)];
             gameManager.CraftProduct(randomIndex);
-            Debug.Log("🔨 Employé a fabriqué : " + gameManager.products[randomIndex].productName);
+            Debug.Log("Employé a fabriqué : " + gameManager.products[randomIndex].productName);
         }
         else
         {
-            Debug.LogWarning("⚠️ Aucun produit ne peut être fabriqué (manque de matériaux)");
+            Debug.LogWarning("Aucun produit ne peut être fabriqué (manque de matériaux)");
         }
     }
     
@@ -212,7 +212,7 @@ public class EmployeeManager : MonoBehaviour
     
         if (gameManager == null)
         {
-            Debug.LogError("❌ gameManager est NULL dans SellRandomProduct !");
+            Debug.LogError("gameManager est NULL dans SellRandomProduct !");
             return;
         }
     
@@ -227,18 +227,18 @@ public class EmployeeManager : MonoBehaviour
             }
         }
     
-        Debug.Log($"🔍 Produits disponibles à la vente : {availableProducts.Count}");
+        Debug.Log($"Produits disponibles à la vente : {availableProducts.Count}");
     
         // Si au moins un produit est disponible
         if (availableProducts.Count > 0)
         {
             int randomIndex = availableProducts[Random.Range(0, availableProducts.Count)];
             gameManager.SellProduct(randomIndex, 1);
-            Debug.Log("💼 Employé a vendu : " + gameManager.products[randomIndex].productName);
+            Debug.Log("Employé a vendu : " + gameManager.products[randomIndex].productName);
         }
         else
         {
-            Debug.LogWarning("⚠️ Aucun produit en stock à vendre");
+            Debug.LogWarning("Aucun produit en stock à vendre");
         }
     }
     
@@ -249,26 +249,26 @@ public class EmployeeManager : MonoBehaviour
     
         if (gameManager == null)
         {
-            Debug.LogError("❌ gameManager est NULL dans BuyRandomMaterial !");
+            Debug.LogError("gameManager est NULL dans BuyRandomMaterial !");
             return;
         }
     
-        Debug.Log($"🔍 Argent disponible : {gameManager.playerMoney}€");
+        Debug.Log($"Argent disponible : {gameManager.playerMoney}€");
     
         // Achète un matériau aléatoire si assez d'argent
         int randomIndex = Random.Range(0, gameManager.craftingMaterials.Count);
         CraftingMaterial mat = gameManager.craftingMaterials[randomIndex];
     
-        Debug.Log($"🔍 Tentative d'achat : {mat.materialName} pour {mat.price}€");
+        Debug.Log($"Tentative d'achat : {mat.materialName} pour {mat.price}€");
     
         if (gameManager.HasEnoughMoney(mat.price))
         {
             gameManager.BuyMaterial(randomIndex, 1);
-            Debug.Log("📦 Employé a acheté : " + mat.materialName);
+            Debug.Log("Employé a acheté : " + mat.materialName);
         }
         else
         {
-            Debug.LogWarning($"⚠️ Pas assez d'argent pour acheter {mat.materialName} ({mat.price}€)");
+            Debug.LogWarning($"Pas assez d'argent pour acheter {mat.materialName} ({mat.price}€)");
         }
     }
     
@@ -282,7 +282,7 @@ public class EmployeeManager : MonoBehaviour
         
         if (employeeIndex < 0 || employeeIndex >= employees.Count)
         {
-            Debug.LogError("❌ Index d'employé invalide !");
+            Debug.LogError("Index d'employé invalide !");
             return;
         }
         
@@ -290,13 +290,13 @@ public class EmployeeManager : MonoBehaviour
         
         if (emp.isHired)
         {
-            Debug.LogWarning("⚠️ " + emp.employeeName + " est déjà embauché !");
+            Debug.LogWarning("" + emp.employeeName + " est déjà embauché !");
             return;
         }
         
         if (!gameManager.HasEnoughMoney(emp.hireCost))
         {
-            Debug.LogWarning("⚠️ Pas assez d'argent pour embaucher " + emp.employeeName + " !");
+            Debug.LogWarning("Pas assez d'argent pour embaucher " + emp.employeeName + " !");
             return;
         }
         
@@ -306,7 +306,7 @@ public class EmployeeManager : MonoBehaviour
         // Sauvegarde après embauche
         SaveEmployees();
         
-        Debug.Log("✅ " + emp.employeeName + " embauché pour " + emp.hireCost + "€ !");
+        Debug.Log("" + emp.employeeName + " embauché pour " + emp.hireCost + "€ !");
     }
     
     // Active/désactive un employé
@@ -314,7 +314,7 @@ public class EmployeeManager : MonoBehaviour
     {
         if (employeeIndex < 0 || employeeIndex >= employees.Count)
         {
-            Debug.LogError("❌ Index d'employé invalide !");
+            Debug.LogError("Index d'employé invalide !");
             return;
         }
         
@@ -322,7 +322,7 @@ public class EmployeeManager : MonoBehaviour
         
         if (!emp.isHired)
         {
-            Debug.LogWarning("⚠️ " + emp.employeeName + " n'est pas embauché !");
+            Debug.LogWarning("" + emp.employeeName + " n'est pas embauché !");
             return;
         }
         
@@ -353,7 +353,7 @@ public class EmployeeManager : MonoBehaviour
         if (totalSalaries > 0)
         {
             gameManager.RemoveMoney(totalSalaries);
-            Debug.Log("💸 Salaires payés : " + totalSalaries + "€");
+            Debug.Log("Salaires payés : " + totalSalaries + "€");
         }
     }
     
@@ -395,7 +395,7 @@ public class EmployeeManager : MonoBehaviour
         PlayerPrefs.SetInt("EmployeeCount", hiredCount);
         PlayerPrefs.Save();
         
-        Debug.Log("💾 Employés sauvegardés (" + hiredCount + " embauchés)");
+        Debug.Log("Employés sauvegardés (" + hiredCount + " embauchés)");
     }
     
     // Charge les employés
@@ -403,12 +403,12 @@ public class EmployeeManager : MonoBehaviour
     {
         if (!PlayerPrefs.HasKey("EmployeeCount"))
         {
-            Debug.Log("🆕 Aucune sauvegarde d'employés trouvée");
+            Debug.Log("Aucune sauvegarde d'employés trouvée");
             return;
         }
         
         int savedCount = PlayerPrefs.GetInt("EmployeeCount");
-        Debug.Log("📂 Chargement de " + savedCount + " employés...");
+        Debug.Log("Chargement de " + savedCount + " employés...");
         
         for (int i = 0; i < employees.Count; i++)
         {
@@ -423,18 +423,18 @@ public class EmployeeManager : MonoBehaviour
                     employees[i].isHired = true;
                     employees[i].isActive = PlayerPrefs.GetInt(key + "_Active") == 1;
                     
-                    Debug.Log("✅ " + employees[i].employeeName + " chargé (Actif: " + employees[i].isActive + ")");
+                    Debug.Log("" + employees[i].employeeName + " chargé (Actif: " + employees[i].isActive + ")");
                 }
             }
         }
         
-        Debug.Log("📂 Employés chargés avec succès !");
+        Debug.Log("Employés chargés avec succès !");
     }
     
     // Réinitialise tous les employés (nouvelle partie)
     public void ResetEmployees()
     {
-        Debug.Log("🔄 Réinitialisation des employés...");
+        Debug.Log("Réinitialisation des employés...");
         
         // Supprime toutes les sauvegardes d'employés
         PlayerPrefs.DeleteKey("EmployeeCount");
@@ -453,6 +453,6 @@ public class EmployeeManager : MonoBehaviour
         
         PlayerPrefs.Save();
         
-        Debug.Log("✅ Employés réinitialisés !");
+        Debug.Log("Employés réinitialisés !");
     }
 }

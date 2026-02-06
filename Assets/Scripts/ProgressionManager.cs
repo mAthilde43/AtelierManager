@@ -25,7 +25,7 @@ public class ProgressionManager : MonoBehaviour
         
         UpdateProgressionDisplay();
         
-        Debug.Log("📊 ProgressionManager initialisé - Niveau " + currentLevel);
+        Debug.Log("ProgressionManager initialisé - Niveau " + currentLevel);
     }
     
     // Ajoute de l'expérience
@@ -52,7 +52,7 @@ public class ProgressionManager : MonoBehaviour
         int xpToAdd = Mathf.RoundToInt(finalXP);
         currentExperience += xpToAdd;
         
-        Debug.Log("⭐ XP gagné : " + amount + " → " + xpToAdd + " (avec bonus)");
+        Debug.Log("XP gagné : " + amount + " → " + xpToAdd + " (avec bonus)");
         // ==============================================
     
         // Feedback visuel XP
@@ -80,7 +80,7 @@ public class ProgressionManager : MonoBehaviour
         // Augmente l'XP nécessaire pour le prochain niveau
         experienceToNextLevel = Mathf.RoundToInt(experienceToNextLevel * 1.5f);
     
-        Debug.Log("🎉 NIVEAU SUPÉRIEUR ! Niveau " + currentLevel + " atteint !");
+        Debug.Log("NIVEAU SUPÉRIEUR ! Niveau " + currentLevel + " atteint !");
         
         // Son de level up
         if (AudioManager.Instance != null)
@@ -100,14 +100,12 @@ public class ProgressionManager : MonoBehaviour
             RecipeUnlockManager.Instance.OnLevelUp();
         }
         
-        // ===== NOUVEAU CODE =====
         // Met à jour l'accès à l'onglet Atelier
         TabManager tabManager = FindObjectOfType<TabManager>();
         if (tabManager != null)
         {
             tabManager.UpdateBuildingTabAccess();
         }
-        // ========================
     }
     
     // Donne les récompenses du niveau
@@ -116,7 +114,7 @@ public class ProgressionManager : MonoBehaviour
         // Récompense en argent
         int moneyReward = currentLevel * 100;
         gameManager.AddMoney(moneyReward);
-        Debug.Log("💰 Récompense de niveau : +" + moneyReward + "€");
+        Debug.Log("Récompense de niveau : +" + moneyReward + "€");
         
         // Déblocages selon le niveau
         UnlockContentAtLevel(currentLevel);
@@ -128,10 +126,10 @@ public class ProgressionManager : MonoBehaviour
             if (FeedbackManager.Instance != null)
             {
                 Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
-                FeedbackManager.Instance.ShowSuccess("🏗️ ATELIER DÉBLOQUÉ !\nVous pouvez maintenant améliorer votre espace !", screenCenter);
+                FeedbackManager.Instance.ShowSuccess("ATELIER DÉBLOQUÉ !\nVous pouvez maintenant améliorer votre espace !", screenCenter);
             }
             
-            Debug.Log("🏗️ ATELIER DÉBLOQUÉ ! Vous pouvez maintenant construire et améliorer votre espace de travail !");
+            Debug.Log("ATELIER DÉBLOQUÉ ! Vous pouvez maintenant construire et améliorer votre espace de travail !");
         }
         // ========================
     }
@@ -142,19 +140,19 @@ public class ProgressionManager : MonoBehaviour
         switch (level)
         {
             case 2:
-                Debug.Log("🔓 Niveau 2 : Vous pouvez maintenant accéder à de meilleurs fournisseurs !");
+                Debug.Log("Niveau 2 : Vous pouvez maintenant accéder à de meilleurs fournisseurs !");
                 break;
                 
             case 3:
-                Debug.Log("🔓 Niveau 3 : Nouveau matériau débloqué !");
+                Debug.Log("Niveau 3 : Nouveau matériau débloqué !");
                 break;
                 
             case 5:
-                Debug.Log("🔓 Niveau 5 : Nouveau produit débloqué !");
+                Debug.Log("Niveau 5 : Nouveau produit débloqué !");
                 break;
                 
             case 10:
-                Debug.Log("🔓 Niveau 10 : Maître artisan ! Tous les contenus débloqués !");
+                Debug.Log("Niveau 10 : Maître artisan ! Tous les contenus débloqués !");
                 break;
         }
     }
@@ -211,7 +209,7 @@ public class ProgressionManager : MonoBehaviour
     {
         if (levelUpNotification != null && levelUpText != null)
         {
-            levelUpText.text = "🎉 NIVEAU SUPÉRIEUR !\nNiveau " + currentLevel + " atteint !";
+            levelUpText.text = "NIVEAU SUPÉRIEUR !\nNiveau " + currentLevel + " atteint !";
             levelUpNotification.SetActive(true);
         
             // Cache automatiquement après 3 secondes

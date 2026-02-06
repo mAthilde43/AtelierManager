@@ -27,7 +27,7 @@ public class EventManager : MonoBehaviour
         
         InitializeEvents();
         
-        Debug.Log("🎲 EventManager initialisé avec " + possibleEvents.Count + " événements possibles");
+        Debug.Log("EventManager initialisé avec " + possibleEvents.Count + " événements possibles");
     }
     
     void Update()
@@ -49,21 +49,21 @@ public class EventManager : MonoBehaviour
         
         // Événements positifs
         possibleEvents.Add(new GameEvent(
-            "🎉 Client satisfait",
+            "Client satisfait",
             "Un client régulier vous laisse un pourboire généreux !",
             EventType.MoneyGain,
             100
         ));
         
         possibleEvents.Add(new GameEvent(
-            "📦 Livraison bonus",
+            "Livraison bonus",
             "Votre fournisseur vous offre des matériaux gratuits !",
             EventType.MaterialGain,
             2
         ));
         
         possibleEvents.Add(new GameEvent(
-            "💰 Subvention",
+            "Subvention",
             "Vous recevez une aide de l'artisanat local !",
             EventType.MoneyGain,
             200
@@ -88,14 +88,14 @@ public class EventManager : MonoBehaviour
         
         // Événements négatifs
         possibleEvents.Add(new GameEvent(
-            "⚡ Panne électrique",
+            "Panne électrique",
             "Une coupure d'électricité ralentit votre production.",
             EventType.MoneyLoss,
             50
         ));
         
         possibleEvents.Add(new GameEvent(
-            "🔨 Outil cassé",
+            "Outil cassé",
             "Un de vos outils s'est cassé, réparation nécessaire.",
             EventType.MoneyLoss,
             80
@@ -114,7 +114,7 @@ public class EventManager : MonoBehaviour
             300));
         
         possibleEvents.Add(new GameEvent(
-            "📉 Matériau défectueux",
+            "Matériau défectueux",
             "Un lot de matériaux reçu était défectueux.",
             EventType.MaterialLoss,
             1
@@ -124,7 +124,7 @@ public class EventManager : MonoBehaviour
         // === ÉVÉNEMENTS AVEC CHOIX ===
 
         possibleEvents.Add(new GameEvent(
-            "🎯 Commande urgente",
+            "Commande urgente",
             "Un client propose une grosse commande urgente. C'est risqué mais potentiellement très rentable !",
             EventType.SpecialOrder,
             "Accepter la commande",  -150, 400,  // Coût 150€, gain 400€ = +250€ net
@@ -132,7 +132,7 @@ public class EventManager : MonoBehaviour
         ));
 
         possibleEvents.Add(new GameEvent(
-            "🏪 Nouveau fournisseur",
+            "Nouveau fournisseur",
             "Un nouveau fournisseur propose des prix très bas, mais la qualité est incertaine.",
             EventType.Opportunity,
             "Tester ce fournisseur", -100, 300,  // Coût 100€, gain 300€ = +200€ net
@@ -140,7 +140,7 @@ public class EventManager : MonoBehaviour
         ));
 
         possibleEvents.Add(new GameEvent(
-            "🎓 Formation proposée",
+            "Formation proposée",
             "Une formation professionnelle vous permettrait d'améliorer vos compétences. Investissement pour l'avenir ?",
             EventType.Opportunity,
             "Suivre la formation", -200, 0,  // Coût 200€, pas de gain immédiat (bénéfice à long terme)
@@ -148,7 +148,7 @@ public class EventManager : MonoBehaviour
         ));
 
         possibleEvents.Add(new GameEvent(
-            "🚨 Inspection surprise",
+            "Inspection surprise",
             "Une inspection surprise ! Vous devez mettre aux normes ou prendre le risque d'une amende.",
             EventType.Breakdown,
             "Mise aux normes", -150, 0,  // Coût 150€, évite l'amende
@@ -156,7 +156,7 @@ public class EventManager : MonoBehaviour
         ));
 
         possibleEvents.Add(new GameEvent(
-            "💎 Matériaux premium",
+            "Matériaux premium",
             "Un lot de matériaux de qualité supérieure est disponible à prix réduit aujourd'hui seulement !",
             EventType.Opportunity,
             "Acheter le lot", -250, 150,  // Coût 250€, valeur 400€ donc gain net futur de 150€
@@ -188,7 +188,7 @@ public class EventManager : MonoBehaviour
         int randomIndex = Random.Range(0, possibleEvents.Count);
         currentEvent = possibleEvents[randomIndex];
         
-        Debug.Log("🎲 Événement déclenché : " + currentEvent.eventName);
+        Debug.Log("Événement déclenché : " + currentEvent.eventName);
         
         // Affiche le popup d'événement
         ShowEventPopup();
@@ -227,12 +227,12 @@ public class EventManager : MonoBehaviour
             if (choiceNumber == 1)
             {
                 ApplyChoiceEffect(currentEvent.choice1Cost, currentEvent.choice1Effect);
-                Debug.Log("✅ Choix 1 : " + currentEvent.choice1Text);
+                Debug.Log("Choix 1 : " + currentEvent.choice1Text);
             }
             else if (choiceNumber == 2)
             {
                 ApplyChoiceEffect(currentEvent.choice2Cost, currentEvent.choice2Effect);
-                Debug.Log("✅ Choix 2 : " + currentEvent.choice2Text);
+                Debug.Log("Choix 2 : " + currentEvent.choice2Text);
             }
         }
         else
@@ -283,13 +283,13 @@ public class EventManager : MonoBehaviour
         {
             // Coût négatif = dépense
             gameManager.RemoveMoney(-cost); // -(-150) = 150
-            Debug.Log("💸 Dépense : " + (-cost) + "€");
+            Debug.Log("Dépense : " + (-cost) + "€");
         }
         else if (cost > 0)
         {
             // Coût positif = gain
             gameManager.AddMoney(cost);
-            Debug.Log("💰 Gain immédiat : +" + cost + "€");
+            Debug.Log("Gain immédiat : +" + cost + "€");
         }
     
         // Applique l'effet supplémentaire (gain/perte)
@@ -298,12 +298,12 @@ public class EventManager : MonoBehaviour
             if (effect > 0)
             {
                 gameManager.AddMoney(effect);
-                Debug.Log("💰 Gain supplémentaire : +" + effect + "€");
+                Debug.Log("Gain supplémentaire : +" + effect + "€");
             }
             else if (effect < 0)
             {
                 gameManager.RemoveMoney(-effect);
-                Debug.Log("💸 Perte supplémentaire : " + (-effect) + "€");
+                Debug.Log("Perte supplémentaire : " + (-effect) + "€");
             }
         }
     

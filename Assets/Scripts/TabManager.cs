@@ -73,15 +73,15 @@ public class TabManager : MonoBehaviour
             {
                 if (canAccessBuilding)
                 {
-                    buttonText.text = "🏠 Atelier";
+                    buttonText.text = "Atelier";
                 }
                 else
                 {
-                    buttonText.text = "🔒 Niv." + buildingUnlockLevel;
+                    buttonText.text = "Niv." + buildingUnlockLevel;
                 }
             }
             
-            Debug.Log("🔓 Atelier " + (canAccessBuilding ? "ACCESSIBLE" : "VERROUILLÉ (Niv." + buildingUnlockLevel + " requis)"));
+            Debug.Log("Atelier " + (canAccessBuilding ? "ACCESSIBLE" : "VERROUILLÉ (Niv." + buildingUnlockLevel + " requis)"));
         }
     }
     
@@ -107,25 +107,25 @@ public class TabManager : MonoBehaviour
             case "shop":
                 shopPanel.SetActive(true);
                 HighlightButton(shopTabButton);
-                Debug.Log("📂 Onglet Boutique ouvert");
+                Debug.Log("Onglet Boutique ouvert");
                 break;
             
             case "workshop":
                 workshopPanel.SetActive(true);
                 HighlightButton(workshopTabButton);
-                Debug.Log("📂 Onglet Atelier ouvert");
+                Debug.Log("Onglet Atelier ouvert");
                 break;
             
             case "sales":
                 salesPanel.SetActive(true);
                 HighlightButton(salesTabButton);
-                Debug.Log("📂 Onglet Vente ouvert");
+                Debug.Log("Onglet Vente ouvert");
                 break;
             
             case "upgrades":
                 upgradesPanel.SetActive(true);
                 HighlightButton(upgradesTabButton);
-                Debug.Log("📂 Onglet Améliorations ouvert");
+                Debug.Log("Onglet Améliorations ouvert");
                 break;
             
             case "stats":
@@ -138,7 +138,7 @@ public class TabManager : MonoBehaviour
                     statsUI.RefreshStatsDisplay();
                 }
             
-                Debug.Log("📂 Onglet Statistiques ouvert");
+                Debug.Log("Onglet Statistiques ouvert");
                 break;
             
             case "employees":
@@ -151,7 +151,7 @@ public class TabManager : MonoBehaviour
                     employeesUI.RefreshEmployeesDisplay();
                 }
     
-                Debug.Log("📂 Onglet Employés ouvert");
+                Debug.Log("Onglet Employés ouvert");
                 break;
             
             case "orders":
@@ -164,17 +164,17 @@ public class TabManager : MonoBehaviour
                     ordersUI.RefreshOrdersDisplay();
                 }
     
-                Debug.Log("📂 Onglet Commandes ouvert");
+                Debug.Log("Onglet Commandes ouvert");
                 break;
             
             case "building":
                 buildingPanel.SetActive(true);
                 HighlightButton(buildingTabButton);  
-                Debug.Log("📂 Onglet Atelier affiché");
+                Debug.Log("Onglet Atelier affiché");
                 break;
 
             default:
-                Debug.LogWarning("⚠️ Onglet inconnu : " + tabName);
+                Debug.LogWarning("Onglet inconnu : " + tabName);
                 shopPanel.SetActive(true);
                 break;
         }
@@ -183,7 +183,7 @@ public class TabManager : MonoBehaviour
         if (gameManager != null)
         {
             gameManager.RefreshAllUI();
-            Debug.Log("🔄 UI rafraîchie après changement d'onglet");
+            Debug.Log("UI rafraîchie après changement d'onglet");
         }
     }
     

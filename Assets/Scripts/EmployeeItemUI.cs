@@ -50,13 +50,13 @@ public class EmployeeItemUI : MonoBehaviour
             switch (emp.type)
             {
                 case EmployeeType.Crafter:
-                    typeString = "🔨 Fabricant";
+                    typeString = "Fabricant";
                     break;
                 case EmployeeType.Seller:
-                    typeString = "💼 Vendeur";
+                    typeString = "Vendeur";
                     break;
                 case EmployeeType.Gatherer:
-                    typeString = "📦 Acheteur";
+                    typeString = "Acheteur";
                     break;
             }
             typeText.text = "Type: " + typeString;
@@ -77,7 +77,7 @@ public class EmployeeItemUI : MonoBehaviour
         // Vitesse
         if (speedText != null)
         {
-            speedText.text = "⚡ " + emp.productionSpeed.ToString("F0") + "s/action";
+            speedText.text = "" + emp.productionSpeed.ToString("F0") + "s/action";
         }
         
         // Statut et boutons
@@ -86,7 +86,7 @@ public class EmployeeItemUI : MonoBehaviour
             // Employé embauché
             if (statusText != null)
             {
-                statusText.text = emp.isActive ? "🟢 Actif" : "🔴 Inactif";
+                statusText.text = emp.isActive ? "Actif" : "Inactif";
                 statusText.color = emp.isActive ? new Color(0.2f, 0.8f, 0.2f) : new Color(0.8f, 0.3f, 0.3f);
             }
             

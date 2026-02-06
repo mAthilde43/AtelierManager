@@ -167,7 +167,7 @@ public class OrderManager : MonoBehaviour
         
         if (!order.CanBeCompleted(gameManager))
         {
-            Debug.LogWarning("⚠Impossible de compléter la commande : stock insuffisant");
+            Debug.LogWarning("Impossible de compléter la commande : stock insuffisant");
             return;
         }
         

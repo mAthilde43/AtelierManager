@@ -68,7 +68,7 @@ public class StatsUI : MonoBehaviour
         
         // Argent total gagné
         CreateStatLine(globalStatsContainer, "Argent total gagné :", stats.totalMoneyEarned + "€", 
-            new Color(0.2f, 0.8f, 0.2f), globalStatsItems);
+           new Color(0.1f, 0.6f, 0.1f), globalStatsItems);
         
         // Argent total dépensé
         CreateStatLine(globalStatsContainer, "Argent total dépensé :", stats.totalMoneySpent + "€", 
@@ -77,7 +77,7 @@ public class StatsUI : MonoBehaviour
         // Bénéfice net
         int netProfit = stats.totalMoneyEarned - stats.totalMoneySpent;
         CreateStatLine(globalStatsContainer, "Bénéfice net :", netProfit + "€", 
-            netProfit >= 0 ? new Color(0.2f, 0.8f, 0.2f) : new Color(0.8f, 0.3f, 0.3f), globalStatsItems);
+            netProfit >= 0 ? new Color(0.1f, 0.6f, 0.1f) : new Color(0.8f, 0.3f, 0.3f), globalStatsItems);
         
         // Produits fabriqués
         CreateStatLine(globalStatsContainer, "Produits fabriqués :", stats.totalProductsCrafted.ToString(), 
@@ -112,16 +112,16 @@ public class StatsUI : MonoBehaviour
         StatsData stats = statsManager.stats;
         
         // Meilleur gain quotidien
-        CreateStatLine(recordsContainer, "🏆 Meilleur gain quotidien :", stats.bestDailyEarnings + "€", 
-            new Color(1f, 0.84f, 0f), recordsItems);
+        CreateStatLine(recordsContainer, "Meilleur gain quotidien :", stats.bestDailyEarnings + "€", 
+            new Color(0.85f, 0.65f, 0.05f), recordsItems);
         
         // Plus grosse fortune
-        CreateStatLine(recordsContainer, "🏆 Plus grosse fortune :", stats.highestMoneyAmount + "€", 
-            new Color(1f, 0.84f, 0f), recordsItems);
+        CreateStatLine(recordsContainer, "Plus grosse fortune :", stats.highestMoneyAmount + "€", 
+            new Color(0.85f, 0.65f, 0.05f), recordsItems);
         
         // Produit le plus cher vendu
-        CreateStatLine(recordsContainer, "🏆 Produit le plus cher vendu :", stats.mostExpensiveProductSold + "€", 
-            new Color(1f, 0.84f, 0f), recordsItems);
+        CreateStatLine(recordsContainer, "Produit le plus cher vendu :", stats.mostExpensiveProductSold + "€", 
+            new Color(0.85f, 0.65f, 0.05f), recordsItems);
     }
     
     // Crée une ligne de stat

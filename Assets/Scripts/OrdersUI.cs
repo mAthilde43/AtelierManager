@@ -51,7 +51,7 @@ public class OrdersUI : MonoBehaviour
             }
         }
         
-        Debug.Log("📋 " + orderItems.Count + " commandes affichées");
+        Debug.Log("" + orderItems.Count + " commandes affichées");
     }
     
     // Met à jour tous les affichages (appelé périodiquement)

@@ -30,7 +30,7 @@ public class TimeManager : MonoBehaviour
         // Affiche le jour initial
         UpdateTimeDisplay();
         
-        Debug.Log("⏰ TimeManager initialisé - Jour " + currentDay + ", Semaine " + currentWeek);
+        Debug.Log("TimeManager initialisé - Jour " + currentDay + ", Semaine " + currentWeek);
     }
     
     void Update()
@@ -68,13 +68,13 @@ public class TimeManager : MonoBehaviour
 void OnNewDay()
 {
     UpdateTimeDisplay();
-    Debug.Log("📅 Nouveau jour : Jour " + currentDay + " de la semaine " + currentWeek);
+    Debug.Log("Nouveau jour : Jour " + currentDay + " de la semaine " + currentWeek);
 
     // Revenu quotidien
     if (gameManager != null)
     {
         gameManager.AddMoney(dailyIncome);
-        Debug.Log("💵 Revenu quotidien : +" + dailyIncome + "€");
+        Debug.Log("Revenu quotidien : +" + dailyIncome + "€");
     }
     
     // Reset les objectifs quotidiens
@@ -83,25 +83,23 @@ void OnNewDay()
         ObjectiveManager.Instance.ResetDailyObjectives();
     }
     
-    // ===== AJOUTE CETTE SECTION =====
     // Commence un nouveau jour pour les stats
     if (StatsManager.Instance != null)
     {
         StatsManager.Instance.StartNewDay();
     }
-    // ================================
 }
     
     // Appelée quand une nouvelle semaine commence
 void OnNewWeek()
 {
-    Debug.Log("🎉 Nouvelle semaine " + currentWeek + " !");
+    Debug.Log("Nouvelle semaine " + currentWeek + " !");
 
     // Coût hebdomadaire (loyer, salaires, etc.)
     if (gameManager != null)
     {
         gameManager.RemoveMoney(weeklyCost);
-        Debug.Log("💸 Charges hebdomadaires : -" + weeklyCost + "€");
+        Debug.Log("Charges hebdomadaires : -" + weeklyCost + "€");
     }
     
     // Reset les objectifs hebdomadaires
@@ -143,21 +141,21 @@ void OnNewWeek()
     public void PauseTime()
     {
         timeIsRunning = false;
-        Debug.Log("⏸️ Temps mis en pause");
+        Debug.Log("Temps mis en pause");
     }
     
     // Fonction pour reprendre le temps
     public void ResumeTime()
     {
         timeIsRunning = true;
-        Debug.Log("▶️ Temps repris");
+        Debug.Log("Temps repris");
     }
     
     // Fonction pour passer au jour suivant immédiatement (pour tester)
     public void SkipDay()
     {
         AdvanceDay();
-        Debug.Log("⏭️ Jour passé manuellement");
+        Debug.Log("Jour passé manuellement");
     }
     
     

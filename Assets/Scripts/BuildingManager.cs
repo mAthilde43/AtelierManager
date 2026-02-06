@@ -110,7 +110,7 @@ public class BuildingManager : MonoBehaviour
         
         LoadBuildingData();
         
-        Debug.Log("🏗️ BuildingManager initialisé avec " + allElements.Count + " éléments");
+        Debug.Log("BuildingManager initialisé avec " + allElements.Count + " éléments");
     }
     
     // Initialise tous les éléments constructibles
@@ -457,7 +457,7 @@ public class BuildingManager : MonoBehaviour
             8f
         ));
         
-        Debug.Log("✅ " + allElements.Count + " éléments de construction créés");
+        Debug.Log("" + allElements.Count + " éléments de construction créés");
     }
     
     // Achète un élément
@@ -465,7 +465,7 @@ public class BuildingManager : MonoBehaviour
     {
         if (index < 0 || index >= allElements.Count)
         {
-            Debug.LogError("❌ Index invalide !");
+            Debug.LogError("Index invalide !");
             return;
         }
         
@@ -473,13 +473,13 @@ public class BuildingManager : MonoBehaviour
         
         if (element.isPurchased)
         {
-            Debug.LogWarning("⚠️ Déjà acheté : " + element.elementName);
+            Debug.LogWarning("Déjà acheté : " + element.elementName);
             return;
         }
         
         if (progressionManager != null && progressionManager.currentLevel < element.unlockLevel)
         {
-            Debug.LogWarning("⚠️ Niveau " + element.unlockLevel + " requis !");
+            Debug.LogWarning("Niveau " + element.unlockLevel + " requis !");
             return;
         }
         
@@ -492,7 +492,7 @@ public class BuildingManager : MonoBehaviour
             ShowElementVisual(element);
             SaveBuildingData();
             
-            Debug.Log("🏗️ Construit : " + element.elementName);
+            Debug.Log("Construit : " + element.elementName);
             
             if (AudioManager.Instance != null)
             {
@@ -502,12 +502,12 @@ public class BuildingManager : MonoBehaviour
             if (FeedbackManager.Instance != null)
             {
                 Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
-                FeedbackManager.Instance.ShowSuccess("🏗️ " + element.elementName.ToUpper() + " CONSTRUIT !", screenCenter);
+                FeedbackManager.Instance.ShowSuccess("" + element.elementName.ToUpper() + " CONSTRUIT !", screenCenter);
             }
         }
         else
         {
-            Debug.LogWarning("⚠️ Pas assez d'argent !");
+            Debug.LogWarning("Pas assez d'argent !");
             
             if (AudioManager.Instance != null)
             {
@@ -518,7 +518,7 @@ public class BuildingManager : MonoBehaviour
     
     void ApplyBonus(BuildingElement element)
     {
-        Debug.Log("💪 Bonus appliqué : " + element.bonusType + " +" + element.bonusValue + "%");
+        Debug.Log("Bonus appliqué : " + element.bonusType + " +" + element.bonusValue + "%");
     }
     
     // Affiche visuellement l'élément dans l'atelier
@@ -529,7 +529,7 @@ public class BuildingManager : MonoBehaviour
         
         if (targetZone == null || visualElementPrefab == null)
         {
-            Debug.LogWarning("⚠️ Zone ou prefab manquant !");
+            Debug.LogWarning("Zone ou prefab manquant !");
             return;
         }
         
@@ -545,11 +545,11 @@ public class BuildingManager : MonoBehaviour
             if (sprite != null)
             {
                 iconImage.sprite = sprite;
-                Debug.Log("✅ Icône chargée : " + element.iconName);
+                Debug.Log("Icône chargée : " + element.iconName);
             }
             else
             {
-                Debug.LogWarning("⚠️ Icône introuvable : Icons/" + element.iconName);
+                Debug.LogWarning("Icône introuvable : Icons/" + element.iconName);
             }
         }
         
@@ -557,7 +557,7 @@ public class BuildingManager : MonoBehaviour
         visualElement.transform.localScale = Vector3.zero;
         StartCoroutine(AnimateElementAppearance(visualElement));
         
-        Debug.Log("🎨 Élément visuel affiché : " + element.elementName + " dans " + targetZone.name);
+        Debug.Log("Élément visuel affiché : " + element.elementName + " dans " + targetZone.name);
     }
     
     // Retourne la zone correspondant à la catégorie
@@ -638,7 +638,7 @@ public class BuildingManager : MonoBehaviour
         }
         
         PlayerPrefs.Save();
-        Debug.Log("💾 Données de construction sauvegardées");
+        Debug.Log("Données de construction sauvegardées");
     }
     
     public void LoadBuildingData()
@@ -660,7 +660,7 @@ public class BuildingManager : MonoBehaviour
             }
         }
         
-        Debug.Log("📂 Données de construction chargées");
+        Debug.Log("Données de construction chargées");
     }
     
     // ===== CALCUL DES BONUS TOTAUX =====
@@ -775,27 +775,27 @@ public class BuildingManager : MonoBehaviour
         
         float salesBonus = (GetSalesBonusMultiplier() - 1f) * 100f;
         if (salesBonus > 0)
-            text += "💰 Ventes : +" + salesBonus.ToString("F0") + "%\n";
+            text += "Ventes : +" + salesBonus.ToString("F0") + "%\n";
         
         float prodSpeed = (GetProductionSpeedMultiplier() - 1f) * 100f;
         if (prodSpeed > 0)
-            text += "⚡ Production : +" + prodSpeed.ToString("F0") + "%\n";
+            text += "Production : +" + prodSpeed.ToString("F0") + "%\n";
         
         float matDiscount = (1f - GetMaterialDiscountMultiplier()) * 100f;
         if (matDiscount > 0)
-            text += "💸 Matériaux : -" + matDiscount.ToString("F0") + "%\n";
+            text += "Matériaux : -" + matDiscount.ToString("F0") + "%\n";
         
         float xpBonus = (GetXPBonusMultiplier() - 1f) * 100f;
         if (xpBonus > 0)
-            text += "⭐ XP : +" + xpBonus.ToString("F0") + "%\n";
+            text += "XP : +" + xpBonus.ToString("F0") + "%\n";
         
         int storageBonus = GetStorageCapacityBonus();
         if (storageBonus > 0)
-            text += "📦 Stockage : +" + storageBonus + "\n";
+            text += "Stockage : +" + storageBonus + "\n";
         
         float employeeBonus = (GetEmployeeEfficiencyMultiplier() - 1f) * 100f;
         if (employeeBonus > 0)
-            text += "👷 Employés : +" + employeeBonus.ToString("F0") + "%\n";
+            text += "Employés : +" + employeeBonus.ToString("F0") + "%\n";
         
         if (text == "")
             text = "Aucun bonus actif";

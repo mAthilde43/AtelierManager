@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class MenuManager : MonoBehaviour
 {
     public TextMeshProUGUI continueText; // Texte "(Continuer la partie)"
-    public Slider musicVolumeSlider; // Ajoute cette ligne
-    public Slider sfxVolumeSlider;   // Ajoute cette ligne
+    public Slider musicVolumeSlider; 
+    public Slider sfxVolumeSlider;   
     public GameObject settingsPanel;
     void Start()
     {
@@ -42,7 +42,7 @@ public class MenuManager : MonoBehaviour
     // Fonction pour charger le jeu
     public void PlayGame()
     {
-        Debug.Log("🎮 Chargement du jeu...");
+        Debug.Log("Chargement du jeu...");
         SceneManager.LoadScene("MainGame");
     }
     
@@ -61,7 +61,7 @@ public class MenuManager : MonoBehaviour
     // Fonction pour démarrer une nouvelle partie (efface la sauvegarde)
     public void NewGame()
     {
-        Debug.Log("🆕 Nouvelle partie - Suppression de la sauvegarde...");
+        Debug.Log("Nouvelle partie - Suppression de la sauvegarde...");
     
         // Trouve le SaveManager (il persiste entre les scènes)
         SaveManager saveManager = SaveManager.Instance;
@@ -97,11 +97,11 @@ public class MenuManager : MonoBehaviour
         if (audioManager != null)
         {
             audioManager.SetMusicVolume(value);
-            Debug.Log("🎵 Volume musique changé : " + value);
+            Debug.Log("Volume musique changé : " + value);
         }
         else
         {
-            Debug.LogWarning("⚠️ AudioManager introuvable !");
+            Debug.LogWarning("AudioManager introuvable !");
         }
     }
 
@@ -112,11 +112,11 @@ public class MenuManager : MonoBehaviour
         if (audioManager != null)
         {
             audioManager.SetSFXVolume(value);
-            Debug.Log("🔊 Volume SFX changé : " + value);
+            Debug.Log("Volume SFX changé : " + value);
         }
         else
         {
-            Debug.LogWarning("⚠️ AudioManager introuvable !");
+            Debug.LogWarning("AudioManager introuvable !");
         }
     }
 }

@@ -209,7 +209,7 @@ public class BoosterManager : MonoBehaviour
             60f,
             BoosterType.MoneyBoost,
             1.5f,
-            "💰"
+            ""
         ));
         
         // Booster d'XP
@@ -220,7 +220,7 @@ public class BoosterManager : MonoBehaviour
             60f,
             BoosterType.XPBoost,
             2.0f,
-            "⭐"
+            ""
         ));
         
         // Booster de production
@@ -231,10 +231,10 @@ public class BoosterManager : MonoBehaviour
             60f,
             BoosterType.InstantCraft,
             1.0f,
-            "⚡"
+            ""
         ));
         
-        Debug.Log("⚡ " + availableBoosters.Count + " boosters disponibles");
+        Debug.Log("" + availableBoosters.Count + " boosters disponibles");
     }
     
     // Fait apparaître un booster aléatoire
@@ -257,7 +257,7 @@ public class BoosterManager : MonoBehaviour
                 offerNameText.text = currentOffer.boosterName;
         }
         
-        Debug.Log("⚡ Booster disponible : " + currentOffer.boosterName + " pour " + offerTimer + "s");
+        Debug.Log("Booster disponible : " + currentOffer.boosterName + " pour " + offerTimer + "s");
     }
     
     // Cache l'offre de booster
@@ -267,7 +267,7 @@ public class BoosterManager : MonoBehaviour
             boosterOfferPanel.SetActive(false);
         
         currentOffer = null;
-        Debug.Log("⏱️ Offre de booster expirée");
+        Debug.Log("Offre de booster expirée");
     }
     
     // Ouvre la popup de confirmation
@@ -303,7 +303,7 @@ public class BoosterManager : MonoBehaviour
         // Cache aussi l'offre de booster (on a refusé)
         HideBoosterOffer();
     
-        Debug.Log("❌ Booster ignoré");
+        Debug.Log("Booster ignoré");
     }
 
     
@@ -325,7 +325,7 @@ public class BoosterManager : MonoBehaviour
             CloseBoosterPopup();
             HideBoosterOffer();
             
-            Debug.Log("⚡ Booster acheté : " + currentOffer.boosterName);
+            Debug.Log("Booster acheté : " + currentOffer.boosterName);
             
             // Son de succès
             if (AudioManager.Instance != null)
@@ -342,7 +342,7 @@ public class BoosterManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("⚠️ Pas assez d'argent pour " + currentOffer.boosterName);
+            Debug.LogWarning("Pas assez d'argent pour " + currentOffer.boosterName);
             
             // Son d'erreur
             if (AudioManager.Instance != null)
@@ -362,7 +362,7 @@ public class BoosterManager : MonoBehaviour
         // Crée le badge
         CreateBadge(activeBooster);
         
-        Debug.Log("⚡ " + booster.boosterName + " actif pour " + booster.duration + " secondes");
+        Debug.Log("" + booster.boosterName + " actif pour " + booster.duration + " secondes");
     }
     
     // Crée un badge pour un booster actif
@@ -400,7 +400,7 @@ public class BoosterManager : MonoBehaviour
     // Appelé quand un booster expire
     void OnBoosterExpired(ActiveBooster booster)
     {
-        Debug.Log("⏱️ Booster expiré : " + booster.type);
+        Debug.Log("Booster expiré : " + booster.type);
         
         // Son d'expiration
         if (AudioManager.Instance != null)

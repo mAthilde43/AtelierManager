@@ -76,7 +76,7 @@ public class AudioManager : MonoBehaviour
         // Lance la musique
         PlayMusic();
     
-        Debug.Log("🔊 AudioManager initialisé - Musique: " + musicVolume + ", SFX: " + sfxVolume);
+        Debug.Log("AudioManager initialisé - Musique: " + musicVolume + ", SFX: " + sfxVolume);
     }
     
     // === MUSIQUE ===

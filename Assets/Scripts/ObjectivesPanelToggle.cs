@@ -37,7 +37,7 @@ public class ObjectivesPanelToggle : MonoBehaviour
         
         UpdateButtonText();
         
-        Debug.Log("🎯 Panneau objectifs : " + (isPanelVisible ? "Affiché" : "Caché"));
+        Debug.Log("Panneau objectifs : " + (isPanelVisible ? "Affiché" : "Caché"));
     }
     
     void UpdateButtonText()

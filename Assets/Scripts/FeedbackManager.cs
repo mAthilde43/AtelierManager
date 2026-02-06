@@ -40,10 +40,10 @@ public class FeedbackManager : MonoBehaviour
         
         if (canvas == null)
         {
-            Debug.LogError("❌ Aucun Canvas trouvé !");
+            Debug.LogError("Aucun Canvas trouvé !");
         }
         
-        Debug.Log("✨ FeedbackManager initialisé");
+        Debug.Log("FeedbackManager initialisé");
     }
     
     // === TEXTES FLOTTANTS ===

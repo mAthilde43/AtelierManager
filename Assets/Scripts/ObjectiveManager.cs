@@ -56,7 +56,7 @@ public class ObjectiveManager : MonoBehaviour
         // Crée l'UI
         CreateObjectivesUI();
     
-        Debug.Log("🎯 ObjectiveManager initialisé");
+        Debug.Log("ObjectiveManager initialisé");
     }
 
     // Crée l'UI des objectifs
@@ -146,7 +146,7 @@ public class ObjectiveManager : MonoBehaviour
             true
         ));
         
-        Debug.Log("📋 3 objectifs quotidiens générés");
+        Debug.Log("3 objectifs quotidiens générés");
     }
     
     // === GÉNÉRATION DES OBJECTIFS HEBDOMADAIRES ===
@@ -175,7 +175,7 @@ public class ObjectiveManager : MonoBehaviour
             false
         ));
         
-        Debug.Log("📋 2 objectifs hebdomadaires générés");
+        Debug.Log("2 objectifs hebdomadaires générés");
     }
     
     // === PROGRESSION DES OBJECTIFS ===
@@ -266,7 +266,7 @@ public class ObjectiveManager : MonoBehaviour
     {
         if (gameManager == null) return;
         
-        Debug.Log("🎁 Récompense : +" + obj.rewardMoney + "€ et +" + obj.rewardXP + " XP");
+        Debug.Log("Récompense : +" + obj.rewardMoney + "€ et +" + obj.rewardXP + " XP");
         
         if (obj.rewardMoney > 0)
         {
@@ -294,7 +294,7 @@ public class ObjectiveManager : MonoBehaviour
     {
         GenerateDailyObjectives();
         CreateObjectivesUI();
-        Debug.Log("🔄 Objectifs quotidiens réinitialisés");
+        Debug.Log("Objectifs quotidiens réinitialisés");
     }
     
     // Réinitialise les objectifs hebdomadaires
@@ -302,7 +302,7 @@ public class ObjectiveManager : MonoBehaviour
     {
         GenerateWeeklyObjectives();
         CreateObjectivesUI();
-        Debug.Log("🔄 Objectifs hebdomadaires réinitialisés");
+        Debug.Log("Objectifs hebdomadaires réinitialisés");
     }
     
     // Met à jour l'UI des objectifs

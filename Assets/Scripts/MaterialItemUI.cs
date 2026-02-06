@@ -77,7 +77,7 @@ public class MaterialItemUI : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("⚠️ buyButton ou gameManager est null !"); // ← AJOUTE
+            Debug.LogWarning("buyButton ou gameManager est null !"); // ← AJOUTE
         }
     }
     
@@ -98,7 +98,7 @@ public class MaterialItemUI : MonoBehaviour
     
         int finalCost = Mathf.RoundToInt(baseCost);
     
-        Debug.Log("💰 Prix affiché : " + mat.price + "€ → Prix réel : " + finalCost + "€");
+        Debug.Log("Prix affiché : " + mat.price + "€ → Prix réel : " + finalCost + "€");
     
         // Achète 1 unité de ce matériau
         gameManager.BuyMaterial(materialIndex, 1);

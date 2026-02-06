@@ -28,7 +28,7 @@ public class Upgrade
         if (!isPurchased)
         {
             isPurchased = true;
-            Debug.Log("✅ Amélioration achetée : " + upgradeName);
+            Debug.Log("Amélioration achetée : " + upgradeName);
         }
     }
 }

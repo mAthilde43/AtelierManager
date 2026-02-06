@@ -541,7 +541,6 @@ string FormatMoney(int amount)
             }
             
             int earnings = Mathf.RoundToInt(baseSellPrice);
-            // ===========================================
         
             prod.RemoveQuantity(quantity);
             AddMoney(earnings);

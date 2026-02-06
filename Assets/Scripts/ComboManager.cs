@@ -48,7 +48,7 @@ public class ComboManager : MonoBehaviour
             comboPanel.SetActive(false);
         }
         
-        Debug.Log("🔥 ComboManager initialisé");
+        Debug.Log("ComboManager initialisé");
     }
     
     void Update()
@@ -78,7 +78,7 @@ public class ComboManager : MonoBehaviour
         // Affiche le combo
         ShowCombo();
         
-        Debug.Log("🔥 COMBO x" + currentCombo + " !");
+        Debug.Log("COMBO x" + currentCombo );
     }
     
     // Retourne le multiplicateur actuel
@@ -100,7 +100,7 @@ public class ComboManager : MonoBehaviour
             
             if (comboText != null)
             {
-                comboText.text = "🔥 COMBO x" + currentCombo + " !";
+                comboText.text = "COMBO x" + currentCombo ;
             }
             
             if (bonusText != null)
@@ -116,7 +116,7 @@ public class ComboManager : MonoBehaviour
     {
         if (currentCombo >= 2)
         {
-            Debug.Log("❌ Combo perdu ! (était à x" + currentCombo + ")");
+            Debug.Log("Combo perdu ! (était à x" + currentCombo + ")");
         
             // Son d'échec si disponible
             if (AudioManager.Instance != null)

@@ -40,7 +40,7 @@ public class RecipeUnlockManager : MonoBehaviour
         // Vérifie les déverrouillages au démarrage
         CheckUnlocks();
         
-        Debug.Log("🔓 RecipeUnlockManager initialisé");
+        Debug.Log("RecipeUnlockManager initialisé");
     }
     
     // Vérifie tous les déverrouillages possibles
@@ -89,13 +89,13 @@ public class RecipeUnlockManager : MonoBehaviour
     {
         product.isUnlocked = true;
         
-        Debug.Log("🎉 NOUVELLE RECETTE DÉBLOQUÉE : " + product.productName + " !");
+        Debug.Log("NOUVELLE RECETTE DÉBLOQUÉE : " + product.productName + " !");
         
         // Feedback visuel
         if (FeedbackManager.Instance != null)
         {
             Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
-            FeedbackManager.Instance.ShowSuccess("🎉 NOUVELLE RECETTE : " + product.productName, screenCenter);
+            FeedbackManager.Instance.ShowSuccess("NOUVELLE RECETTE : " + product.productName, screenCenter);
         }
         
         // Met à jour les notifications (badges)

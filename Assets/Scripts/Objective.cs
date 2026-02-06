@@ -53,7 +53,7 @@ public class Objective
         {
             currentProgress = targetAmount;
             isCompleted = true;
-            Debug.Log("🎯 Objectif complété : " + objectiveName);
+            Debug.Log("Objectif complété : " + objectiveName);
         }
     }
     

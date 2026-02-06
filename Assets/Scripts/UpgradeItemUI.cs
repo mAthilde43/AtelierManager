@@ -39,7 +39,7 @@ public class UpgradeItemUI : MonoBehaviour
         // Change le statut et l'apparence selon si c'est acheté
         if (upgrade.isPurchased)
         {
-            statusText.text = "✅ Acheté";
+            statusText.text = "Acheté";
             statusText.color = new Color(0f, 0.7f, 0f); // Vert
             
             // Désactive le bouton
@@ -60,10 +60,8 @@ public class UpgradeItemUI : MonoBehaviour
             // Active le bouton SI on a assez d'argent
             if (buyButton != null)
             {
-                // ===== MODIFICATION ICI =====
                 bool canAfford = gameManager.HasEnoughMoney(upgrade.cost);
                 buyButton.interactable = canAfford;
-                // ============================
                 
                 buyButton.GetComponentInChildren<TextMeshProUGUI>().text = "Acheter";
             }
