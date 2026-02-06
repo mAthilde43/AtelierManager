@@ -49,9 +49,9 @@ public class OrderManager : MonoBehaviour
     
     void Start()
     {
-        gameManager = FindFirstObjectByType<GameManager>();  // ← Corrigé
-        
-        Debug.Log("OrderManager initialisé");
+        gameManager = FindFirstObjectByType<GameManager>(); 
+        activeOrders.Clear();
+        Debug.Log("✅ OrderManager initialisé");
         
         GenerateRandomOrder();
     }
@@ -90,7 +90,17 @@ public class OrderManager : MonoBehaviour
     
     void HandleOrderGeneration()
     {
-        if (activeOrders.Count >= maxActiveOrders)
+        // Compte seulement les commandes actives (pas complétées/échouées)
+        int activeCount = 0;
+        foreach (Order order in activeOrders)
+        {
+            if (!order.isCompleted && !order.isFailed)
+            {
+                activeCount++;
+            }
+        }
+        
+        if (activeCount >= maxActiveOrders)
         {
             orderSpawnTimer = 0f;
             return;
@@ -120,33 +130,67 @@ public class OrderManager : MonoBehaviour
         ProgressionManager pm = FindFirstObjectByType<ProgressionManager>();  
         int playerLevel = pm != null ? pm.currentLevel : 1;
         
-        int numProducts = Mathf.Min(1 + (playerLevel / 3), 4);
-        float timeLimit = 180f + (playerLevel * 30f);
+        // ===== TEMPS AUGMENTÉ =====
+        float timeLimit = 600f + (playerLevel * 60f);  // 10 min de base + 1 min par niveau
+        // ==========================
+        
         int baseReward = 200 + (playerLevel * 50);
         
         Order newOrder = new Order(orderID, clientName, baseReward, timeLimit);
         
-        List<int> usedProducts = new List<int>();
+        // ===== FILTRE LES PRODUITS DÉBLOQUÉS =====
+        List<int> availableProducts = new List<int>();
+
+        for (int i = 0; i < gameManager.products.Count; i++)
+        {
+            Product prod = gameManager.products[i];
+    
+            // Ajoute seulement les produits débloqués
+            if (prod.isUnlocked)
+            {
+                availableProducts.Add(i);
+            }
+        }
+
+        // Si aucun produit débloqué, annule la génération
+        if (availableProducts.Count == 0)
+        {
+            Debug.LogWarning("⚠️ Aucun produit débloqué pour générer une commande !");
+            return;
+        }
+
+        Debug.Log("📦 " + availableProducts.Count + " produits débloqués disponibles");
+        // ==========================================
         
+        // Nombre de produits dans la commande (limité par les produits disponibles)
+        int numProducts = Mathf.Min(
+            1 + (playerLevel / 3),    // Augmente avec le niveau
+            4,                         // Max 4 produits différents
+            availableProducts.Count    // Limité par les produits disponibles
+        );
+
         for (int i = 0; i < numProducts; i++)
         {
-            int productIndex;
-            int attempts = 0;
-            do
+            // ===== CHOISIT PARMI LES PRODUITS DÉBLOQUÉS =====
+            if (availableProducts.Count == 0)
             {
-                productIndex = Random.Range(0, gameManager.products.Count);
-                attempts++;
+                Debug.LogWarning("⚠️ Plus de produits disponibles pour cette commande");
+                break;
             }
-            while (usedProducts.Contains(productIndex) && attempts < 20);
+    
+            int randomIndex = Random.Range(0, availableProducts.Count);
+            int productIndex = availableProducts[randomIndex];
+    
+            // Retire de la liste pour éviter les doublons
+            availableProducts.RemoveAt(randomIndex);
+            // ================================================
             
-            if (attempts >= 20) break;
-            
-            usedProducts.Add(productIndex);
-            
+            // Quantité demandée
             int quantity = Random.Range(1, Mathf.Min(2 + (playerLevel / 5), 4));
             
             newOrder.AddRequirement(productIndex, quantity);
             
+            // Augmente la récompense
             Product prod = gameManager.GetProduct(productIndex);
             if (prod != null)
             {
@@ -156,7 +200,10 @@ public class OrderManager : MonoBehaviour
         
         activeOrders.Add(newOrder);
         
-        Debug.Log("Nouvelle commande : " + orderID + " de " + clientName + " - " + newOrder.reward + "€ - " + newOrder.GetFormattedTimeRemaining());
+        Debug.Log("📦 Nouvelle commande : " + orderID + " de " + clientName);
+        Debug.Log("   💰 Récompense : " + newOrder.reward + "€");
+        Debug.Log("   ⏰ Temps limite : " + newOrder.GetFormattedTimeRemaining());
+        Debug.Log("   📋 Produits demandés : " + newOrder.requirements.Count);
         
         RefreshOrdersUI();
     }
@@ -167,7 +214,7 @@ public class OrderManager : MonoBehaviour
         
         if (!order.CanBeCompleted(gameManager))
         {
-            Debug.LogWarning("Impossible de compléter la commande : stock insuffisant");
+            Debug.LogWarning("⚠️ Impossible de compléter la commande : stock insuffisant");
             return;
         }
         
@@ -194,21 +241,18 @@ public class OrderManager : MonoBehaviour
     
     void OnOrderFailed(Order order)
     {
-        Debug.Log("Commande échouée : " + order.orderID + " de " + order.clientName);
+        Debug.Log("❌ Commande échouée : " + order.orderID + " de " + order.clientName);
         RefreshOrdersUI();
     }
     
-    // Rafraîchit l'UI des commandes
     void RefreshOrdersUI()
     {
-        // Trouve l'UI des commandes
         OrdersUI ordersUI = FindFirstObjectByType<OrdersUI>();
         if (ordersUI != null)
         {
             ordersUI.RefreshOrdersDisplay();
         }
     }
-
     
     public Order GetOrder(string orderID)
     {
