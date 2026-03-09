@@ -23,6 +23,11 @@ public class MaterialItemUI : MonoBehaviour
     private bool isHolding = false;          // Bouton maintenu ?
     private float holdDuration = 1f;         // Durée requise (2 secondes)
     
+    void Start()
+    {
+        if (holdProgressBar != null)
+            holdProgressBar.gameObject.SetActive(false);
+    }
     // Initialise l'élément
     public void Setup(int index, CraftingMaterial craftingMaterial, GameManager gm)
     {

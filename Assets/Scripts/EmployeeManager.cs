@@ -93,7 +93,7 @@ public class EmployeeManager : MonoBehaviour
     employees.Add(new Employee(
         "Paul - Vendeur Débutant",
         EmployeeType.Seller,
-        250,
+        600,
         25,
         18f,    // Vend toutes les 18 secondes
         3
@@ -102,7 +102,7 @@ public class EmployeeManager : MonoBehaviour
     employees.Add(new Employee(
         "Luc - Acheteur Junior",
         EmployeeType.Gatherer,
-        200,
+        900,
         20,
         20f,    // Achète toutes les 20 secondes
         5
@@ -115,7 +115,7 @@ public class EmployeeManager : MonoBehaviour
     employees.Add(new Employee(
         "Marie - Artisane Confirmée",
         EmployeeType.Crafter,
-        600,
+        1200,
         60,
         10f,    // Plus rapide
         5
@@ -124,7 +124,7 @@ public class EmployeeManager : MonoBehaviour
     employees.Add(new Employee(
         "Sophie - Vendeuse Experte",
         EmployeeType.Seller,
-        550,
+        1500,
         55,
         12f,
         7
@@ -133,7 +133,7 @@ public class EmployeeManager : MonoBehaviour
     employees.Add(new Employee(
         "Thomas - Acheteur Confirmé",
         EmployeeType.Gatherer,
-        500,
+        1800,
         50,
         15f,
         8
@@ -146,7 +146,7 @@ public class EmployeeManager : MonoBehaviour
     employees.Add(new Employee(
         "Pierre - Maître Artisan",
         EmployeeType.Crafter,
-        1000,
+        2200,
         100,
         7f,     // Très rapide
         9
@@ -155,7 +155,7 @@ public class EmployeeManager : MonoBehaviour
     employees.Add(new Employee(
         "Claire - Directrice des Ventes",
         EmployeeType.Seller,
-        950,
+        2600,
         95,
         8f,
         11
@@ -164,7 +164,7 @@ public class EmployeeManager : MonoBehaviour
     employees.Add(new Employee(
         "Marc - Chef Acheteur",
         EmployeeType.Gatherer,
-        900,
+        3000,
         90,
         10f,
         12
@@ -177,7 +177,7 @@ public class EmployeeManager : MonoBehaviour
     employees.Add(new Employee(
         "Antoine - Artisan Légendaire",
         EmployeeType.Crafter,
-        2000,
+        3500,
         200,
         5f,     // Ultra rapide
         14
@@ -186,7 +186,7 @@ public class EmployeeManager : MonoBehaviour
     employees.Add(new Employee(
         "Isabelle - Vendeuse Experte",
         EmployeeType.Seller,
-        1900,
+        4000,
         190,
         6f,
         17
@@ -195,7 +195,7 @@ public class EmployeeManager : MonoBehaviour
     employees.Add(new Employee(
         "François - Négociateur Expert",
         EmployeeType.Gatherer,
-        1800,
+        5000,
         180,
         7f,
         19
@@ -208,7 +208,7 @@ public class EmployeeManager : MonoBehaviour
     employees.Add(new Employee(
         "Élise - Maître d'Œuvre",
         EmployeeType.Crafter,
-        3500,
+        6000,
         350,
         4f,     // Extrêmement rapide
         24
@@ -217,7 +217,7 @@ public class EmployeeManager : MonoBehaviour
     employees.Add(new Employee(
         "Victor - Directeur Commercial",
         EmployeeType.Seller,
-        3300,
+        8000,
         330,
         4.5f,
         27
@@ -226,7 +226,7 @@ public class EmployeeManager : MonoBehaviour
     employees.Add(new Employee(
         "Camille - Expert en Logistique",
         EmployeeType.Gatherer,
-        3000,
+        10000,
         300,
         5f,
         35
@@ -239,7 +239,7 @@ public class EmployeeManager : MonoBehaviour
     employees.Add(new Employee(
         "Alexandre - Génie de l'Artisanat",
         EmployeeType.Crafter,
-        5000,
+        15000,
         500,
         3f,     // Super rapide
         37
@@ -248,7 +248,7 @@ public class EmployeeManager : MonoBehaviour
     employees.Add(new Employee(
         "Charlotte - Reine des Ventes",
         EmployeeType.Seller,
-        4800,
+        20000,
         480,
         3.5f,
         46
@@ -257,7 +257,7 @@ public class EmployeeManager : MonoBehaviour
     employees.Add(new Employee(
         "Maxime - Roi des Négociations",
         EmployeeType.Gatherer,
-        4500,
+        25000,
         450,
         4f,
         55
@@ -265,7 +265,6 @@ public class EmployeeManager : MonoBehaviour
     
     Debug.Log("" + employees.Count + " employés initialisés");
 }
-
     
     // Effectue l'action de l'employé
     void PerformEmployeeAction(Employee emp)

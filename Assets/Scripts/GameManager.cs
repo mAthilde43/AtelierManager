@@ -177,7 +177,7 @@ else
         upgrades.Add(new Upgrade(
             "Fournisseur de confiance",
             "Réduit le coût des matériaux de 10%",
-            300,
+            20000,
             UpgradeType.MaterialDiscount,
             10
         ));
@@ -185,7 +185,7 @@ else
         upgrades.Add(new Upgrade(
             "Meilleure réputation",
             "Augmente le prix de vente de 15%",
-            500,
+            40000,
             UpgradeType.SalesBonus,
             15
         ));
@@ -193,7 +193,7 @@ else
         upgrades.Add(new Upgrade(
             "Outils perfectionnés",
             "Production plus rapide",
-            400,
+            60000,
             UpgradeType.ProductionSpeed,
             20
         ));
@@ -201,7 +201,7 @@ else
         upgrades.Add(new Upgrade(
             "Contrat régulier",
             "Augmente les revenus quotidiens de 30€",
-            600,
+            80000,
             UpgradeType.DailyIncomeBoost,
             30
         ));
@@ -209,7 +209,7 @@ else
         upgrades.Add(new Upgrade(
             "Local optimisé",
             "Réduit les charges hebdomadaires de 50€",
-            800,
+            100000,
             UpgradeType.WeeklyCostReduction,
             50
         ));

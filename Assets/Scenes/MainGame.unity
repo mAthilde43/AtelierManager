@@ -22366,7 +22366,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1090665105}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -27991,7 +27991,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 583001783}
   m_HandleRect: {fileID: 583001782}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -42038,7 +42038,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ProgressionManager
   currentLevel: 1
   currentExperience: 0
-  experienceToNextLevel: 100
+  experienceToNextLevel: 1500
   levelText: {fileID: 427362099}
   xpText: {fileID: 1348378695}
   xpBarFill: {fileID: 713002690}

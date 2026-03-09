@@ -7,7 +7,7 @@ public class ProgressionManager : MonoBehaviour
     // === PROGRESSION ===
     public int currentLevel = 1;
     public int currentExperience = 0;
-    public int experienceToNextLevel = 100;
+    public int experienceToNextLevel = 1500;
     
     // === UI ===
     public TextMeshProUGUI levelText;
@@ -78,7 +78,7 @@ public class ProgressionManager : MonoBehaviour
         currentLevel++;
     
         // Augmente l'XP nécessaire pour le prochain niveau
-        experienceToNextLevel = Mathf.RoundToInt(experienceToNextLevel * 1.5f);
+        experienceToNextLevel = Mathf.RoundToInt(experienceToNextLevel * 1.8f);
     
         Debug.Log("NIVEAU SUPÉRIEUR ! Niveau " + currentLevel + " atteint !");
         

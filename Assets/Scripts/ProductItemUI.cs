@@ -23,6 +23,12 @@ public class ProductItemUI : MonoBehaviour
     private int productIndex;
     private GameManager gameManager;
     
+    void Start()
+    {
+        if (holdProgressBar != null)
+            holdProgressBar.gameObject.SetActive(false);
+    }
+    
     // Fonction appelée pour initialiser cet élément
     public void Setup(int index, Product product, GameManager gm)
     {
