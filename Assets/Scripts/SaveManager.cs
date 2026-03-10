@@ -159,6 +159,13 @@ public class SaveManager : MonoBehaviour
 
         PlayerPrefs.Save();
         Debug.Log("Jeu sauvegardé avec succès !");
+        
+        // === SAUVEGARDE FIREBASE (en ligne) ===
+        if (FirebaseSaveManager.Instance != null)
+        {
+            FirebaseSaveManager.Instance.SaveToFirebase();
+            Debug.Log("☁️ Sauvegarde Firebase lancée !");
+        }
     }
 
     // Charge toutes les données

@@ -1,0 +1,9 @@
+{
+    "_comment": "Configuration Firebase pour AtelierManager",
+    
+    "projectId": "ateliermanager-e7c06",
+    "databaseURL": "https://ateliermanager-e7c06-default-rtdb.europe-west1.firebasedatabase.app",
+    
+    "_note": "Cette URL est déjà configurée dans Unity (FirebaseManager)"
+}
+

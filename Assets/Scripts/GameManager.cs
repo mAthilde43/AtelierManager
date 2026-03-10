@@ -55,6 +55,10 @@ public class GameManager : MonoBehaviour
     // === RÉFÉRENCES ===
     private ProgressionManager progressionManager;
     
+    // === SAUVEGARDE AUTOMATIQUE ===
+    private float autoSaveTimer = 0f;
+    private float autoSaveInterval = 60f; // Sauvegarde toutes les 60 secondes
+    
     void Start()
     {
         Debug.Log("Atelier Manager démarré avec succès !");
@@ -83,6 +87,28 @@ else
     Debug.Log("Nouvelle partie - Données réinitialisées");
 }
 
+        }
+    }
+    
+    void Update()
+    {
+        // === SAUVEGARDE AUTOMATIQUE TOUTES LES 60 SECONDES ===
+        autoSaveTimer += Time.deltaTime;
+        
+        if (autoSaveTimer >= autoSaveInterval)
+        {
+            autoSaveTimer = 0f;
+            
+            SaveManager saveManager = SaveManager.Instance;
+            if (saveManager != null)
+            {
+                TimeManager timeManager = FindObjectOfType<TimeManager>();
+                if (timeManager != null && progressionManager != null)
+                {
+                    saveManager.SaveGame(this, timeManager, progressionManager);
+                    Debug.Log("⏰ Sauvegarde automatique (toutes les 60 sec)");
+                }
+            }
         }
     }
     
