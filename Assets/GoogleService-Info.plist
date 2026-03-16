@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyAD-fjXZklSjNjn_tVrmp9QzbVWqaOyvjY</string>
+	<string>AIzaSyCqodhe8dS3cqE6DVXiQoJPnzNa1cuty3k</string>
 	<key>GCM_SENDER_ID</key>
-	<string>786464054543</string>
+	<string>385724884335</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.schmid.ateliermanager</string>
 	<key>PROJECT_ID</key>
-	<string>ateliermanager-17bbe</string>
+	<string>ateliermanager-e7c06</string>
 	<key>STORAGE_BUCKET</key>
-	<string>ateliermanager-17bbe.firebasestorage.app</string>
+	<string>ateliermanager-e7c06.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,8 +25,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:786464054543:ios:f724e46b4f1b77f512327a</string>
+	<string>1:385724884335:ios:983cf2cb7f6adbbace349a</string>
 	<key>DATABASE_URL</key>
-	<string>https://ateliermanager-17bbe-default-rtdb.firebaseio.com</string>
+	<string>https://ateliermanager-e7c06-default-rtdb.europe-west1.firebasedatabase.app</string>
 </dict>
 </plist>

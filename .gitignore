@@ -33,3 +33,6 @@ Assets/StreamingAssets/google-services-desktop.json
 Assets/StreamingAssets/google-services.json
 google-services.json
 GoogleService-Info.plist
+
+# Markdown files
+*.md
