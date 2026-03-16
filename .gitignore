@@ -29,3 +29,7 @@ AddressableAssetsData/*/*.bin*
 
 # Firebase large plugins
 Assets/Firebase/Plugins/x86_64/
+Assets/StreamingAssets/google-services-desktop.json
+Assets/StreamingAssets/google-services.json
+google-services.json
+GoogleService-Info.plist
