@@ -113,7 +113,7 @@ public class AudioManager : MonoBehaviour
     public void SetSFXVolume(float volume)
     {
         sfxVolume = Mathf.Clamp01(volume);
-        sfxSource.volume = sfxVolume; 
+        sfxSource.volume = sfxVolume;
         PlayerPrefs.SetFloat("SFXVolume", sfxVolume);
     }
     
