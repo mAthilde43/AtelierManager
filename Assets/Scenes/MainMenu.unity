@@ -1909,6 +1909,82 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &947812530
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 947812532}
+  - component: {fileID: 947812531}
+  m_Layer: 0
+  m_Name: CreateManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &947812531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 947812530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21fbce64184a34e93a1c9f0a355786fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  playerMoney: 1000
+  moneyText: {fileID: 0}
+  craftingMaterials: []
+  products: []
+  woodItemUI: {fileID: 0}
+  pineItemUI: {fileID: 0}
+  varnishItemUI: {fileID: 0}
+  metalItemUI: {fileID: 0}
+  fabricItemUI: {fileID: 0}
+  leatherItemUI: {fileID: 0}
+  tableItemUI: {fileID: 0}
+  chairItemUI: {fileID: 0}
+  shelfItemUI: {fileID: 0}
+  lampItemUI: {fileID: 0}
+  armchairItemUI: {fileID: 0}
+  deskItemUI: {fileID: 0}
+  sofaItemUI: {fileID: 0}
+  wardrobeItemUI: {fileID: 0}
+  saleTableItemUI: {fileID: 0}
+  saleChairItemUI: {fileID: 0}
+  saleShelfItemUI: {fileID: 0}
+  saleLampItemUI: {fileID: 0}
+  saleArmchairItemUI: {fileID: 0}
+  saleDeskItemUI: {fileID: 0}
+  saleSofaItemUI: {fileID: 0}
+  saleWardrobefItemUI: {fileID: 0}
+  upgrade1ItemUI: {fileID: 0}
+  upgrade2ItemUI: {fileID: 0}
+  upgrade3ItemUI: {fileID: 0}
+  upgrade4ItemUI: {fileID: 0}
+  upgrade5ItemUI: {fileID: 0}
+  upgrades: []
+--- !u!4 &947812532
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 947812530}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 250.3478, y: 680.08386, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &961437270
 GameObject:
   m_ObjectHideFlags: 0
@@ -3352,5 +3428,6 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 926239558}
   - {fileID: 961437272}
+  - {fileID: 947812532}
   - {fileID: 1916129607}
   - {fileID: 165062584}

@@ -59,6 +59,11 @@ public class GameManager : MonoBehaviour
     private float autoSaveTimer = 0f;
     private float autoSaveInterval = 60f; // Sauvegarde toutes les 60 secondes
     
+    void Awake()
+{
+    DontDestroyOnLoad(this.gameObject);
+}
+
     void Start()
     {
         Debug.Log("Atelier Manager démarré avec succès !");
