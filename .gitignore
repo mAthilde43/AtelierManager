@@ -27,3 +27,5 @@ Thumbs.db
 # Addressables
 AddressableAssetsData/*/*.bin*
 
+# Firebase large plugins
+Assets/Firebase/Plugins/x86_64/
