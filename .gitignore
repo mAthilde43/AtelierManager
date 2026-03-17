@@ -36,3 +36,6 @@ GoogleService-Info.plist
 
 # Markdown files
 *.md
+
+# Exception: track the main technical documentation in the repo
+!/TECHNICAL_DOCUMENTATION.md
